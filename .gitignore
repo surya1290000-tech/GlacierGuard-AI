@@ -1,0 +1,24 @@
+# ── Raw data (large binaries — do not commit to git) ───────────────────────
+raw/GLO/*.gpkg
+data/raw/**/*.gpkg
+data/raw/**/*.zip
+
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.venv
+venv/
+*.egg-info/
+
+# ── Jupyter ──────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Outputs (generated, not source) ──────────────────────────────────────────
+reports/figures/*.png
+reports/figures/*.pdf
