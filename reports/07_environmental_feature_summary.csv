@@ -1,0 +1,12 @@
+Feature,Source,Definition,Time_Window,Leakage_Safe,Spatial_Extraction
+ERA5_T2M_MEAN,ERA5-Land,2m temperature annual mean (°C),Jan-Dec year t,Yes,ERA5: nearest grid cell; CHIRPS: nearest pixel; RGI: cKDTree
+ERA5_T2M_WARM,ERA5-Land,2m temperature warm-season mean (°C),Apr-Sep year t,Yes,ERA5: nearest grid cell; CHIRPS: nearest pixel; RGI: cKDTree
+ERA5_T2M_ANOM,ERA5-Land,Temp anomaly vs 2010-2016 baseline (°C),Annual,Yes,ERA5: nearest grid cell; CHIRPS: nearest pixel; RGI: cKDTree
+ERA5_TP_TOTAL,ERA5-Land,Total precipitation (mm),Jan-Dec year t,Yes,ERA5: nearest grid cell; CHIRPS: nearest pixel; RGI: cKDTree
+ERA5_TP_WET,ERA5-Land,Monsoon precipitation (mm),Jun-Sep year t,Yes,ERA5: nearest grid cell; CHIRPS: nearest pixel; RGI: cKDTree
+ERA5_TP_ANOM,ERA5-Land,Precip anomaly vs 2010-2016 baseline (mm),Annual,Yes,ERA5: nearest grid cell; CHIRPS: nearest pixel; RGI: cKDTree
+ERA5_SD_MEAN,ERA5-Land,Pre-melt snow depth mean (m w.e.),Oct(t-1)-Mar(t),Yes,ERA5: nearest grid cell; CHIRPS: nearest pixel; RGI: cKDTree
+CHIRPS_TP_TOTAL,CHIRPS v2,Total precipitation (mm),Jan-Dec year t,Yes,ERA5: nearest grid cell; CHIRPS: nearest pixel; RGI: cKDTree
+CHIRPS_TP_JJAS,CHIRPS v2,JJAS monsoon precipitation (mm),Jun-Sep year t,Yes,ERA5: nearest grid cell; CHIRPS: nearest pixel; RGI: cKDTree
+CHIRPS_TP_ANOM,CHIRPS v2,Precip anomaly vs 2010-2016 (mm),Annual,Yes,ERA5: nearest grid cell; CHIRPS: nearest pixel; RGI: cKDTree
+DIST_NEAREST_GLACIER_KM,RGI 6.0,Distance to nearest glacier centroid (km),Static,Yes,ERA5: nearest grid cell; CHIRPS: nearest pixel; RGI: cKDTree

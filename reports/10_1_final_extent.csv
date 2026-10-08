@@ -1,0 +1,3 @@
+lake_name,sensor,observation_date,observation_range,current_area_km2,median_recent_area_km2,historical_glo_2023_km2,diff_from_2023_glo_km2,diff_from_2023_glo_pct,quality_score,monitoring_status
+Imja Tsho,Sentinel-2 (MNDWI > 0.0),2026-09-28,2026-04-16 to 2026-09-28 (5 scenes),1.7652,1.7563,1.7646240802962483,0.0005759197037518149,0.03263696274931987,HIGH,NORMAL
+Imja Tsho,"Sentinel-1 (Lee 5x5, VV < -12 dB, 50m)",2026-09-28,2026-08-11 to 2026-09-28 (5 scenes),1.6312,0.9706,1.7646240802962483,-0.1334240802962483,-7.5610483720617045,HIGH (Post-monsoon calm),NORMAL

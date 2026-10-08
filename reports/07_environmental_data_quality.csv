@@ -1,0 +1,4 @@
+Dataset,Available,Status
+ERA5-Land,True,CDS API registered
+CHIRPS v2.0,True,96 monthly NetCDF rasters (2016-2023) loaded via rasterio/xarray
+RGI 6.0 Region 15,True,downloaded from OGGM mirror

@@ -1,0 +1,19 @@
+# This is a Declarative Automation Bundle definition for GlacierGuard-AI.
+# The Databricks extension requires databricks.yml configuration file.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+
+bundle:
+  name: GlacierGuard-AI
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-0be231d6-04fb.cloud.databricks.com
+
+  ## Optionally, there could be 'staging' or 'prod' targets here.
+  #
+  # prod:
+  #   workspace:
+  #     host: https://dbc-ac341ee9-c0a3.cloud.databricks.com

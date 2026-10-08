@@ -1,24 +1,63 @@
-# ── Raw data (large binaries — do not commit to git) ───────────────────────
-raw/GLO/*.gpkg
-data/raw/**/*.gpkg
-data/raw/**/*.zip
+# =============================================================================
+# GlacierGuard-AI — .gitignore
+# =============================================================================
 
-# ── Python ──────────────────────────────────────────────────────────────────
+# ── Secrets and Credentials (NEVER COMMIT TO GIT) ────────────────────────────
+# Real CDSE credentials live at ~/.glacierguard/cdse_credentials.json (user home)
+# Real CDS credentials live at ~/.cdsapirc (user home)
+.env
+.env.*
+!.env.example
+.cdsapirc
+.glacierguard/
+credentials/
+secrets/
+*.pem
+*.key
+*.token
+
+# ── Python & Virtual Environments ───────────────────────────────────────────
+.venv/
+venv/
+ENV/
+env/
 __pycache__/
 *.py[cod]
-*.pyo
-.env
-.venv
-venv/
+*$py.class
 *.egg-info/
+dist/
+build/
 
-# ── Jupyter ──────────────────────────────────────────────────────────────────
+# ── Jupyter Checkpoints & ML Framework Caches ────────────────────────────────
 .ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+catboost_info/
+notebooks/catboost_info/
 
-# ── OS ───────────────────────────────────────────────────────────────────────
+# ── Raw Datasets (Large External Binaries — Local & Reproducibly Downloaded) ──
+# Raw datasets must be obtained locally or downloaded via reproducible scripts.
+raw/GLO/*.gpkg
+raw/ERA5/*
+raw/CHIRPS/*
+raw/RGI/*
+data/raw/
+
+# ── Temporary Download & Processing Caches ───────────────────────────────────
+scratch/cache_*/
+scratch/__pycache__/
+.databricks/
+
+# ── Operating System & Temporary Files ───────────────────────────────────────
 .DS_Store
 Thumbs.db
+desktop.ini
+*.tmp
+*.temp
 
-# ── Outputs (generated, not source) ──────────────────────────────────────────
-reports/figures/*.png
-reports/figures/*.pdf
+# ── Preserved Research & Engineering Artifacts (DO NOT IGNORE) ───────────────
+# The following directories ARE tracked in Git:
+# - notebooks/ (NB01 through NB10.1)
+# - scratch/*.py (operational scripts, tests, calibration workflows)
+# - reports/*.csv (all benchmark, ablation, and validation reports)
+# - reports/figures/*.png (publication & analytical figures)
+# - reports/models/*.pkl (frozen ML models: S1, S2, fused XGBoost)

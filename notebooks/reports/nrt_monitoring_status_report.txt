@@ -1,0 +1,38 @@
+======================================================================
+GLACIERGUARD-AI -- NRT LAKE MONITORING STATUS REPORT
+Generated : 2026-09-29 07:41:14 UTC
+Auth      : CDSE Keycloak
+Window    : last 365 days
+======================================================================
+
+----------------------------------------------------------------------
+LAKE:Imja Tsho (Imja Lake)
+HAZARD:HIGH  HIST:1.320 km2
+  S2 [PROCESSING_ERROR]
+     scenes=88  latest=2026-09-28
+     WARN:Catalog(SENTINEL-2):STAC HTTP 400: {"detail":{"code":"CollectionInQuerryDoesNotE
+     WARN:ProcessAPI HTTP 400: {"error":{"status":400,"reason":"Bad Request","message":"In
+  S1 [PROCESSING_ERROR]
+     scenes=60  latest=2026-09-28
+     WARN:Catalog(SENTINEL-1):STAC HTTP 400: {"detail":{"code":"CollectionInQuerryDoesNotE
+     WARN:GeoTIFF parse failed
+
+----------------------------------------------------------------------
+LAKE:Thulagi Glacier Lake
+HAZARD:HIGH  HIST:0.730 km2
+
+----------------------------------------------------------------------
+LAKE:Tsho Rolpa Glacier Lake
+HAZARD:HIGH  HIST:1.650 km2
+
+----------------------------------------------------------------------
+LAKE:Lower Barun Glacial Lake
+HAZARD:MEDIUM  HIST:0.480 km2
+
+----------------------------------------------------------------------
+LAKE:Sabai Tsho
+HAZARD:LOW  HIST:0.220 km2
+
+======================================================================
+END
+======================================================================

@@ -1,0 +1,17 @@
+parameter,value
+Selected S1 Preprocessing,"Lee speckle filter (5x5 window, num_looks=4.4)"
+Selected S1 Threshold,VV < -12.0 dB
+Selected S2 Index,MNDWI (Green B03 vs SWIR B11)
+Selected S2 Threshold,MNDWI > 0.0
+Selected GLO Buffer Constraint,0 m (exact GLO polygon prior) / 50 m search envelope
+Selected Morphological Filter,"Component size >= 10 px, hole filling <= 5 px"
+S2 Median Recent Area,1.7563 km2
+S2 Area Std Dev / CV,0.0558 km2 (CV: 3.22%)
+S1 Median Recent Area (0m),0.8097 km2
+S1 Median Recent Area (50m),0.9706 km2
+S1 Area on Calm Scene (2026-09-28),1.3668 km2 (0m) / 1.6312 km2 (50m)
+First-pass S1/S2 Disagreement (2026-09-28),58.6% relative difference (S1: 0.51 km2 vs S2: 0.93 km2 with ellipse)
+"Calibrated S1/S2 Disagreement (2026-09-28, 50m)",7.9% relative difference (S1: 1.631 km2 vs S2: 1.765 km2)
+S2 Quality Status,"HIGH (0% cloud in AOI on 2026-09-28, 100% valid)"
+S1 Quality Status,"MODERATE to HIGH (100% SAR coverage, elevated backscatter during monsoon wind/roughness)"
+Overall Monitoring Status,"WATCH (stable water body, high cross-sensor consistency on calm post-monsoon acquisition)"
