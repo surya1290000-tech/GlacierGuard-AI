@@ -111,7 +111,8 @@ GlacierGuard-AI/
 │   ├── 08_multisource_advanced_modeling.ipynb
 │   ├── 09_final_model_validation.ipynb
 │   ├── 10_nrt_lake_monitoring.ipynb
-│   └── 10_1_imja_extent_calibration.ipynb
+│   ├── 10_1_imja_extent_calibration.ipynb
+│   └── 10_2_five_lake_monitoring_qa.ipynb
 │
 ├── reports/                        # Curated validation, ablation & benchmark CSVs
 │   ├── 06_*.csv                    # Single-sensor baseline model comparisons
@@ -127,7 +128,8 @@ GlacierGuard-AI/
 │   │   ├── 06_*.png to 09_*.png    # Model residual diagnostics & ablation curves
 │   │   ├── 10_*.png                # NRT monitoring dashboards
 │   │   ├── 10_1_*.png              # SAR/Optical threshold sensitivity & masks
-│   │   └── 10_2_five_lake_extent_qa.png # Five-lake multi-sensor comparison
+│   │   ├── 10_2_five_lake_extent_qa.png # Five-lake multi-sensor comparison
+│   │   └── 10_2_*_water_mask.png   # Individual lake dual-sensor masks
 │   │
 │   └── models/                     # Serialized production model artifacts
 │       ├── 08_best_model_S1.pkl    # Standalone S1 XGBoost model
@@ -167,7 +169,7 @@ GlacierGuard-AI/
 | **NB09** | Final Model Validation | Confirmatory validation, frozen 2023 test set, bootstrap CIs, robustness | **Validated Baseline** | `09_final_fused_xgboost.pkl` |
 | **NB10** | NRT Satellite Monitoring | CDSE OAuth, STAC catalog queries, Sentinel-1/2 Processing API retrieval | Completed | NRT surveillance pipeline |
 | **NB10.1** | Imja Extent Calibration | Dual-sensor calibration, speckle filtering, threshold tuning on Imja Tsho | Completed | Extent calibration protocol |
-| **NB10.2** | Five-Lake Scaling | Controlled evaluation across Imja, Thulagi, Tsho Rolpa, Lower Barun, Sabai | Completed | `10_2_five_lake_monitoring_qa.csv` |
+| **NB10.2** | Five-Lake Scaling & QA | Multi-sensor surveillance, strict temporal matching, and SAR failure screening | **Audited & Validated** | `10_2_five_lake_monitoring_qa.csv`, `10_2_five_lake_extent_qa.png` |
 
 ---
 
@@ -293,10 +295,10 @@ uv sync
 ```
 
 ### Verification
-Run the verification suite to ensure dependencies and scripts compile cleanly:
+Run the unified verification suite to ensure all credentials, APIs, and dependencies function:
 
 ```powershell
-python -c "import geopandas, shapely, sklearn, xgboost; print('Environment OK!')"
+python scratch/verify_api_credentials.py
 python scratch/audit_secrets.py
 ```
 
@@ -309,7 +311,7 @@ GlacierGuard-AI supports distributed data processing via **Databricks Connect** 
 1. **Bundle Definition:** Defined in `databricks.yml` targeting the workspace host `https://dbc-0be231d6-04fb.cloud.databricks.com`.
 2. **Local Profile:** Databricks CLI authentication should be configured locally using:
    ```powershell
-   databricks auth login --host https://<your-databricks-instance>.cloud.databricks.com
+   databricks auth login --host https://dbc-0be231d6-04fb.cloud.databricks.com
    ```
 3. **Execution Separation:** Heavy exploratory spatial joins and catalog profiling can execute on Databricks clusters via PySpark (`notebooks/02_glo_databricks_eda.ipynb`), while ML modeling and NRT satellite processing execute locally.
 4. **Security Notice:** Databricks authentication tokens are stored in the local profile (`~/.databrickscfg`) and must **NEVER** be committed to Git.
@@ -318,7 +320,13 @@ GlacierGuard-AI supports distributed data processing via **Databricks Connect** 
 
 ## 12. API Credential Setup
 
-GlacierGuard-AI requires credentials for Copernicus CDS (ERA5) and Copernicus Data Space (NRT Satellite Imagery). All credentials reside outside the Git repository.
+GlacierGuard-AI requires credentials for Copernicus CDS (ERA5), Copernicus Data Space (NRT Satellite Imagery), and Databricks. All credentials reside strictly outside the Git repository. For full instructions, see [DEVELOPER_SETUP.md](DEVELOPER_SETUP.md).
+
+### Interactive Setup Helper
+Configure or verify all credentials with a single command:
+```powershell
+python scratch/configure_credentials.py
+```
 
 ### 1. CDSE / Sentinel Hub OAuth (for NRT Imagery)
 Register an account at [Copernicus Data Space](https://dataspace.copernicus.eu/). Create an OAuth client under your dashboard.
@@ -335,16 +343,17 @@ Alternatively, set them in your terminal session:
 $env:CDSE_CLIENT_ID="your-client-id"
 $env:CDSE_CLIENT_SECRET="your-client-secret"
 ```
-Verify your configuration using the helper tool:
-```powershell
-python scratch/setup_cdse_credentials.py
-```
 
 ### 2. Climate Data Store (CDS API for ERA5-Land)
 Create an account at [Copernicus Climate Data Store](https://cds.climate.copernicus.eu/). Save your key in `~/.cdsapirc`:
 ```ini
 url: https://cds.climate.copernicus.eu/api
 key: your-cds-api-key
+```
+
+### 3. Verify All Services
+```powershell
+python scratch/verify_api_credentials.py
 ```
 
 > [!WARNING]
