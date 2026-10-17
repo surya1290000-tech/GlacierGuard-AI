@@ -1,0 +1,86 @@
+{
+  "dataset_name": "High Mountain Asia Glacial Lake Outburst Flood Database (HMAGLOFDB)",
+  "source_url": "https://github.com/fidelsteiner/HMAGLOFDB",
+  "file_sha256": "b4c84bb933f63a398001ac3838d9eddbfa53015c1ff173867d5f8f5dfe8b290c",
+  "file_size_bytes": 451573,
+  "dimensions": {
+    "total_records": 774,
+    "total_columns": 59
+  },
+  "identifier_audit": {
+    "primary_key": "GF_ID",
+    "unique_identifiers": 774,
+    "duplicate_identifiers": 0,
+    "null_identifiers": 0
+  },
+  "temporal_coverage": {
+    "earliest_year": 1533,
+    "latest_year": 2026,
+    "events_since_2000": 172,
+    "malformed_year_count": 33,
+    "post_2025_events_count": 2,
+    "pre_1850_events_count": 11,
+    "undated_events_count": 148
+  },
+  "temporal_qc_audit": {
+    "maintainer_documentation_notice": "The database has been quality controlled up to 2025/12/31. Events with a later date in the database need to be evaluated and cross checked.",
+    "post_2025_qc_status": "UNVERIFIED_REQUIRES_CROSS_CHECK",
+    "post_2025_records": [
+      {
+        "GF_ID": "775",
+        "date": "2026-08-09",
+        "lake": "Unnamed",
+        "country": "Bhutan",
+        "citation": "(this study)",
+        "secondary_ref": "https://www.bbs.bt/246122/",
+        "qc_flag": "UNVERIFIED_POST_2025_REQUIRES_CROSS_CHECK",
+        "review_status": "PENDING_MAINTAINER_EVALUATION"
+      },
+      {
+        "GF_ID": "773",
+        "date": "2026-07-26",
+        "lake": "Cogalongco",
+        "country": "China",
+        "citation": "(this study)",
+        "secondary_ref": "None",
+        "qc_flag": "UNVERIFIED_POST_2025_REQUIRES_CROSS_CHECK",
+        "review_status": "PENDING_MAINTAINER_EVALUATION"
+      }
+    ],
+    "pre_instrumental_pre_1850_records_count": 11,
+    "undated_records_count": 148,
+    "policy": "Original raw records preserved untouched without silent modification. Unverified post-2025 events and pre-instrumental documentary accounts flagged for explicit QC."
+  },
+  "plus_counts_audit": {
+    "interpretation": "Values formatted as '+' represent positive-but-unknown counts and must never be converted to zero.",
+    "fields_with_plus_counts": {
+      "Lives_total": 4,
+      "Livestock": 5,
+      "Residential_destroyed": 26,
+      "Commerical_destroyed": 3,
+      "Agricultural": 17
+    }
+  },
+  "feasibility_gate": {
+    "task_1_glof_occurrence": {
+      "status": "BLOCKED",
+      "blockers": [
+        "HMAGLOFDB is an event-only inventory (774 positive events); no verified non-event observations exist.",
+        "Unrecorded lake-years in GLO cannot be assumed to be true negatives without historical observation bias.",
+        "Pre-event lake area is missing in 95.1% of recorded events."
+      ]
+    },
+    "task_2_impact_severity": {
+      "status": "BLOCKED",
+      "blockers": [
+        "Overall impact narrative is available for only 3.6% of events (28 / 774).",
+        "Casualties (Lives_total) recorded for only 4.1% of events; missing reports cannot be assumed to equal 0.",
+        "Infrastructure damage recorded for only 11.4% of events.",
+        "Grouping narrative text into 'LOW / MEDIUM / HIGH' creates arbitrary, uncalibrated subjective targets.",
+        "Crucial physical outcomes (discharge, casualties, mechanism) are post-event leakage, not pre-event features."
+      ]
+    },
+    "overall_recommendation": "NO-GO",
+    "rationale": "Model training is strictly NO-GO for both GLOF occurrence and GLOF impact severity. HMAGLOFDB provides invaluable historical geomorphological reference context, but its extreme missingness (>87% across damage fields), event-only nature, and post-event character of documented mechanisms prevent training a defensible, reproducible machine learning classifier. GlacierGuard-AI must maintain GLOF hazard assessment as a rule-based expert glaciological surveillance tier, distinct from the validated annual lake area change regression tier."
+  }
+}

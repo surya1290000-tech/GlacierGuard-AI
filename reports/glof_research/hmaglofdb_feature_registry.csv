@@ -1,0 +1,60 @@
+column_name,role,completeness_pct,description
+GF_ID,IDENTIFIER,100.0,Unique GLOF event identifier (primary key)
+Year_approx,EVENT_METADATA,80.88,Approximate year of GLOF event
+Year_exact,EVENT_METADATA,76.61,Confirmed exact year of GLOF event
+Month,EVENT_METADATA,51.29,Month of GLOF event (1-12)
+Day,EVENT_METADATA,43.41,Day of GLOF event (1-31)
+Lake_name,IDENTIFIER,85.53,Reported local or toponymic lake name
+Glacier_name,IDENTIFIER,91.47,Associated parent glacier name
+GL_ID,IDENTIFIER,97.8,Glacial lake inventory identifier
+LakeDB_ID,IDENTIFIER,50.13,External lake database identifier
+G_ID,IDENTIFIER,97.16,Glacier identifier in RGI / GLIMS
+Lat_lake,PRE_EVENT_CANDIDATE,100.0,Latitude of source lake (WGS84)
+Lon_lake,PRE_EVENT_CANDIDATE,100.0,Longitude of source lake (WGS84)
+Elev_lake,PRE_EVENT_CANDIDATE,99.1,Elevation of source lake surface (m a.s.l.)
+Lat_impact,POST_EVENT_LEAKAGE,62.53,Latitude of downstream impact location
+Lon_impact,POST_EVENT_LEAKAGE,62.53,Longitude of downstream impact location
+Elev_impact,POST_EVENT_LEAKAGE,62.53,Elevation of downstream impact location
+Impact_type,POST_EVENT_LEAKAGE,65.25,Nature of observed evidence (Observation / Deposit)
+Lake_type,PRE_EVENT_CANDIDATE,96.12,"Lake dam type (e.g., Moraine-dammed, Ice-dammed)"
+Transboundary,EVENT_METADATA,99.87,Whether event crossed national borders (Y/N)
+Repeat,EVENT_METADATA,99.87,Whether the lake has experienced repeated GLOFs (Y/N)
+Region_RGI,EVENT_METADATA,97.42,Randolph Glacier Inventory region (e.g. 15 South Asia East)
+Region_HiMAP,EVENT_METADATA,96.38,High Mountain Asia sub-region classification
+Country,EVENT_METADATA,100.0,Country where lake is located
+Province,EVENT_METADATA,64.73,Administrative province/state
+River_Basin,EVENT_METADATA,90.7,Major drainage river basin
+Driver_lake,PRE_EVENT_CANDIDATE,18.6,Long-term morphological or climate driver of lake formation
+Driver_GLOF,POST_EVENT_LEAKAGE,12.66,Triggering mechanism of breach (determined post-event)
+Mechanism,POST_EVENT_LEAKAGE,25.06,Breach physical failure mode (determined post-event)
+Area,SPARSE_UNVERIFIED_TIMING,4.91,Reported lake area (km²); unverified whether pre- or post-drainage
+Volume,SPARSE_UNVERIFIED_TIMING,13.95,Reported lake volume (m³); unverified whether pre- or post-drainage
+Discharge_water,POST_EVENT_LEAKAGE,10.08,Peak water discharge (m³/s) — physical outcome of breach
+Discharge_solid,POST_EVENT_LEAKAGE,2.45,Solid sediment volume transported (m³) — post-event outcome
+Impact,POST_EVENT_LEAKAGE,3.62,Narrative summary of downstream devastation / damage
+Lives_total,POST_EVENT_LEAKAGE,4.13,Fatalities caused by GLOF — post-event consequence
+Lives_male,POST_EVENT_LEAKAGE,0.13,Male fatalities — post-event consequence
+Lives_female,POST_EVENT_LEAKAGE,0.26,Female fatalities — post-event consequence
+Lives_disabilities,POST_EVENT_LEAKAGE,0.0,Fatalities among disabled individuals — post-event consequence
+Injured_total,POST_EVENT_LEAKAGE,0.26,Total persons injured — post-event consequence
+Injured_male,POST_EVENT_LEAKAGE,0.0,Injured male individuals — post-event consequence
+Injured_female,POST_EVENT_LEAKAGE,0.0,Injured female individuals — post-event consequence
+Injured_disabilities,POST_EVENT_LEAKAGE,0.0,Injured disabled individuals — post-event consequence
+Displaced_total,POST_EVENT_LEAKAGE,1.16,Persons displaced or evacuated — post-event consequence
+Displaced_male,POST_EVENT_LEAKAGE,0.0,Displaced males — post-event consequence
+Displaced_female,POST_EVENT_LEAKAGE,0.0,Displaced females — post-event consequence
+Displaced_disabilities,POST_EVENT_LEAKAGE,0.0,Displaced disabled individuals — post-event consequence
+Livestock,POST_EVENT_LEAKAGE,1.68,Livestock killed or swept away — post-event consequence
+Residential_destroyed,POST_EVENT_LEAKAGE,6.85,Homes destroyed — post-event damage
+Commerical_destroyed,POST_EVENT_LEAKAGE,1.42,Commercial buildings destroyed — post-event damage
+Residential_damaged,POST_EVENT_LEAKAGE,2.07,Homes damaged — post-event damage
+Commerical_damaged,POST_EVENT_LEAKAGE,0.0,Commercial buildings damaged — post-event damage
+Infra,POST_EVENT_LEAKAGE,11.37,"Infrastructure damaged (bridges, roads, trails) — post-event damage"
+Agricultural,POST_EVENT_LEAKAGE,4.13,Farmland destroyed/damaged — post-event damage
+Hydropower,POST_EVENT_LEAKAGE,0.65,Hydropower plants destroyed/damaged — post-event damage
+Econ_damage,POST_EVENT_LEAKAGE,2.07,Estimated financial loss ($ / local currency) — post-event outcome
+Sat_evidence,POST_EVENT_LEAKAGE,0.65,Satellite imagery confirming post-event deposit/breach
+Ref_scientific,EVENT_METADATA,98.71,Primary scientific literature citation
+Ref_scientific_full,EVENT_METADATA,88.11,Full bibliographic reference
+Ref_other,EVENT_METADATA,9.82,Secondary/grey literature reference
+Remarks,EVENT_METADATA,15.5,Free-text narrative comments and context

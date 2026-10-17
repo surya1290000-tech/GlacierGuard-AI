@@ -9,12 +9,14 @@ dependencies = [
     "pyproj",
     "matplotlib",
     "scikit-learn",
+    "xgboost",
 ]
 
 [dependency-groups]
 dev = [
     "databricks-connect~=18.0.0",
     "ipykernel",
+    "pytest>=8.3.5",
 ]
 
 [tool.databricks.environment]
