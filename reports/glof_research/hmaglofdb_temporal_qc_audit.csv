@@ -1,0 +1,775 @@
+GF_ID,Year_exact,Year_approx,Month,Day,Lake_name,Country,River_Basin,QC_Flag,Review_Status,Source_Citation,Source_Other,QC_Note
+458,2013,2013,9,9,Gandukh,Afghanistan,Sanglich,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),monitoring by AKAH,1950-2025 modern era with potential aerial/satellite verification.
+492,2018,2018,7,11,Pishkandah,Afghanistan,Panjshir,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+510,2021,2021,7,4,Bam Tanab,Afghanistan,Panjshir,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),https://www.facebook.com/watch/?extid=NS-UNK-UNK-UNK-IOS_GK0T-GK1C&v=2843144129330850,1950-2025 modern era with potential aerial/satellite verification.
+521,,,,,Unnamed,Afghanistan,Kunar,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+770,2025,2025,6,13,Taghanak,Afghanistan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),https://www.linkedin.com/posts/fayez-azizi-%D9%81%D8%A7%DB%8C%D8%B2-%D8%B9%D8%B2%DB%8C%D8%B2%DB%8C-1a744123b_glof-debris-glof-activity-7339297120807493632-wJwo?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC220e0BhVbjUp-sC3yUdCfOXQdAXIAef9o,1950-2025 modern era with potential aerial/satellite verification.
+153,1957,1957,,,Tarina Tsho,Bhutan,Pho Chhu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Carrivick and Tweed, 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+163,1959,1959,,,Tarina Tsho,Bhutan,Pho Chhu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Veh et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+365,1994,1994,10,7,Luggye Tsho,Bhutan,Pho Chhu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ives, Shrestha and Mool, 2010; Komori et al., 2012; Gurung et al., 2017)",,1950-2025 modern era with potential aerial/satellite verification.
+377,1998,1998,,,Gangri Tsho III,Bhutan,Chamkhar Chhu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Komori et al., 2012; Carrivick and Tweed, 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+439,2009,2009,4,29,Tshojo Tsho,Bhutan,Pho Chhu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Komori et al., 2012; Carrivick and Tweed, 2016; Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+480,2015,2015,7,28,Lemthang Tsho,Bhutan,Mo Chhu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Gurung et al., 2017)",,1950-2025 modern era with potential aerial/satellite verification.
+503,2019,2019,6,20,Thorthormi,Bhutan,Pho Chhu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),https://www.nchm.gov.bt/attachment/ckfinder/userfiles/files/Report_on_Thorthormi_assessment_2019.pdf,1950-2025 modern era with potential aerial/satellite verification.
+624,,Before 1966,,,Jhomohari South,Bhutan,Pa Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='Before 1966'"
+627,,1966-1974,,,Unnamed,Bhutan,Pa Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='1966-1974'"
+630,,Before 1966,,,Upper Chokham Tsho,Bhutan,Mo Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='Before 1966'"
+635,,Before 1966,,,Simdong Goi Tsho,Bhutan,Mo Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='Before 1966'"
+638,,Before 1966,,,Unnamed,Bhutan,Pho Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='Before 1966'"
+639,,,,,Unnamed,Bhutan,Pho Chhu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+642,,,,,Unnamed,Bhutan,Mangde Chhu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+643,,1960s,,,,Bhutan,Pho Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Ives, Shrestha and Mool, 2010; Komori et al., 2012; Carrivick and Tweed, 2016)",,"Non-numeric year entry: exact='None', approx='1960s'"
+645,,1990-1991,,,Unnamed,Bhutan,Pho Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='1990-1991'"
+646,,2009-2010,,,Unnamed,Bhutan,Pho Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='2009-2010'"
+654,,Before 1956,,,Tarikha Tsho,Bhutan,Chamkhar Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='Before 1956'"
+655,,1960s,,,Tarikha Tsho,Bhutan,Chamkhar Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Ives, Shrestha and Mool, 2010; Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='1960s'"
+658,,Before 1956,,,Chubda Tsho,Bhutan,Chamkhar Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='Before 1956'"
+699,2023,2023,10,30,Thorthormi,Bhutan,Pho Chhu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"https://www.nchm.gov.bt/attachment/ckfinder/userfiles/files/Re-assessment%20of%20Potentailly%20Dangerous%20Glacial%20Lakes.pdf, https://twitter.com/thebhutanese/status/1719235773684457928?t=sGPUXPsyspkeYHmrt0I0XA&s=19",1950-2025 modern era with potential aerial/satellite verification.
+775,2026,2026,8,9,Unnamed,Bhutan,,UNVERIFIED_POST_2025_REQUIRES_CROSS_CHECK,PENDING_MAINTAINER_EVALUATION,(this study),https://www.bbs.bt/246122/,Dated after 2025-12-31; maintainer documentation specifies this record requires evaluation and cross-checking.
+24,1880,1880,9,,Kyagar,China,Yarkant,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zhang et al., 1990; Zhang, 1992)",,1850-1950 early instrumental/expedition record.
+34,1892,1892,6,,Kyagar,China,Yarkant,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zhang et al., 1990; Zhang, 1992)",,1850-1950 early instrumental/expedition record.
+41,1897,1897,6,,Kyagar,China,Yarkant,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zhang et al., 1990; Zhang, 1992)",,1850-1950 early instrumental/expedition record.
+80,1917,1917,6,,Kyagar,China,Yarkant,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zhang et al., 1990; Zhang, 1992)",,1850-1950 early instrumental/expedition record.
+88,1926,1926,,,Kyagar,China,Yarkant,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Mason, 1929a; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+97,1929,1929,,,,China,Shaksgam,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Desio, 1930; Feng, 1991; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+98,1929,1929,,,,China,Shaksgam,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Desio, 1930; Feng, 1991; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+101,1931,1931,6,,Lulang,China,Parlung Zangbo,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Cui et al., 2010)",,1850-1950 early instrumental/expedition record.
+110,1935,1935,8,28,Tara Co,China,Poiqu,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Mool, Bajracharya and Joshi, 2001; Cui et al. 2010; Ives, Shrestha and Mool, 2010; ICIMOD, 2011; Veh et al., 2019)",,1850-1950 early instrumental/expedition record.
+113,1937,1937,7,,Kyagar,China,Yarkant,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zhang et al., 1990; Zhang, 1992)",,1850-1950 early instrumental/expedition record.
+119,1940,1940,7,10,Qiongbixiama Co,China,Amo Chhu,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Wang et al., 2012; Chen et al., 2013; Veh et al., 2019)",,1850-1950 early instrumental/expedition record.
+129,1950,1950,,,Sangwang Co,China,Nian Chu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Carrivick and Tweed, 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+136,1953,1953,,,,China,Shaksgam,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Desio, 1955; Feng, 1991; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+137,1953,1953,,,,China,Shaksgam,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Desio, 1955; Feng, 1991; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+138,1953,1953,5,6,Guxiang,China,Bomi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Carrivick and Tweed, 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+140,1954,1954,7,16,Sangwang Co,China,Nian Chu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Cui et al., 2010; Komori et al., 2012; Carrivick and Tweed, 2016; Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+143,1955,1955,7,,Unnamed,China,Yalong Tsangpo,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ding and Jingshi, 1992)",,1950-2025 modern era with potential aerial/satellite verification.
+160,1959,1959,8,29,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+171,1961,1961,9,4,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+179,1963,1963,6,24,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+185,1964,1964,9,6,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+187,1964,1964,8,25,Longda Co,China,Gyirong,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ives, Shrestha and Mool, 2010; Cui et al. 2010; ICIMOD, 2011; Carrivick and Tweed, 2016; Nie et al., 2018; Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+188,1964,1964,5,17,Cirenma Co,China,Poiqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Yamada and Sharma, 1993; ICIMOD, 2011; Carrivick and Tweed, 2016; Allen et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+189,1964,1964,7,,Tara Co,China,Poiqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ghimire, 2009)",,1950-2025 modern era with potential aerial/satellite verification.
+190,1964,1964,9,21,Gelhaip Co,China,Pumqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Yamada and Sharma, 1993; Mool, Bajracharya and Joshi, 2001; Cui et al. 2010; Ives, Shrestha and Mool, 2010; ICIMOD, 2011; Carrivick and Tweed, 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+191,1964,1964,9,26,Damenhai Co,China,Gongbujiangda/Tangbulang (Nyang),MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Cui et al. 2010; Wang et al., 2012; Carrivick and Tweed, 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+193,1965,1965,8,21,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+200,1966,1966,7,,Unnamed,China,Yalong Tsangpo,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ding and Jingshi, 1992)",,1950-2025 modern era with potential aerial/satellite verification.
+205,1968,1968,8,10,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+206,1968,1968,8,15,Aya Co,China,Pumqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Mool, Bajracharya and Joshi, 2001; ICIMOD, 2011; Komori et al., 2012; Wang et al., 2012; Liu et al., 2014; Nie et al., 2018; Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+208,1968,1968,8,15,Damenhai Co,China,Nyang,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Yao et al., 2014)",,1950-2025 modern era with potential aerial/satellite verification.
+211,1969,1969,8,17,Aya Co,China,Pumqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Mool, Bajracharya and Joshi, 2001; Wang et al., 2012; Liu et al., 2014; Carrivick and Tweed, 2016; Nie et al., 2018; Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+218,1970,1970,8,18,Aya Co,China,Pumqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Mool, Bajracharya and Joshi, 2001; Wang et al., 2012; Liu et al., 2014; Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+219,1970,1970,7,10,,China,Kangbuqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Cui et al., 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+220,1970,1970,7,,Qunbixiama Co,China,Kangbuqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+224,1971,1971,8,2,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+230,1972,1972,8,23,Poge Co,China,Suo/Xibaxiaqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Cui et al., 2010; Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+231,1972,1972,7,23,Bugyai,China,Nujiang,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ding and Jingshi, 1992)",,1950-2025 modern era with potential aerial/satellite verification.
+251,1974,1974,7,6,Boge Co,China,Suo/Xibaxiaqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Wang et al., 2012)",,1950-2025 modern era with potential aerial/satellite verification.
+260,1976,1976,6,18,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+262,1976,1976,8,30,Unnamed,China,Yalong Tsangpo,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ding and Jingshi, 1992)",,1950-2025 modern era with potential aerial/satellite verification.
+268,1977,1977,8,1,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Feng, 1991; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+276,1978,1978,9,6,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Feng, 1991; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+293,1980,1980,10,21,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+300,1981,1981,7,11,Cirenma Co,China,Poiqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Mool, Bajracharya and Joshi, 2001; Ives, Shrestha and Mool, 2010; Cui et al. 2010; ICIMOD, 2011; Khanal, Hu and Mool, 2015; Carrivick and Tweed, 2016; Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+301,1981,1981,6,24,Zari Co,China,Luozha Zhangmu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ives, Shrestha and Mool, 2010; Liu et al., 2014; Veh et al., 2019; Zheng et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+306,1982,1982,11,16,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+309,1982,1982,8,27,Jin Co/Yindapu Co,China,Pumqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Yamada and Sharma, 1993; Cui et al., 2010; Ives, Shrestha and Mool, 2010; ICIMOD, 2011; Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+310,1983,1983,10,28,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+311,1983,1983,,,Cirenma Co,China,Poiqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Allen et al., 2019; Zhang et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+314,1984,1984,8,30,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+325,1986,1986,8,14,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 1990; Zhang, 1992; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+336,1988,1988,7,15,Guangxie Co,China,Bomi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Cui et al., 2010; Gurung et al., 2017; Liu et al., 2014)",,1950-2025 modern era with potential aerial/satellite verification.
+346,1991,1991,6,12,Gebumaco,China,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Liu et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+350,1992,1992,,,Upper Langbu Co,China,Rongxia,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Nie et al., 2018)",,1950-2025 modern era with potential aerial/satellite verification.
+351,1992,1992,,,Rejie Co,China,Nian Chu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+364,1994,1994,,,Zangla Co,China,Maquan,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Nie et al., 2018; Zhang et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+367,1995,1995,6,6,Zana Co,China,Gyirong,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ives, Shrestha and Mool, 2010; ICIMOD, 2011; Liu et al., 2014; Yao et al., 2014; Carrivick and Tweed, 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+370,1997,1997,8,3,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Feng, 1991; Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+374,1998,1998,11,5,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+382,1999,1999,8,11,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+393,2001,2001,8,6,Chongbaxia Co/ Longjiu Co,China,Nian Chu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Yao et al., 2014; Zhang et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+397,2002,2002,8,9,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+400,2002,2002,5,23,Jialong Co,China,Poiqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Cui et al. 2010; Liu et al., 2014; Carrivick and Tweed, 2016; Nie et al., 2018)",,1950-2025 modern era with potential aerial/satellite verification.
+401,2002,2002,6,29,Jialong Co,China,Poiqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Liu et al., 2014; Carrivick and Tweed, 2016; Nie et al., 2018)",,1950-2025 modern era with potential aerial/satellite verification.
+402,2002,2002,,,,China,Nyalam,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+403,2002,2002,9,18,Dega Co,China,Luozhaxiongqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Cui et al., 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+413,2005,2005,9,2,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hewitt and Liu, 2010; Carrivick and Tweed, 2016; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+415,2005,2005,9,,Dalonggongba,China,Bomi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2019; Liu et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+424,2007,2007,8,10,Lang Co,China,Yarlung Tsangpo,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Liu et al., 2014)",,1950-2025 modern era with potential aerial/satellite verification.
+431,2008,2008,6,14,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+436,2009,2009,7,28,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hewitt and Liu, 2010; Round et al., 2017; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+440,2009,2009,7,3,Zhemai Co,China,Cona,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Carrivick and Tweed, 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+441,2009,2009,7,29,Cuoga,China,Bianba,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Wang et al., 2012)",,1950-2025 modern era with potential aerial/satellite verification.
+451,2010,2010,,,Geiqu,China,Pumqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Yao et al., 2014; Nie et al., 2018; Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+462,2013,2013,7,5,Ranzeria Co,China,Bianba,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+469,2014,2014,6,,,China,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Liu et al. 2019),,1950-2025 modern era with potential aerial/satellite verification.
+475,2015,2015,7,15,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Round et al., 2017; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+479,2015,2015,,,Jin Co/Yindapu Co,China,Pumqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+481,2015,2015,7,3,Tulaco,China,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Liu et al. 2019),,1950-2025 modern era with potential aerial/satellite verification.
+482,2016,2016,7,17,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Round et al., 2017; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+483,2016,2016,8,11,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Round et al., 2017; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+484,2016,2016,5,7,Gongbatongsha Co,China,Poiqu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Cook et al., 2018; Miaomiao, Liu and Gao, 2021; Zhang et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+489,2017,2017,8,10,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+496,2018,2018,8,10,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zhang et al., 2020; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+497,2018,2018,7,8,,China,Rongxia,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+776,2018,2018,7,11,,China,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"Ling Huang, Ningsheng Chen, Liangshuai Wei, Taixin Peng, Xin Zhang, Qinfeng Shu, Ming He, Large uncertainties in early warning of debris flows in southeastern Tibet increased by climate change, Quaternary Science Advances, Volume 23, 2026, 100335, ISSN 2666-0334, https://doi.org/10.1016/j.qsa.2026.100335.",,1950-2025 modern era with potential aerial/satellite verification.
+501,2019,2019,7,25,Kyagar,China,Yarkant,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+508,2020,2020,6,26,Jinwuco,China,Yigong Zangbo,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zheng et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+509,2020,2020,8,1,,China,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study; Veh et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+537,,,,,Unnamed,China,Bhagirathi,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+538,,,,,Unnamed,China,Upper Indus,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+539,,,,,Unnamed,China,Upper Indus,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+541,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+543,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+544,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+546,,,,,Unnamed,China,Sutlej,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+548,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Narama et al., 2018)",,Neither exact nor approximate year recorded in source literature.
+551,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+553,,2015-2016,,,Zangla Co East,China,Maquan,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='2015-2016'"
+556,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+558,,,,,Unnamed,China,Maquan,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+559,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+560,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+563,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+564,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+565,,,,,Unnamed,China,Yarlung Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+566,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+567,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+568,,,,,Unnamed,China,Budhi Gandaki,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+569,,,,,,China,Budhi Gandaki,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+570,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+571,,,,,,China,Gyirong,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+572,,1995-1996,,,Unnamed,China,Gyirong,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",GLOF predicted between 1995-11-01 and 1996-10-02 based on satellite image,"Non-numeric year entry: exact='None', approx='1995-1996'"
+573,,,,,Unnamed,China,Gyirong,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+574,,,,,Unnamed,China,Pelkhu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+575,,,,,Unnamed,China,Dogxung Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+576,,,,,Unnamed,China,Poiqu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+577,,,,,Unnamed,China,Poiqu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+578,,2001-2003,,,Dareco South,China,Poiqu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='2001-2003'"
+579,,,,,Unnamed,China,Poiqu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+580,,,,,Unnamed,China,Poiqu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+581,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+582,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+583,,,,,Unnamed,China,Rongxia,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+584,,,,,Unnamed,China,Rongxia,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+585,,,,,Unnamed,China,Rongxia,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+586,,,,,Unnamed,China,Rongxia,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+587,,,,,Unnamed,China,Rongxia,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+588,,,,,Unnamed,China,Rongxia,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+592,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+601,,,,,Unnamed,China,Dogxung Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+602,,,,,Unnamed,China,Pumqu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+615,,,,,Unnamed,China,Dogxung Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+616,,,,,Unnamed,China,Yarlung Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+617,,,,,Unnamed,China,Yarlung Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+619,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+622,,,,,Unnamed,China,Amo Chhu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+623,,,,,Unnamed,China,Nian Chu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+625,,,,,Unnamed,China,Nian Chu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+626,,Before 1966,,,JiChudrake North 1,China,Nian Chu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='Before 1966'"
+628,,Before 1966,,,JiChudrake North 2,China,Nian Chu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='Before 1966'"
+629,,,,,Unnamed,China,Nian Chu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+631,,,,,Unnamed,China,Nian Chu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+632,,,,,Unnamed,China,Nian Chu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+633,,,,,Unnamed,China,Nian Chu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+634,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+636,,,,,Unnamed,China,Mo Chhu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+637,,,,,Unnamed,China,Yarlung Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+640,,,,,Unnamed,China,Nian Chu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+641,,,,,Unnamed,China,Lhasa,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+644,,,,,Unnamed,China,Mangde Chhu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+647,,,,,Unnamed,China,Lhasa,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+648,,,,,Unnamed,China,Kuri Chhu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+649,,,,,Unnamed,China,Lhasa,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+650,,,,,Unnamed,China,Kuri Chhu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+651,,1950s,,,Lure Co,China,Kuri Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Yao et al., 2014; Nie et al., 2018)",,"Non-numeric year entry: exact='None', approx='1950s'"
+652,,,,,Unnamed,China,Lhasa,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+653,,1955-66,,,Unnamed,China,Kuri Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='1955-66'"
+656,,Before 1966,,,Dega Co,China,Kuri Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='Before 1966'"
+657,,,,,Unnamed,China,Lhasa,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+659,,Before 1966,,,Upper Jiejiu Co,China,Kuri Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='Before 1966'"
+660,,Before 1966,,,Upper Shegong Co,China,Kuri Chhu,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Komori et al., 2012)",,"Non-numeric year entry: exact='None', approx='Before 1966'"
+661,,,,,Unnamed,China,Subansiri,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+662,,,,,Unnamed,China,Nian Chu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+663,,,,,Unnamed,China,Subansiri,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+665,,,,,Unnamed,China,Subansiri,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+666,,,,,Unnamed,China,Subansiri,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+667,,,,,Unnamed,China,Subansiri,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+668,,,,,Unnamed,China,Subansiri,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+669,,,,,Unnamed,China,Subansiri,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+670,,,,,Unnamed,China,Kuri Chhu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+671,,,,,Unnamed,China,Yarlung Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+672,,,,,Unnamed,China,Nyang,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+673,,,,,Unnamed,China,Nyang,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+674,,2003-2004,,,Oubuguoco Upper,China,,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,(Liu et al. 2019),,"Non-numeric year entry: exact='None', approx='2003-2004'"
+675,,2002-2004,,,Unnamed,China,,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='2002-2004'"
+676,,1976-1987,,,Unnamed,China,Nyang,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='1976-1987'"
+677,,,,,Unnamed,China,Yigong Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+678,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+679,,2002-2003,,,Jitang South,China,Yigong Zangbo,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='2002-2003'"
+680,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+681,,2013-2014,,,Unnamed,China,Yigong Zangbo,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='2013-2014'"
+682,,,,,Unnamed,China,Lohit,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+683,,,,,Unnamed,China,Yigong Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+684,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+685,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+686,,,,,Unnamed,China,Yigong Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+687,,,,,Unnamed,China,Yigong Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+688,,,,,Unnamed,China,Yigong Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+689,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+690,,,,,Unnamed,China,Yigong Zangbo,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+691,,,,,Unnamed,China,Lohit,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+692,,,,,Unnamed,China,Lohit,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+693,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+694,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+695,,,,,Unnamed,China,Lohit,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+696,,,,,Unnamed,China,Lohit,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+697,,,,,Unnamed,China,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+700,2018,2018,7,,Dagongba,China,Yangtze,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),,1950-2025 modern era with potential aerial/satellite verification.
+701,2017,2017,,,Unnamed,China,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),,1950-2025 modern era with potential aerial/satellite verification.
+702,2005,2005,,,Unnamed,China,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),,1950-2025 modern era with potential aerial/satellite verification.
+731,2021,2021,10,5,Chamai,China,Langqen Zangbo,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ma et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+759,2025,2025,7,8,Ephemeral,China,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),https://hirisk.org/wp-content/uploads/2025/07/RHA_CN1_PurepuGLOF-2.pdf,1950-2025 modern era with potential aerial/satellite verification.
+773,2026,2026,7,26,Cogalongco,China,,UNVERIFIED_POST_2025_REQUIRES_CROSS_CHECK,PENDING_MAINTAINER_EVALUATION,(this study),,Dated after 2025-12-31; maintainer documentation specifies this record requires evaluation and cross-checking.
+774,2024,2024,12,16,Pida,China,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"Liu, Q., Yin, Y., Yang, J., Luo, Y., Lu, X., Wang, H., Fu, Y., Zhang, B., Zheng, Q., Lei, D., Wang, X., Liu, S., Nie, Y., and Kang, S.: Brief communication: A landslide-induced winter outburst from a frozen glacial lake in the Central Himalaya, EGUsphere [preprint], https://doi.org/10.5194/egusphere-2026-2674, 2026.",,1950-2025 modern era with potential aerial/satellite verification.
+1,1533,1533,,,,India,Shyok,HISTORICAL_PRE_INSTRUMENTAL_DOCUMENTARY,DOCUMENTED_HISTORICAL_RECORD,"(Hedin, 1917; Hewitt, 2014; Bazai et al., 2021)",,Pre-1850 historical documentary/oral record; lake geometry often unknown or unverified.
+4,1780,1780,,,,India,Shyok,HISTORICAL_PRE_INSTRUMENTAL_DOCUMENTARY,DOCUMENTED_HISTORICAL_RECORD,"(Strachey, 1853; Bazai et al., 2021)",,Pre-1850 historical documentary/oral record; lake geometry often unknown or unverified.
+6,1833,1833,,,,India,Shyok,HISTORICAL_PRE_INSTRUMENTAL_DOCUMENTARY,DOCUMENTED_HISTORICAL_RECORD,"(Hewitt and Liu, 2010; Hewitt, 2014; Bazai et al., 2021)",,Pre-1850 historical documentary/oral record; lake geometry often unknown or unverified.
+7,1835,1835,,,,India,Shyok,HISTORICAL_PRE_INSTRUMENTAL_DOCUMENTARY,DOCUMENTED_HISTORICAL_RECORD,"(Strachey, 1853; Bazai et al., 2021)",,Pre-1850 historical documentary/oral record; lake geometry often unknown or unverified.
+8,1839,1839,,,,India,Shyok,HISTORICAL_PRE_INSTRUMENTAL_DOCUMENTARY,DOCUMENTED_HISTORICAL_RECORD,"(Hewitt and Liu, 2010; Hewitt, 2014; Bazai et al., 2021)",,Pre-1850 historical documentary/oral record; lake geometry often unknown or unverified.
+9,1842,1842,,,,India,Shyok,HISTORICAL_PRE_INSTRUMENTAL_DOCUMENTARY,DOCUMENTED_HISTORICAL_RECORD,"(Hewitt and Liu, 2010; Hewitt, 2014; Bazai et al., 2021)",,Pre-1850 historical documentary/oral record; lake geometry often unknown or unverified.
+13,1855,1855,,,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Mason, 1929b; Hewitt and Liu, 2010; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+16,1864,1864,,,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Mason, 1929b, 1929a; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+19,1869,1869,,,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hedin, 1917; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+20,1871,1871,11,,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hewitt and Liu, 2010; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+23,1879,1879,8,,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Mason, 1935; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+27,1882,1882,7,,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Mason, 1935; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+42,1898,1898,7,,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Longstaff, 1910; Hewitt and Liu, 2010; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+50,1903,1903,,,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Longstaff, 1910; Hedin, 1917; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+59,1905,1905,,,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Huntingdon, 1907; Longstaff, 1910; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+89,1926,1926,,,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Mason, 1935; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+99,1929,1929,8,15,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Mason, 1935; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+102,1932,1932,7,12,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Mason, 1930, 1935; Feng, 1991; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+104,1933,1933,8,27,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Mason, 1935; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+108,1934,1934,,,,India,Shyok,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hewitt and Liu, 2010; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+225,1971,1971,,,Unnamed,India,Indus,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ikeda, Narama and Gyalson, 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+258,1975,1975,6,18,,India,Nubra,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+261,1976,1976,9,15,Unnamed,India,Shyok,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+277,1978,1978,7,16,Unnamed,India,Shyok,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+297,1981,1981,,,,India,Baspa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Sangewar, Srivastava and Singh, 1999)",,1950-2025 modern era with potential aerial/satellite verification.
+334,1988,1988,,,,India,Baspa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Sangewar, Srivastava and Singh, 1999)",,1950-2025 modern era with potential aerial/satellite verification.
+342,1990,1990,6,6,,India,Nubra,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+359,1993,1993,5,4,,India,Nubra,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+372,1997,1997,,,Kongyangmi La Tsho,India,Changme,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Yao et al., 2014; Nie et al., 2018)",,1950-2025 modern era with potential aerial/satellite verification.
+389,2000,2000,4,21,,India,Nubra,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+398,2002,2002,6,6,,India,Nubra,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+406,2003,2003,,,Unnamed,India,Indus,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ikeda, Narama and Gyalson, 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+417,2006,2006,,,,India,Indus,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),https://cdn.cseindia.org/userfiles/TM_Presentation.pdf,1950-2025 modern era with potential aerial/satellite verification.
+449,2010,2010,10,8,Chorog,India,Upper Indus,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ikeda, Narama and Gyalson, 2016)",https://ui.adsabs.harvard.edu/abs/2016EGUGA..1818019S/abstract; https://cdn.cseindia.org/userfiles/TM_Presentation.pdf,1950-2025 modern era with potential aerial/satellite verification.
+452,2011,2011,6,24,Unnamed,India,Shyok,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+460,2013,2013,5,13,Unnamed,India,Shyok,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+461,2013,2013,6,17,Chorabari,India,Alaknanda,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Allen et al., 2015)","Due to heavy rainfall and cloudburst, right lateral Moraine dammed lake: collapsed barrier's proximal location to the snout of the glacier; lake was completely drained within 5-10 mins; 138 houses destroyed, 56 were partly damaged. 3 towns: Gaurikund, Rambara and Kedarnath were completely washed away. Roads and footpath between Gaurikund and Kedarnath damaged",1950-2025 modern era with potential aerial/satellite verification.
+467,2014,2014,7,10,Unnamed,India,Shyok,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+468,2014,2014,8,6,Gya,India,Upper Indus,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Schmidt et al., 2020)",https://www.thehindu.com/sci-tech/science/lessons-from-ladakhs-glacial-lake-outburst/article33048752.ece,1950-2025 modern era with potential aerial/satellite verification.
+488,2017,2017,8,4,,India,Indus,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),https://confit.atlas.jp/guide/event-img/jpgu2018/ACC28-P03/public/pdf?type=in&lang=en,1950-2025 modern era with potential aerial/satellite verification.
+514,2021,2021,8,22,Rumbak,India,Upper Indus,MODERN_SATELLITE_ERA,VERIFIED_RECORD,,https://www.thestatesman.com/india/14-persons-rescued-ladakh-village-glacial-lake-bursts-1502997439.html; https://sandrp.in/2021/08/29/about-landslide-lake-in-uttarakhand-glof-in-ladakh/,1950-2025 modern era with potential aerial/satellite verification.
+524,,,,,Unnamed,India,Zanskar,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+526,,,,,Unnamed,India,Chenab,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+527,,,,,Unnamed,India,Chenab,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+528,,,,,,India,Chenab,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+531,,,,,,India,Chenab,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+534,,,,,Unnamed,India,Sutlej,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+535,,,,,Unnamed,India,Indus,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+536,,,,,Unnamed,India,Upper Indus,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+542,,,,,Unnamed,India,Dhauliganga,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+610,,1992-1993,,,Unnamed,India,East Rathong,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='1992-1993'"
+611,,,,,Unnamed,India,East Rathong,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+612,,,,,Unnamed,India,Zemu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+613,,,,,Unnamed,India,Zemu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+614,,,,,Unnamed,India,Zemu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+618,,,,,Unnamed,India,Zemu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+620,,,,,Unnamed,India,Zemu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+621,,,,,Unnamed,India,Changme,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+664,,1996-1997,,,Unnamed,India,Manas,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='1996-1997'"
+698,2023,2023,10,4,South Lonak,India,Teesta,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),,1950-2025 modern era with potential aerial/satellite verification.
+765,2020,2020,9,,Unnamed,India,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Sattar et al. 2026),,1950-2025 modern era with potential aerial/satellite verification.
+131,1951,1951,8,20,Lake number 2,Kazakhstan,Kishi Almaty,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+146,1956,1956,8,7,Lake number 2,Kazakhstan,Kishi Almaty,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+155,1958,1958,7,6,Lake number 17,Kazakhstan,Izzyk,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+180,1963,1963,7,6,Lake number 17,Kazakhstan,Izzyk,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Petrakov et al., 2020, Medeu et al. 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+216,1970,1970,7,14,Lake number 9,Kazakhstan,Leviy Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zheng et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+223,1971,1971,7,12,Lake number 18,Kazakhstan,Leviy Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama, Severskiy and Yegorov, 2009)",,1950-2025 modern era with potential aerial/satellite verification.
+236,1973,1973,7,15,Lake number 2 (Tuyuksu),Kazakhstan,Kishi Almatinka,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama, Severskiy and Yegorov, 2009, Medeu et al. 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+237,1973,1973,7,16,Lake number 2 (Tuyuksu),Kazakhstan,Kishi Almatinka,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama, Severskiy and Yegorov, 2009)",,1950-2025 modern era with potential aerial/satellite verification.
+238,1973,1973,7,15,Lake number 6,Kazakhstan,Srednii Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+239,1973,1973,8,16,Lake number 6,Kazakhstan,Srednii Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+240,1973,1973,8,18,Lake number 6,Kazakhstan,Srednii Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+241,1973,1973,8,19,Lake number 6,Kazakhstan,Srednii Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+248,1974,1974,7,15,Lake number 6,Kazakhstan,Srednii Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+249,1974,1974,7,21,Lake number 6,Kazakhstan,Srednii Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Medeu et al. 2022; Narama, Severskiy and Yegorov, 2009)",,1950-2025 modern era with potential aerial/satellite verification.
+250,1974,1974,8,2,Lake number 6,Kazakhstan,Srednii Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Medeu et al. 2022; Narama, Severskiy and Yegorov, 2009)",,1950-2025 modern era with potential aerial/satellite verification.
+256,1975,1975,8,19,Unnamed,Kazakhstan,Kumbelisu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama, Severskiy and Yegorov, 2009; Medeu et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+267,1977,1977,8,3,Unnamed,Kazakhstan,Kumbelisu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama, Severskiy and Yegorov, 2009; Medeu et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+269,1977,1977,6,25,Lake number 17,Kazakhstan,Izzyk,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+270,1977,1977,7,3,Lake number 17,Kazakhstan,Izzyk,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama, Severskiy and Yegorov, 2009)",,1950-2025 modern era with potential aerial/satellite verification.
+281,1979,1979,6,21,Lake number 7,Kazakhstan,Middle Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+290,1980,1980,7,23,Unnamed,Kazakhstan,Kaskelen,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama, Severskiy and Yegorov, 2009; Bolch et al., 2012; Medeu et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+308,1982,1982,9,8,Lake No 93,Kazakhstan,Sarykan,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+319,1985,1985,7,23,Bogatyr,Kazakhstan,Shilik,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+324,1986,1986,7,23,Unnamed,Kazakhstan,Kaskelen,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+333,1988,1988,6,24,Unnamed,Kazakhstan,Kaskelen,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+358,1993,1993,7,6,Lake number 8,Kazakhstan,Middle Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+465,2014,2014,7,17,Lake number 6,Kazakhstan,Srednii Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Medeu et al., 2020)",,1950-2025 modern era with potential aerial/satellite verification.
+466,2014,2014,7,17,Lake number 8,Kazakhstan,Middle Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+474,2015,2015,7,23,Lake number 1,Kazakhstan,Kargaly,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(This study; Medeu et al., 2022)",https://earthobservatory.nasa.gov/images/86300/glacier-lake-outburst-flood-near-almaty,1950-2025 modern era with potential aerial/satellite verification.
+500,2019,2019,8,14,Lake number 1,Kazakhstan,Kargaly,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(Medeu et al. 2022),,1950-2025 modern era with potential aerial/satellite verification.
+517,,,,,,Kazakhstan,Aksu,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zaginaev et al., 2016)",,Neither exact nor approximate year recorded in source literature.
+525,,,,,,Kazakhstan,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+533,,,,,,Kazakhstan,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+540,,,,,Unnamed,Kazakhstan,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+736,2005,2005,7,4,Lake 16bis,Kazakhstan,Kaskelen,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+738,1992,1992,7,10,Lake 16,Kazakhstan,Kaskelen,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+739,1986,1986,7,5,Lake 16,Kazakhstan,Kaskelen,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+741,1981,1981,6,22,Lake number 2 (Tuyuksu),Kazakhstan,Kishi Almatinka,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+742,1927,1927,8,8,Lake number 2 (Tuyuksu),Kazakhstan,Kishi Almatinka,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Shahgedanova et al., 2024)",,1850-1950 early instrumental/expedition record.
+744,1976,1976,6,24,Sol Talgar,Kazakhstan,Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+745,1990,1990,7,7,Orta Talgar,Kazakhstan,Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+746,1997,1997,7,15,Sol Talgar,Kazakhstan,Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+747,1961,1961,8,19,Lake 8,Kazakhstan,Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+748,1961,1961,7,26,Lake 8,Kazakhstan,Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+749,1984,1984,6,16,Lake 5,Kazakhstan,Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+750,1976,1976,7,10,Lake 5,Kazakhstan,Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+751,1970,1970,6,20,Lake 5,Kazakhstan,Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+752,1965,1965,7,25,Lake 5,Kazakhstan,Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+753,1968,1968,7,22,South East Talgar,Kazakhstan,Talgar,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+754,1980,1980,6,6,Lake 19,Kazakhstan,Esik,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+755,1977,1977,7,12,Lake 17,Kazakhstan,Esik,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+756,1980,1980,6,6,Lake 20,Kazakhstan,Esik,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+757,1983,1983,8,5,Turgen Lake 18,Kazakhstan,Turgen,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shahgedanova et al., 2024)",,1950-2025 modern era with potential aerial/satellite verification.
+11,1846,1846,,,Unnamed,Kyrgyzstan,Alamedin,HISTORICAL_PRE_INSTRUMENTAL_DOCUMENTARY,DOCUMENTED_HISTORICAL_RECORD,"(Zaginaev et al., 2019)",,Pre-1850 historical documentary/oral record; lake geometry often unknown or unverified.
+22,1877,1877,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Erokhin et al., 2018)",,1850-1950 early instrumental/expedition record.
+25,1882,1882,,,Unnamed,Kyrgyzstan,Alamedin,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+29,1885,1885,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+47,1902,1902,,,Unnamed,Kyrgyzstan,Alamedin,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+48,1902,1902,8,21,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+53,1904,1904,,,Unnamed,Kyrgyzstan,Alamedin,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+68,1910,1910,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zheng et al., 2021)",,1850-1950 early instrumental/expedition record.
+79,1916,1916,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+81,1918,1918,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+83,1922,1922,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+86,1924,1924,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+93,1928,1928,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+94,1928,1928,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+95,1928,1928,,,Unnamed,Kyrgyzstan,Alamedin,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+100,1931,1931,9,19,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+103,1932,1932,9,12,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+105,1933,1933,8,,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+106,1934,1934,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+107,1934,1934,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+109,1935,1935,9,,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+111,1936,1936,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+112,1936,1936,10,,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+114,1937,1937,10,,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+115,1938,1938,,,Unnamed,Kyrgyzstan,Alamedin,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+116,1938,1938,10,,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+117,1939,1939,8,1,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+118,1940,1940,10,,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+120,1941,1941,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+122,1941,1941,10,,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+123,1942,1942,10,,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+124,1943,1943,,,Unnamed,Kyrgyzstan,Ala Archa,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Zaginaev et al., 2019)",,1850-1950 early instrumental/expedition record.
+125,1943,1943,9,22,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+127,1949,1949,8,3,Merzbacher,Kyrgyzstan,Inylchek,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Glazirin, 2010)",,1850-1950 early instrumental/expedition record.
+128,1950,1950,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+133,1953,1953,6,22,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Erokhin et al., 2018)",,1950-2025 modern era with potential aerial/satellite verification.
+134,1953,1953,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+139,1954,1954,8,24,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+142,1955,1955,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+144,1956,1956,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+145,1956,1956,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+147,1956,1956,9,2,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+148,1956,1956,7,2,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+151,1957,1957,7,25,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+152,1957,1957,8,31,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+154,1958,1958,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+156,1958,1958,9,1,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+157,1958,1958,11,24,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+161,1959,1959,8,26,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+162,1959,1959,9,19,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+164,1960,1960,7,8,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+166,1960,1960,9,4,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+167,1960,1960,7,22,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+168,1961,1961,7,26,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+169,1961,1961,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+172,1961,1961,9,9,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+173,1961,1961,7,16,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+175,1962,1962,9,15,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+181,1963,1963,9,9,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+183,1963,1963,6,6,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+186,1964,1964,9,16,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010; Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+192,1965,1965,7,21,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+194,1965,1965,8,16,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010; Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+195,1966,1966,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+196,1966,1966,6,18,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+197,1966,1966,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+198,1966,1966,7,4,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+199,1966,1966,12,27,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+201,1966,1966,8,3,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+202,1967,1967,9,7,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010; Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+203,1968,1968,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+204,1968,1968,8,10,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+209,1968,1968,8,17,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+210,1969,1969,7,25,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+212,1969,1969,8,20,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+213,1970,1970,7,18,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+214,1970,1970,8,2,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+215,1970,1970,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+217,1970,1970,9,1,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+221,1970,1970,7,31,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+222,1971,1971,7,10,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+226,1971,1971,8,17,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+232,1972,1972,10,4,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+234,1973,1973,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+242,1973,1973,9,4,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+243,1974,1974,7,10,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+247,1974,1974,6,14,Angy Say,Kyrgyzstan,Tong,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama et al., 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+252,1974,1974,8,8,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+253,1975,1975,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+254,1975,1975,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+257,1975,1975,6,17,Angy Say,Kyrgyzstan,Tong,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama et al., 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+259,1975,1975,9,12,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+263,1976,1976,8,24,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+265,1977,1977,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+278,1978,1978,9,,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+279,1978,1978,5,24,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+280,1978,1978,8,8,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+283,1980,1980,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+284,1980,1980,7,18,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+285,1980,1980,8,3,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+286,1980,1980,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+287,1980,1980,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+291,1980,1980,6,25,Angy Say,Kyrgyzstan,Tong,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama et al., 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+292,1980,1980,7,14,Angy Say,Kyrgyzstan,Tong,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama et al., 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+294,1980,1980,5,15,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010; Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+295,1980,1980,9,2,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010; Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+298,1981,1981,7,8,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+299,1981,1981,8,8,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+303,1982,1982,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+304,1982,1982,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+307,1982,1982,8,14,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010; Kinglsake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+312,1983,1983,8,22,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+313,1984,1984,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+315,1984,1984,8,20,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+318,1985,1985,,,Suuk Tor,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama et al., 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+320,1985,1985,8,9,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+326,1986,1986,8,26,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+328,1987,1987,8,14,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+330,1988,1988,6,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+331,1988,1988,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+332,1988,1988,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+337,1988,1988,12,12,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+338,1989,1989,10,10,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+339,1989,1989,8,31,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+343,1990,1990,8,5,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+344,1991,1991,7,24,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+349,1992,1992,8,4,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+353,1993,1993,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+354,1993,1993,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+355,1993,1993,,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+356,1993,1993,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+360,1993,1993,8,22,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+363,1994,1994,7,24,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+366,1995,1995,7,18,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+369,1996,1996,12,5,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+371,1997,1997,7,31,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+373,1998,1998,7,8,Unnamed,Kyrgyzstan,Alauddin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama, Severskiy and Yegorov, 2009)",,1950-2025 modern era with potential aerial/satellite verification.
+375,1998,1998,7,27,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+379,1999,1999,6,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+380,1999,1999,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+383,1999,1999,7,19,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shangguan et al., 2017; Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+385,2000,2000,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+390,2000,2000,7,27,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+392,2001,2001,7,28,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+399,2002,2002,8,2,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+405,2003,2003,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+407,2003,2003,7,23,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+408,2004,2004,8,7,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Glazirin, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+412,2005,2005,7,,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Erokhin et al., 2018)",,1950-2025 modern era with potential aerial/satellite verification.
+414,2005,2005,7,13,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shangguan et al., 2017; Kingslake and Ng, 2013; Glazirin, 2010)",https://www.researchgate.net/profile/Wilfried-Hagg/publication/259121312_The_2005_Lake_Merzbacher_GLOF_event_and_status_of_future_planned_activities_in_the_Tien_Shan_region/links/0deec52a04b5497cb8000000/The-2005-Lake-Merzbacher-GLOF-event-and-status-of-future-planned-activities-in-the-Tien-Shan-region.pdf,1950-2025 modern era with potential aerial/satellite verification.
+416,2006,2006,,,Kashka-Suu,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama et al., 2018)",,1950-2025 modern era with potential aerial/satellite verification.
+418,2006,2006,7,30,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+422,2007,2007,7,11,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+430,2008,2008,7,24,Western Zyndan,Kyrgyzstan,Zymdan,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama, Severskiy and Yegorov, 2009)",,1950-2025 modern era with potential aerial/satellite verification.
+432,2008,2008,7,15,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shangguan et al., 2017; Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+437,2009,2009,,,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shangguan et al., 2017)",,1950-2025 modern era with potential aerial/satellite verification.
+447,2010,2010,,,Unnamed,Kyrgyzstan,Alamedin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+450,2010,2010,,,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shangguan et al., 2017)",,1950-2025 modern era with potential aerial/satellite verification.
+453,2011,2011,,,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shangguan et al., 2017)",,1950-2025 modern era with potential aerial/satellite verification.
+456,2012,2012,7,31,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Petrakov et al., 2020)",,1950-2025 modern era with potential aerial/satellite verification.
+457,2012,2012,,,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shangguan et al., 2017)",,1950-2025 modern era with potential aerial/satellite verification.
+459,2013,2013,8,15,Jeruy,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Narama et al., 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+464,2014,2014,7,17,Karateke,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Medeu et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+472,2015,2015,7,23,Unnamed,Kyrgyzstan,Ala Archa,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Zaginaev et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+476,2015,2015,,,Merzbacher,Kyrgyzstan,Inylchek,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shangguan et al., 2017; Kingslake and Ng, 2013)",,1950-2025 modern era with potential aerial/satellite verification.
+486,2017,2017,8,8,Chelektor,Kyrgyzstan,Nooruz,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Daiyrov et al., 2020)",,1950-2025 modern era with potential aerial/satellite verification.
+502,2019,2019,8,8,Toguz-Bulak,Kyrgyzstan,Toguzbulak,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Daiyrov et al., 2020)",,1950-2025 modern era with potential aerial/satellite verification.
+523,,,,,,Kyrgyzstan,Syn Tash,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+529,,,,,,Kyrgyzstan,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+530,,,,,,Kyrgyzstan,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+532,,,,,Unnamed,Kyrgyzstan,,UNDATED_HISTORICAL_RECORD,UNDATED,"(Narama et al., 2018)",,Neither exact nor approximate year recorded in source literature.
+704,1958,1958,7,15,Kyzyl-Djar,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+705,1959,1959,6,5,Chon Kyzyl Su,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+706,1966,1966,10,,Chon Kyzyl Su,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+707,1966,1966,7,11,Chon Kyzyl Su,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+708,1964,1964,8,12,Tamga,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+709,1995,1995,7,9,Tosor,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+710,2015,2015,7,,Kurumdy,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+711,2005,2005,,,Suyuk Tor,Kyrgyzstan,Djerui,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+712,1994,1994,6,14,Chon Koisuu,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+713,2013,2013,7,,Koltor,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+714,1978,1978,9,27,Choktal-1,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+715,1999,1999,9,,Choktal-2,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+716,1987,1987,7,,Buzulgansuu,Kyrgyzstan,Naryn,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+717,2006,2006,,,Buzulgansuu,Kyrgyzstan,Naryn,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+718,1968,1968,7,13,At-Djailoo,Kyrgyzstan,Kegety,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+719,1953,1953,8,16,Teketor,Kyrgyzstan,Tuyuk Issyk Atta,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+720,1978,1978,8,,Teketor,Kyrgyzstan,Tuyuk Issyk Atta,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+721,1992,1992,6,4,Takyrtor,Kyrgyzstan,Norus,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+722,1999,1999,6,4,Takyrtor,Kyrgyzstan,Norus,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+723,2020,2020,8,2,Akpay,Kyrgyzstan,Sokuluk,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+724,1980,1980,7,,Keidy Kuchkach,Kyrgyzstan,Aksuu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+725,1983,1983,8,12,Keidy Kuchkach,Kyrgyzstan,Aksuu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+726,1968,1968,6,,Isha,Kyrgyzstan,Aksuu,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+727,1995,1995,,,Djery Kaindy,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+728,1999,1999,7,,Tegermach South,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+729,1977,1977,7,,Tegermach North,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+760,2025,2025,6,27,,Kyrgyzstan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+2,1560,1560,,,,Nepal,Seti,HISTORICAL_PRE_INSTRUMENTAL_DOCUMENTARY,DOCUMENTED_HISTORICAL_RECORD,"(Ives, Shrestha and Mool, 2010; ICIMOD, 2011)",,Pre-1850 historical documentary/oral record; lake geometry often unknown or unverified.
+82,1921,1921,,,Lhonak (Ghunsa 1),Nepal,Tamor,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Byers et al., 2020)",,1850-1950 early instrumental/expedition record.
+182,1963,1963,,,Tiptola (Olangchun Gola 1),Nepal,Tamor,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Byers et al., 2020)",,1950-2025 modern era with potential aerial/satellite verification.
+207,1968,1968,,,Tiptola (Olangchun Gola 2),Nepal,Tamor,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Byers et al., 2020)",,1950-2025 modern era with potential aerial/satellite verification.
+271,1977,1977,9,3,Nare,Nepal,Dudh Koshi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Yamada and Sharma, 1993; Mool, Bajracharya and Joshi, 2001; Ives, Shrestha and Mool, 2010; ICIMOD, 2011)",,1950-2025 modern era with potential aerial/satellite verification.
+296,1980,1980,6,23,Nagma Pokhari (Phuchan),Nepal,Tamor,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Yamada and Sharma, 1993; Ives, Shrestha and Mool, 2010; ICIMOD, 2011)",,1950-2025 modern era with potential aerial/satellite verification.
+321,1985,1985,,,Unnamed,Nepal,Upper Mustang,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"Personal communication from Giovanni Kappenberger, documentation by local villagers",1950-2025 modern era with potential aerial/satellite verification.
+322,1985,1985,8,4,Dig Tsho,Nepal,Dudh Koshi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Vuichard and Zimmermann, 1986, 1987; Ives, Shrestha and Mool, 2010; ICIMOD, 2011)",,1950-2025 modern era with potential aerial/satellite verification.
+327,1986,1986,,,Shimbuwa,Nepal,Tamor,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Byers et al., 2020)",,1950-2025 modern era with potential aerial/satellite verification.
+335,1988,1988,,,Unnamed,Nepal,Upper Mustang,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Fort, 2015)",,1950-2025 modern era with potential aerial/satellite verification.
+345,1991,1991,7,12,Chubung,Nepal,Tama Koshi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Mool, 1995; Mool, Bajracharya and Joshi, 2001; Ives, Shrestha and Mool, 2010; ICIMOD, 2011; Wang et al., 2012; Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+376,1998,1998,9,3,Sabai Tsho/ Tam Pokhari,Nepal,Dudh Koshi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Dwiwedi, Acharya and Simard, 2000; Mool, Bajracharya and Joshi, 2001; ICIMOD, 2011)",,1950-2025 modern era with potential aerial/satellite verification.
+409,2004,2004,6,,,Nepal,Humla,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kropacek et al., 2015)",,1950-2025 modern era with potential aerial/satellite verification.
+419,2006,2006,6,,,Nepal,Humla,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kropacek et al., 2015)",,1950-2025 modern era with potential aerial/satellite verification.
+423,2007,2007,6,,,Nepal,Humla,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kropacek et al., 2015)",,1950-2025 modern era with potential aerial/satellite verification.
+433,2008,2008,6,,,Nepal,Humla,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kropacek et al., 2015)",,1950-2025 modern era with potential aerial/satellite verification.
+438,2009,2009,6,23,,Nepal,Humla,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kropacek et al., 2015)",,1950-2025 modern era with potential aerial/satellite verification.
+454,2011,2011,6,30,,Nepal,Humla,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kropacek et al., 2015)",,1950-2025 modern era with potential aerial/satellite verification.
+477,2015,2015,4,25,Dig Tsho,Nepal,Dudh Koshi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Byers et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+478,2015,2015,5,25,,Nepal,Dudh Koshi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Rounce et al., 2017)",,1950-2025 modern era with potential aerial/satellite verification.
+485,2016,2016,6,12,,Nepal,Dudh Koshi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Rounce et al., 2017)",,1950-2025 modern era with potential aerial/satellite verification.
+490,2017,2017,7,15,,Nepal,Dudh Koshi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Miles et al., 2018)",,1950-2025 modern era with potential aerial/satellite verification.
+491,2017,2017,4,20,Langmale,Nepal,Arun,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Byers et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+507,2020,May to June 2020,,,Unnamed,Nepal,Humla,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),documentation from satellite imagery,1950-2025 modern era with potential aerial/satellite verification.
+515,2021,2021,6,14,Pemdang Pokhari,Nepal,Melamchi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Maharjan et al., 2021)",https://kathmandupost.com/health/2021/06/20/families-displaced-by-melamchi-floods-refuse-covid-19-tests-fearing-separation,1950-2025 modern era with potential aerial/satellite verification.
+545,,,,,Unnamed,Nepal,Dhauliganga,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+547,,,,,Unnamed,Nepal,West Seti,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+549,,Before 1976,,,,Nepal,Humla,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,(This study),"reporting by local villagers, documentation from satellite imagery","Non-numeric year entry: exact='None', approx='Before 1976'"
+550,,Before 1976,,,,Nepal,Humla,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,(This study),documentation from satellite imagery,"Non-numeric year entry: exact='None', approx='Before 1976'"
+552,,,,,Unnamed,Nepal,Humla,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+554,,,,,Unnamed,Nepal,Humla,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+555,,,,,,Nepal,Mugu Karnali,UNDATED_HISTORICAL_RECORD,UNDATED,"(Ives, Shrestha and Mool, 2010; ICIMOD, 2011)",Given coordinate in Ives 2010 seems to be wrong,Neither exact nor approximate year recorded in source literature.
+557,,,,,,Nepal,Bheri,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+561,,,,,Unnamed,Nepal,Kali Gandaki,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+562,,,,,Unnamed,Nepal,Marsyangdi,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+589,,,,,Unnamed,Nepal,Dudh Koshi,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+590,,,,,Unnamed,Nepal,Dudh Koshi,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+591,,,,,Unnamed,Nepal,Dudh Koshi,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+593,,,,,Unnamed,Nepal,Dudh Koshi,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+594,,,,,Chokarma Tsho,Nepal,Dudh Koshi,UNDATED_HISTORICAL_RECORD,UNDATED,"(Mool, Bajracharya and Joshi, 2001; Ives, Shrestha and Mool, 2010; ICIMOD, 2011; Nie et al., 2018)",,Neither exact nor approximate year recorded in source literature.
+595,,,,,Unnamed,Nepal,Dudh Koshi,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+596,,,,,,Nepal,Dudh Koshi,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+597,,,,,Unnamed,Nepal,Dudh Koshi,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+598,,,,,Barun,Nepal,Arun,UNDATED_HISTORICAL_RECORD,UNDATED,"(Mool, Bajracharya and Joshi, 2001; Ives, Shrestha and Mool, 2010; ICIMOD, 2011)",,Neither exact nor approximate year recorded in source literature.
+599,,,,,Barun,Nepal,Arun,UNDATED_HISTORICAL_RECORD,UNDATED,"(Mool, Bajracharya and Joshi, 2001; Ives, Shrestha and Mool, 2010; ICIMOD, 2011)",,Neither exact nor approximate year recorded in source literature.
+600,,,,,Unnamed,Nepal,Arun,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+603,,,,,Unnamed,Nepal,Tamor,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+604,,,,,,Nepal,Tamor,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+605,,Before 1962,,,Jaritar,Nepal,Tamor,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Byers et al., 2020)",,"Non-numeric year entry: exact='None', approx='Before 1962'"
+606,,,,,Unnamed,Nepal,Tamor,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+607,,,,,Unnamed,Nepal,Tamor,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+608,,Before 1962,,,Khangpachen,Nepal,Tamor,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Byers et al., 2020)",,"Non-numeric year entry: exact='None', approx='Before 1962'"
+609,,,,,Unnamed,Nepal,Tamor,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+703,2015,2015,,,Unnamed,Nepal,Dudh Koshi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),,1950-2025 modern era with potential aerial/satellite verification.
+730,2024,2024,4,21,Birendra Taal,Nepal,Gandaki,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),https://hirisk.org/wp-content/uploads/2024/04/birendraexample-1.pdf,1950-2025 modern era with potential aerial/satellite verification.
+733,2024,2024,8,16,Tomutse Lake,Nepal,Dudh Koshi,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),"https://www.stimson.org/wp-content/uploads/2024/09/DHM-Report-on-the-Thame-GLOF_23Aug_English-Stimson-translated_public.pdf, https://lib.icimod.org/records/8g9ze-1r153",1950-2025 modern era with potential aerial/satellite verification.
+737,2025,2025,5,15,Til,Nepal,Karnali,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),https://kathmandupost.com/karnali-province/2025/05/19/landslide-flood-displace-eighteen-families-in-humla,1950-2025 modern era with potential aerial/satellite verification.
+762,2025,2025,7,8,,Nepal,Kali Gandaki,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),https://myrepublica.nagariknetwork.com/news/flood-sweeps-away-four-bridges-damages-two-in-upper-mustang-90-49.html,1950-2025 modern era with potential aerial/satellite verification.
+3,1661,1661,,,Unnamed,Pakistan,Braldu,HISTORICAL_PRE_INSTRUMENTAL_DOCUMENTARY,DOCUMENTED_HISTORICAL_RECORD,"(Godwin-Austen, 1864)",,Pre-1850 historical documentary/oral record; lake geometry often unknown or unverified.
+5,1833,1833,,,,Pakistan,Hunza,HISTORICAL_PRE_INSTRUMENTAL_DOCUMENTARY,DOCUMENTED_HISTORICAL_RECORD,"(Hewitt and Liu, 2010)",,Pre-1850 historical documentary/oral record; lake geometry often unknown or unverified.
+10,1844,1844,,,Karambar,Pakistan,Gilgit,HISTORICAL_PRE_INSTRUMENTAL_DOCUMENTARY,DOCUMENTED_HISTORICAL_RECORD,"(Hewitt, 1982; Iturrizaga, 2005a)",,Pre-1850 historical documentary/oral record; lake geometry often unknown or unverified.
+12,1850,1850,,,,Pakistan,Indus,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hewitt, 1968)",,1850-1950 early instrumental/expedition record.
+14,1860,1860,,,Karambar,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hewitt, 1982; Iturrizaga, 2005a)",,1850-1950 early instrumental/expedition record.
+15,1860,1860,7,,,Pakistan,Shigar,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Godwin-Austen, 1864)",,1850-1950 early instrumental/expedition record.
+17,1865,1865,,,Sokhter Rabot,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hewitt, 1982; Iturrizaga, 2005a)",,1850-1950 early instrumental/expedition record.
+18,1865,1865,,,Karambar,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Todd, 1930; Iturrizaga, 2005a)",,1850-1950 early instrumental/expedition record.
+21,1873,1873,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994)",,1850-1950 early instrumental/expedition record.
+26,1882,1882,9,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+28,1884,1884,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Todd, 1930; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+30,1890,1890,,,,Pakistan,Bagrot,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,(This study),"(Ashraf et al., 2015)",1850-1950 early instrumental/expedition record.
+31,1890,1890,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hewitt, 2014; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+32,1890,1890,,,Unnamed,Pakistan,Braldu,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hewitt and Liu, 2010)",,1850-1950 early instrumental/expedition record.
+33,1892,1892,,,,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Conway, 1897; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+35,1893,1893,7,6,Karambar,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Iturrizaga, 2005a)",,1850-1950 early instrumental/expedition record.
+36,1893,1893,7,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Mason, 1929a; Kreutzmann, 1994)",,1850-1950 early instrumental/expedition record.
+37,1894,1894,,,Hassanabad,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hewitt and Liu, 2010)",,1850-1950 early instrumental/expedition record.
+38,1895,1895,6,,Karambar,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994; Iturrizaga, 2005a)",,1850-1950 early instrumental/expedition record.
+39,1895,1895,,,,Pakistan,Indus,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Collie, 1902; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+40,1895,1895,,,Unnamed,Pakistan,Braldu,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(McCormick, 1895; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+43,1899,1899,,,Hassanabad,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994; Hewitt and Liu, 2010)",,1850-1950 early instrumental/expedition record.
+44,1900,1900,,,Hassanabad,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994)",,1850-1950 early instrumental/expedition record.
+45,1901,1901,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994)",,1850-1950 early instrumental/expedition record.
+46,1902,1902,,,Hassanabad,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994; Hewitt and Liu, 2010)",,1850-1950 early instrumental/expedition record.
+49,1903,1903,,,Hassanabad,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994; Hewitt and Liu, 2010)",,1850-1950 early instrumental/expedition record.
+51,1904,1904,,,Karambar,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+52,1904,1904,,,Hassanabad,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994; Hewitt and Liu, 2010)",,1850-1950 early instrumental/expedition record.
+54,1904,1904,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hewitt and Liu, 2010)",,1850-1950 early instrumental/expedition record.
+55,1905,1905,,,Sokhter Rabot,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994; Iturrizaga, 2005a)",,1850-1950 early instrumental/expedition record.
+56,1905,1905,6,17,Karambar,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Todd, 1930; Iturrizaga, 2005a)",,1850-1950 early instrumental/expedition record.
+57,1905,1905,,,,Pakistan,Bagrot,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,(This study),"(Ashraf et al., 2015)",1850-1950 early instrumental/expedition record.
+58,1905,1905,8,2,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Neve, 1913; Todd, 1930; Kreutzmann, 1994)",,1850-1950 early instrumental/expedition record.
+60,1906,1906,8,11,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Todd, 1930; Kreutzmann, 1994)",,1850-1950 early instrumental/expedition record.
+61,1906,1906,6,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hewitt and Liu, 2010; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+62,1907,1907,9,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Todd, 1930; Iturrizaga, 2005b)",,1850-1950 early instrumental/expedition record.
+63,1908,1908,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+64,1909,1909,,,Warghut,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Iturrizaga, 2005a)",,1850-1950 early instrumental/expedition record.
+65,1909,1909,,,,Pakistan,Bagrot,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,(This study),"(Ashraf et al., 2015)",1850-1950 early instrumental/expedition record.
+66,1909,1909,,,,Pakistan,Indus,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Neve, 1911; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+69,1910,1910,,,,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994)",,1850-1950 early instrumental/expedition record.
+70,1910,1910,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+71,1911,1911,,,Saklei Shuyinj,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Iturrizaga, 2005a, 2005c)",,1850-1950 early instrumental/expedition record.
+72,1912,1912,,,Saklei Shuyinj,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Iturrizaga, 2005c, 2005a)",,1850-1950 early instrumental/expedition record.
+73,1912,1912,,,,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Neve, 1913)",,1850-1950 early instrumental/expedition record.
+74,1913,1913,,,Saklei Shuyinj,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Iturrizaga, 2005c, 2005a)",,1850-1950 early instrumental/expedition record.
+75,1913,1913,,,Hassanabad,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994)",,1850-1950 early instrumental/expedition record.
+76,1914,1914,,,Hassanabad,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994)",,1850-1950 early instrumental/expedition record.
+77,1916,1916,10,,Chilinji,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Longstaff, 1951)",,1850-1950 early instrumental/expedition record.
+78,1916,1916,,,Karambar,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Longstaff, 1920; Hewitt, 1982)",,1850-1950 early instrumental/expedition record.
+84,1922,1922,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Visser, Visser-Hooft and von Cvitkovi?, 1935; Kreutzmann, 1994; Iturrizaga, 2005b)",,1850-1950 early instrumental/expedition record.
+85,1923,1923,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Kreutzmann, 1994; Iturrizaga, 2005b; Hewitt and Liu, 2010)",,1850-1950 early instrumental/expedition record.
+87,1926,1926,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Visser-Hooft, 1926; Mason, 1935; Bazai et al., 2021)",,1850-1950 early instrumental/expedition record.
+90,1927,1927,,,,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Morris, 1928; Hewitt, 1968)",,1850-1950 early instrumental/expedition record.
+91,1927,1927,6,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Iturrizaga, 2005b; Hewitt and Liu, 2010)",,1850-1950 early instrumental/expedition record.
+92,1928,1928,,,,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Hewitt, 1968)",,1850-1950 early instrumental/expedition record.
+96,1929,1929,,,Karambar,Pakistan,Gilgit,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Iturrizaga, 2005a)",,1850-1950 early instrumental/expedition record.
+121,1941,1941,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Charles, 1985; Kreutzmann, 1994; Iturrizaga, 2005b)",,1850-1950 early instrumental/expedition record.
+126,1944,1944,,,Unnamed,Pakistan,Hunza,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Saunders, 1983; Kreutzmann, 1994; Iturrizaga, 2005b)",,1850-1950 early instrumental/expedition record.
+130,1951,1951,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+135,1953,1953,,,,Pakistan,Indus,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hewitt, 1968)",,1950-2025 modern era with potential aerial/satellite verification.
+141,1955,1955,,,Karambar,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Iturrizaga, 2005a; Hewitt and Liu, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+150,1957,1957,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Charles, 1985; Kreutzmann, 1994; Iturrizaga, 2005b)",,1950-2025 modern era with potential aerial/satellite verification.
+158,1959,1959,8,21,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Finsterwalder, 1960; Kreutzmann, 1994; Iturrizaga, 2005b)",,1950-2025 modern era with potential aerial/satellite verification.
+159,1959,1959,8,23,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Iturrizaga, 2005b)",,1950-2025 modern era with potential aerial/satellite verification.
+165,1960,1960,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kreutzmann, 1994; Iturrizaga, 2005b)",,1950-2025 modern era with potential aerial/satellite verification.
+170,1961,1961,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kreutzmann, 1994; Iturrizaga, 2005b)",,1950-2025 modern era with potential aerial/satellite verification.
+174,1962,1962,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kreutzmann, 1994; Iturrizaga, 2005b)",,1950-2025 modern era with potential aerial/satellite verification.
+178,1963,1963,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kreutzmann, 1994; Iturrizaga, 2005b)",,1950-2025 modern era with potential aerial/satellite verification.
+184,1964,1964,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kreutzmann, 1994; Iturrizaga, 2005b)",,1950-2025 modern era with potential aerial/satellite verification.
+227,1972,1972,,,Chateboi,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Iturrizaga, 2004)",,1950-2025 modern era with potential aerial/satellite verification.
+228,1972,1972,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+229,1972,1972,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shi, 2003; Hewitt and Liu, 2010; Gao et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+235,1973,1973,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Shi and Zhang, 1978; Gao et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+244,1974,1974,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+245,1974,1974,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Goudie, 1981; Kreutzmann, 1994)",,1950-2025 modern era with potential aerial/satellite verification.
+246,1974,1974,4,12,,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Wang et al., 1984)",,1950-2025 modern era with potential aerial/satellite verification.
+255,1975,1975,,,,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Ali, 1977; Kreutzmann, 1994)",,1950-2025 modern era with potential aerial/satellite verification.
+264,1977,1977,6,10,Chateboi,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Iturrizaga, 2005a; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+266,1977,1977,,,,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Francis, Miller and Dong, 1981; Roohi et al., 2008; Bazai et al., 2021; Gao et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+272,1978,1978,9,,Darkot,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hughes, 1981; Roohi et al., 2008)",,1950-2025 modern era with potential aerial/satellite verification.
+273,1978,1978,5,21,Warghut,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+274,1978,1978,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+275,1978,1978,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Goudie, 1984; Kreutzmann, 1994; Iturrizaga, 2005b)",,1950-2025 modern era with potential aerial/satellite verification.
+282,1980,1980,7,27,Unnamed,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Nash et al., 1985)",,1950-2025 modern era with potential aerial/satellite verification.
+288,1980,1980,,,Ghulkin,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Goudie, 1981; Kreutzmann, 1994)",,1950-2025 modern era with potential aerial/satellite verification.
+289,1980,1980,6,28,Unnamed,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Iturrizaga, 2005b; Carrivick and Tweed, 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+305,1982,1982,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+317,1985,1985,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+323,1986,1986,,,Ghulkin,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Kreutzmann, 1994)",,1950-2025 modern era with potential aerial/satellite verification.
+340,1990,1990,,,Warghut,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Iturrizaga, 2004, 2005a)",,1950-2025 modern era with potential aerial/satellite verification.
+341,1990,1990,,,,Pakistan,Hushe,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hewitt, 2009)",,1950-2025 modern era with potential aerial/satellite verification.
+347,1992,1992,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+348,1992,1992,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+352,1993,1993,,,Unnamed,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2019)",,1950-2025 modern era with potential aerial/satellite verification.
+357,1993,1993,,,,Pakistan,Hushe,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hewitt and Liu, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+361,1994,1994,6,29,Sosot,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Din et al., 2014; Rehman et al., 2014; Rehman, 2015)",,1950-2025 modern era with potential aerial/satellite verification.
+362,1994,1994,,,Karambar,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hewitt and Liu, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+368,1996,1996,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+378,1999,1999,8,6,Khalti,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Din et al., 2014; Amin et al., 2020)",,1950-2025 modern era with potential aerial/satellite verification.
+381,1999,1999,,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hewitt and Liu, 2010)",,1950-2025 modern era with potential aerial/satellite verification.
+384,2000,2000,5,21,Chateboi,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+386,2000,2000,6,11,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Hewitt and Liu, 2010; Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+387,2000,2000,9,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+388,2000,2000,7,27,,Pakistan,Hushe,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Din et al., 2014; Ahmad et al., 2016)",,1950-2025 modern era with potential aerial/satellite verification.
+391,2001,2001,5,,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+395,2002,2002,,,Hassanabad,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+396,2002,2002,7,15,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Bazai et al., 2021)",,1950-2025 modern era with potential aerial/satellite verification.
+404,2003,May to August 2003,,,Unnamed,Pakistan,Indus,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),documentation from satellite imagery,1950-2025 modern era with potential aerial/satellite verification.
+410,2005,2005,6,,Brep,Pakistan,Chitral,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Haq, 2007)",https://reliefweb.int/report/pakistan/pakistan-floods-ocha-situation-report-no-5,1950-2025 modern era with potential aerial/satellite verification.
+411,2005,2005,7,25,Sosot,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Haq, 2007)",,1950-2025 modern era with potential aerial/satellite verification.
+420,2007,2007,,,,Pakistan,Chitral,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Haq, 2007)",,1950-2025 modern era with potential aerial/satellite verification.
+421,2007,2007,8,5,Ghulkin,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Din et al., 2014)",,1950-2025 modern era with potential aerial/satellite verification.
+425,2008,2008,4,22,Ghulkin,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Din et al., 2014)",,1950-2025 modern era with potential aerial/satellite verification.
+426,2008,2008,5,22,Ghulkin,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Din et al., 2014)",,1950-2025 modern era with potential aerial/satellite verification.
+427,2008,2008,5,24,Ghulkin,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Din et al., 2014)",,1950-2025 modern era with potential aerial/satellite verification.
+428,2008,2008,6,14,Ghulkin,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Din et al., 2014)",,1950-2025 modern era with potential aerial/satellite verification.
+429,2008,2008,1,6,Passu,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Din et al., 2014)",,1950-2025 modern era with potential aerial/satellite verification.
+434,2009,2009,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+435,2009,2009,3,26,Ghulkin,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Din et al., 2014)",,1950-2025 modern era with potential aerial/satellite verification.
+442,2010,2010,7,28,Bindo Gol,Pakistan,Chitral,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),https://unfccc.int/files/cooperation_and_support/financial_mechanism/standing_committee/application/pdf/s8.2_2_syed.pdf; https://reliefweb.int/report/pakistan/undp-inaugurates-project-protect-remote-communities-glacial-flooding;  https://www.thethirdpole.net/en/climate/glacier-floods-cause-humanitarian-crisis-in-chitral/,1950-2025 modern era with potential aerial/satellite verification.
+443,2010,2010,7,,,Pakistan,Chitral,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),monitoring by AKAH,1950-2025 modern era with potential aerial/satellite verification.
+444,2010,2010,,,,Pakistan,Yasin,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),personal communication from local villagers,1950-2025 modern era with potential aerial/satellite verification.
+445,2010,2010,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+446,2010,2010,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+448,2010,2010,,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"(Ashraf et al., 2015)",1950-2025 modern era with potential aerial/satellite verification.
+455,2012,2012,7,8,Sosot,Pakistan,Gilgit,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Din et al., 2014)",,1950-2025 modern era with potential aerial/satellite verification.
+463,2014,2014,4,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),https://www.reuters.com/article/pakistan-glaciers-floods-idUSL8N14G0IB20151227; https://globalcryospherewatch.org/meetings/salekhard2016/presentations/3.1.3.j-K.Uddin-Pakistan%20cryospheric%20activities.pdf,1950-2025 modern era with potential aerial/satellite verification.
+470,2015,2015,7,,,Pakistan,Arkary,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),monitoring by AKAH,1950-2025 modern era with potential aerial/satellite verification.
+471,2015,2015,7,,Bindo Gol,Pakistan,Chitral,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),https://www.thethirdpole.net/en/climate/glacier-floods-cause-humanitarian-crisis-in-chitral/; https://www.chitraltoday.net/2015/07/bindu-gol-flooding-glof-project-interventions-minimized-losses/,1950-2025 modern era with potential aerial/satellite verification.
+473,2015,2015,7,,,Pakistan,Bagrot,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),https://www.reuters.com/article/pakistan-glaciers-floods-idUSL8N14G0IB20151227; https://globalcryospherewatch.org/meetings/salekhard2016/presentations/3.1.3.j-K.Uddin-Pakistan%20cryospheric%20activities.pdf,1950-2025 modern era with potential aerial/satellite verification.
+487,2017,2017,7,28,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+493,2018,2018,7,17,Badswat,Pakistan,Ishkoman,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(This study; Anwar et al., 2020)",,1950-2025 modern era with potential aerial/satellite verification.
+494,2018,2018,3,25,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+495,2018,2018,5,10,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+498,2019,2019,7,7,Rogheli,Pakistan,Chitral,MODERN_SATELLITE_ERA,VERIFIED_RECORD,,https://www.dawn.com/news/1495655; https://reliefweb.int/report/pakistan/golain-chitral-glof-event-preliminary-report-7-july-2019,1950-2025 modern era with potential aerial/satellite verification.
+499,2019,2019,6,22,Shisper,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+504,2020,2020,7,13,Rogheli,Pakistan,Chitral,MODERN_SATELLITE_ERA,VERIFIED_RECORD,,https://www.dawn.com/news/1568889,1950-2025 modern era with potential aerial/satellite verification.
+505,2020,2020,8,14,Yarkhun,Pakistan,Chitral,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),https://nation.com.pk/17-Aug-2020/girl-dies-25-huts-damaged-in-glacial-lake-outburst,1950-2025 modern era with potential aerial/satellite verification.
+506,2020,2020,5,29,Shisper,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+511,2021,2021,6,8,Unnamed,Pakistan,Ghizer,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),https://twitter.com/pamirtimes/status/1402519181879386114,1950-2025 modern era with potential aerial/satellite verification.
+512,2021,2021,5,15,Shisper,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+513,2021,2021,5,11,Unnamed,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+516,2022,2022,5,7,Shisper,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(This study),"reporting by local villagers, documentation from satellite imagery",1950-2025 modern era with potential aerial/satellite verification.
+518,,,,,Unnamed,Pakistan,Upper Indus,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+522,,2002-2004,,,Unnamed,Pakistan,Indus,MALFORMED_YEAR_TEXT,REQUIRES_FORMAT_CLEANING,"(Veh et al., 2019)",,"Non-numeric year entry: exact='None', approx='2002-2004'"
+732,2024,2024,6,12,Dih,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),https://hirisk.org/wp-content/uploads/2024/06/RHA_PK2_DihGLOF.pdf,1950-2025 modern era with potential aerial/satellite verification.
+734,2024,2024,8,30,,Pakistan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+735,2024,2024,3,29,Ghulkin,Pakistan,Hunza,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),https://www.facebook.com/pamirtimes/videos/1141178993554468,1950-2025 modern era with potential aerial/satellite verification.
+758,2025,2025,6,24,,Pakistan,Kabul,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),https://hirisk.org/wp-content/uploads/2025/07/RHA_PK4_LuspurGLOF.pdf,1950-2025 modern era with potential aerial/satellite verification.
+764,2025,2025,8,22,Unnamed,Pakistan,Ghizer,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+67,1910,1910,,,Unnamed,Tajikistan,Vanch,HISTORICAL_EARLY_INSTRUMENTAL,VERIFIED_LITERATURE_RECORD,"(Veh et al., 2022)",,1850-1950 early instrumental/expedition record.
+149,1957,1957,9,28,,Tajikistan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+176,1963,1963,7,3,Abdukagor,Tajikistan,Vanch,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+177,1963,1963,6,19,Abdukagor,Tajikistan,Vanch,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+233,1973,1973,7,20,Abdukagor,Tajikistan,Vanch,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+302,1982,1982,7,27,Unnamed,Tajikistan,Tanymas,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+316,1985,1985,7,8,,Tajikistan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+329,1988,1988,,,Abdukagor,Tajikistan,Vanch,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Veh et al., 2022)",,1950-2025 modern era with potential aerial/satellite verification.
+394,2002,2002,8,7,Shahdara,Tajikistan,Shakhdara,MODERN_SATELLITE_ERA,VERIFIED_RECORD,"(Mergili et al., 2012; Narama et al., 2018)",,1950-2025 modern era with potential aerial/satellite verification.
+519,,,,,,Tajikistan,Pyanj,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+520,,,,,,Tajikistan,Shugnan,UNDATED_HISTORICAL_RECORD,UNDATED,"(Zheng et al., 2021)",,Neither exact nor approximate year recorded in source literature.
+743,2021,2021,7,15,Lake Sugat,Tajikistan,Lyakhsh,MODERN_SATELLITE_ERA,VERIFIED_RECORD,,https://www.zora.uzh.ch/id/eprint/278393/1/Thesis_Kharlamova.pdf,1950-2025 modern era with potential aerial/satellite verification.
+761,2025,2025,6,14,Lake Sugat,Tajikistan,Lyakhsh,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+763,2025,2025,8,10,Lake Sugat,Tajikistan,Lyakhsh,MODERN_SATELLITE_ERA,VERIFIED_RECORD,(this study),,1950-2025 modern era with potential aerial/satellite verification.
+766,2023,2023,6,15,Kyzylsu,Tajikistan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,,GLOFCA,1950-2025 modern era with potential aerial/satellite verification.
+767,2024,2024,6,25,Kyzylsu,Tajikistan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,,GLOFCA,1950-2025 modern era with potential aerial/satellite verification.
+768,2025,2025,6,12,Kyzylsu,Tajikistan,,MODERN_SATELLITE_ERA,VERIFIED_RECORD,,GLOFCA,1950-2025 modern era with potential aerial/satellite verification.
+769,2024,2024,7,6,Lake Sugat,Tajikistan,Lyakhsh,MODERN_SATELLITE_ERA,VERIFIED_RECORD,,https://www.zora.uzh.ch/id/eprint/278393/1/Thesis_Kharlamova.pdf,1950-2025 modern era with potential aerial/satellite verification.
+771,2023,2023,7,23,Lake Sugat,Tajikistan,Lyakhsh,MODERN_SATELLITE_ERA,VERIFIED_RECORD,,https://www.zora.uzh.ch/id/eprint/278393/1/Thesis_Kharlamova.pdf,1950-2025 modern era with potential aerial/satellite verification.
+772,2022,2022,7,25,Lake Sugat,Tajikistan,Lyakhsh,MODERN_SATELLITE_ERA,VERIFIED_RECORD,,https://www.zora.uzh.ch/id/eprint/278393/1/Thesis_Kharlamova.pdf,1950-2025 modern era with potential aerial/satellite verification.

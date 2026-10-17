@@ -34,13 +34,15 @@ notebooks/.ipynb_checkpoints/
 catboost_info/
 notebooks/catboost_info/
 
-# ── Raw Datasets (Large External Binaries — Local & Reproducibly Downloaded) ──
+# ── Raw Datasets & Sharing Folder (Large Binaries — Excluded from Git) ────────
 # Raw datasets must be obtained locally or downloaded via reproducible scripts.
 raw/GLO/*.gpkg
 raw/ERA5/*
 raw/CHIRPS/*
 raw/RGI/*
+raw/GLOF/*
 data/raw/
+shared_datasets/
 
 # ── Temporary Download & Processing Caches ───────────────────────────────────
 scratch/cache_*/

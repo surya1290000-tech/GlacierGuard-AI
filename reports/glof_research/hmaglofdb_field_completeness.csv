@@ -1,0 +1,60 @@
+column_name,role,description,total_records,non_null_records,null_records,completeness_pct,plus_unknown_count
+GF_ID,IDENTIFIER,Unique GLOF event identifier (primary key),774,774,0,100.0,0
+Year_approx,EVENT_METADATA,Approximate year of GLOF event,774,626,148,80.88,0
+Year_exact,EVENT_METADATA,Confirmed exact year of GLOF event,774,593,181,76.61,0
+Month,EVENT_METADATA,Month of GLOF event (1-12),774,397,377,51.29,0
+Day,EVENT_METADATA,Day of GLOF event (1-31),774,336,438,43.41,0
+Lake_name,IDENTIFIER,Reported local or toponymic lake name,774,662,112,85.53,0
+Glacier_name,IDENTIFIER,Associated parent glacier name,774,708,66,91.47,0
+GL_ID,IDENTIFIER,Glacial lake inventory identifier,774,757,17,97.8,0
+LakeDB_ID,IDENTIFIER,External lake database identifier,774,388,386,50.13,0
+G_ID,IDENTIFIER,Glacier identifier in RGI / GLIMS,774,752,22,97.16,0
+Lat_lake,PRE_EVENT_CANDIDATE,Latitude of source lake (WGS84),774,774,0,100.0,0
+Lon_lake,PRE_EVENT_CANDIDATE,Longitude of source lake (WGS84),774,774,0,100.0,0
+Elev_lake,PRE_EVENT_CANDIDATE,Elevation of source lake surface (m a.s.l.),774,767,7,99.1,0
+Lat_impact,POST_EVENT_LEAKAGE,Latitude of downstream impact location,774,484,290,62.53,0
+Lon_impact,POST_EVENT_LEAKAGE,Longitude of downstream impact location,774,484,290,62.53,0
+Elev_impact,POST_EVENT_LEAKAGE,Elevation of downstream impact location,774,484,290,62.53,0
+Impact_type,POST_EVENT_LEAKAGE,Nature of observed evidence (Observation / Deposit),774,505,269,65.25,0
+Lake_type,PRE_EVENT_CANDIDATE,"Lake dam type (e.g., Moraine-dammed, Ice-dammed)",774,744,30,96.12,0
+Transboundary,EVENT_METADATA,Whether event crossed national borders (Y/N),774,773,1,99.87,0
+Repeat,EVENT_METADATA,Whether the lake has experienced repeated GLOFs (Y/N),774,773,1,99.87,0
+Region_RGI,EVENT_METADATA,Randolph Glacier Inventory region (e.g. 15 South Asia East),774,754,20,97.42,0
+Region_HiMAP,EVENT_METADATA,High Mountain Asia sub-region classification,774,746,28,96.38,0
+Country,EVENT_METADATA,Country where lake is located,774,774,0,100.0,0
+Province,EVENT_METADATA,Administrative province/state,774,501,273,64.73,0
+River_Basin,EVENT_METADATA,Major drainage river basin,774,702,72,90.7,0
+Driver_lake,PRE_EVENT_CANDIDATE,Long-term morphological or climate driver of lake formation,774,144,630,18.6,0
+Driver_GLOF,POST_EVENT_LEAKAGE,Triggering mechanism of breach (determined post-event),774,98,676,12.66,0
+Mechanism,POST_EVENT_LEAKAGE,Breach physical failure mode (determined post-event),774,194,580,25.06,0
+Area,SPARSE_UNVERIFIED_TIMING,Reported lake area (km²); unverified whether pre- or post-drainage,774,38,736,4.91,0
+Volume,SPARSE_UNVERIFIED_TIMING,Reported lake volume (m³); unverified whether pre- or post-drainage,774,108,666,13.95,0
+Discharge_water,POST_EVENT_LEAKAGE,Peak water discharge (m³/s) — physical outcome of breach,774,78,696,10.08,0
+Discharge_solid,POST_EVENT_LEAKAGE,Solid sediment volume transported (m³) — post-event outcome,774,19,755,2.45,0
+Impact,POST_EVENT_LEAKAGE,Narrative summary of downstream devastation / damage,774,28,746,3.62,0
+Lives_total,POST_EVENT_LEAKAGE,Fatalities caused by GLOF — post-event consequence,774,32,742,4.13,4
+Lives_male,POST_EVENT_LEAKAGE,Male fatalities — post-event consequence,774,1,773,0.13,0
+Lives_female,POST_EVENT_LEAKAGE,Female fatalities — post-event consequence,774,2,772,0.26,0
+Lives_disabilities,POST_EVENT_LEAKAGE,Fatalities among disabled individuals — post-event consequence,774,0,774,0.0,0
+Injured_total,POST_EVENT_LEAKAGE,Total persons injured — post-event consequence,774,2,772,0.26,0
+Injured_male,POST_EVENT_LEAKAGE,Injured male individuals — post-event consequence,774,0,774,0.0,0
+Injured_female,POST_EVENT_LEAKAGE,Injured female individuals — post-event consequence,774,0,774,0.0,0
+Injured_disabilities,POST_EVENT_LEAKAGE,Injured disabled individuals — post-event consequence,774,0,774,0.0,0
+Displaced_total,POST_EVENT_LEAKAGE,Persons displaced or evacuated — post-event consequence,774,9,765,1.16,0
+Displaced_male,POST_EVENT_LEAKAGE,Displaced males — post-event consequence,774,0,774,0.0,0
+Displaced_female,POST_EVENT_LEAKAGE,Displaced females — post-event consequence,774,0,774,0.0,0
+Displaced_disabilities,POST_EVENT_LEAKAGE,Displaced disabled individuals — post-event consequence,774,0,774,0.0,0
+Livestock,POST_EVENT_LEAKAGE,Livestock killed or swept away — post-event consequence,774,13,761,1.68,5
+Residential_destroyed,POST_EVENT_LEAKAGE,Homes destroyed — post-event damage,774,53,721,6.85,26
+Commerical_destroyed,POST_EVENT_LEAKAGE,Commercial buildings destroyed — post-event damage,774,11,763,1.42,3
+Residential_damaged,POST_EVENT_LEAKAGE,Homes damaged — post-event damage,774,16,758,2.07,0
+Commerical_damaged,POST_EVENT_LEAKAGE,Commercial buildings damaged — post-event damage,774,0,774,0.0,0
+Infra,POST_EVENT_LEAKAGE,"Infrastructure damaged (bridges, roads, trails) — post-event damage",774,88,686,11.37,0
+Agricultural,POST_EVENT_LEAKAGE,Farmland destroyed/damaged — post-event damage,774,32,742,4.13,17
+Hydropower,POST_EVENT_LEAKAGE,Hydropower plants destroyed/damaged — post-event damage,774,5,769,0.65,0
+Econ_damage,POST_EVENT_LEAKAGE,Estimated financial loss ($ / local currency) — post-event outcome,774,16,758,2.07,0
+Sat_evidence,POST_EVENT_LEAKAGE,Satellite imagery confirming post-event deposit/breach,774,5,769,0.65,0
+Ref_scientific,EVENT_METADATA,Primary scientific literature citation,774,764,10,98.71,0
+Ref_scientific_full,EVENT_METADATA,Full bibliographic reference,774,682,92,88.11,0
+Ref_other,EVENT_METADATA,Secondary/grey literature reference,774,76,698,9.82,0
+Remarks,EVENT_METADATA,Free-text narrative comments and context,774,120,654,15.5,0

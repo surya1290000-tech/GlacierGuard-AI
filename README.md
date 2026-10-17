@@ -111,7 +111,8 @@ GlacierGuard-AI/
 │   ├── 08_multisource_advanced_modeling.ipynb
 │   ├── 09_final_model_validation.ipynb
 │   ├── 10_nrt_lake_monitoring.ipynb
-│   └── 10_1_imja_extent_calibration.ipynb
+│   ├── 10_1_imja_extent_calibration.ipynb
+│   └── 10_2_five_lake_monitoring_qa.ipynb
 │
 ├── reports/                        # Curated validation, ablation & benchmark CSVs
 │   ├── 06_*.csv                    # Single-sensor baseline model comparisons
@@ -120,34 +121,54 @@ GlacierGuard-AI/
 │   ├── 09_*.csv                    # Confirmatory validation & bootstrap CIs
 │   ├── 10_*.csv                    # NRT monitoring results & scene inventories
 │   ├── 10_1_*.csv                  # Water extraction calibration tables
-│   ├── 10_2_five_lake_monitoring_qa.csv # Multi-lake operational assessment
+│   ├── 08_*.csv                    # Multi-source sensor fusion results
+│   ├── 09_*.csv                    # Confirmatory validation & bootstrap CIs
+│   ├── 10_*.csv                    # NRT monitoring results & scene inventories
+│   ├── 10_1_*.csv                  # Water extraction calibration tables
+│   ├── 10_2_five_lake_monitoring_qa.csv # Multi-lake operational assessment (corrected & audited)
+│   ├── 11_ensemble_*.csv           # NB11 RF+XGBoost benchmark & paired comparisons
+│   ├── 11_ensemble_experiment_manifest.json # NB11 full provenance manifest
+│   │
+│   ├── glof_research/              # GLOF event database research & audit outputs
+│   │   ├── hmaglofdb_dataset_profile.json
+│   │   ├── hmaglofdb_field_completeness.csv
+│   │   └── hmaglofdb_feature_registry.csv
 │   │
 │   ├── figures/                    # High-resolution publication plots (PNG)
 │   │   ├── 01_*.png                # Lake inventory distributions & maps
 │   │   ├── 06_*.png to 09_*.png    # Model residual diagnostics & ablation curves
 │   │   ├── 10_*.png                # NRT monitoring dashboards
 │   │   ├── 10_1_*.png              # SAR/Optical threshold sensitivity & masks
-│   │   └── 10_2_five_lake_extent_qa.png # Five-lake multi-sensor comparison
+│   │   ├── 10_2_five_lake_extent_qa.png # Five-lake multi-sensor comparison
+│   │   ├── 10_2_*_water_mask.png   # Individual lake dual-sensor masks
+│   │   └── 11_ensemble_residual_diagnostics.png # NB11 residual diagnostic scatter
 │   │
 │   └── models/                     # Serialized production model artifacts
 │       ├── 08_best_model_S1.pkl    # Standalone S1 XGBoost model
 │       ├── 08_best_model_S2.pkl    # Standalone S2 XGBoost model
-│       └── 09_final_fused_xgboost.pkl # Validated cross-sensor fused XGBoost
+│       ├── 09_final_fused_xgboost.pkl # Validated cross-sensor fused XGBoost (FROZEN BASELINE)
+│       └── 11_best_s1.pkl          # Standalone S1 RandomForest model
+│
+├── tests/                          # Automated Pytest validation test suites
+│   ├── test_ensemble_benchmark.py  # 33 tests covering splits, leakage, metrics, OOF
+│   └── test_glof_event_database_audit.py # 26 tests covering data audit & normalization
+│
+├── docs/                           # Technical documentation & research roadmaps
+│   ├── IMPLEMENTATION_ROADMAP.md   # Project implementation roadmap & status
+│   └── GLOF_CLASSIFICATION_RESEARCH_PLAN.md # GLOF research plan & NO-GO audit
 │
 ├── scratch/                        # Execution runners, audit scripts & test suites
-│   ├── audit_secrets.py            # Static analysis secret scanner
-│   ├── audit_large_files.py        # Workspace file size auditor
+│   ├── run_ensemble_benchmark.py   # NB11 reproducible benchmark execution script
+│   ├── audit_glof_event_database.py # HMAGLOFDB data quality and feasibility audit
 │   ├── setup_cdse_credentials.py   # Multi-tier CDSE credential resolver & tester
-│   ├── test_cdse_oauth.py          # OAuth and STAC catalog verification
-│   ├── test_processing_api.py      # Sentinel Hub Processing API verification
-│   ├── execute_nb*.py              # Headless notebook execution harnesses
 │   └── generate_all_reports_and_figures.py # Full report generation suite
 │
 └── raw/                            # Local raw datasets (GIT-IGNORED)
     ├── GLO/                        # GLO v1.02 GeoPackages (S1/S2 annual & unique)
     ├── ERA5/                       # ERA5-Land monthly reanalysis netCDF/CSV
     ├── CHIRPS/                     # CHIRPS monthly precipitation netCDF/CSV
-    └── RGI/                        # Randolph Glacier Inventory 6.0/7.0 shapefiles/CSVs
+    ├── RGI/                        # Randolph Glacier Inventory 6.0/7.0 shapefiles/CSVs
+    └── GLOF/                       # HMAGLOFDB GLOF event database (git-ignored)
 ```
 
 ---
@@ -167,7 +188,8 @@ GlacierGuard-AI/
 | **NB09** | Final Model Validation | Confirmatory validation, frozen 2023 test set, bootstrap CIs, robustness | **Validated Baseline** | `09_final_fused_xgboost.pkl` |
 | **NB10** | NRT Satellite Monitoring | CDSE OAuth, STAC catalog queries, Sentinel-1/2 Processing API retrieval | Completed | NRT surveillance pipeline |
 | **NB10.1** | Imja Extent Calibration | Dual-sensor calibration, speckle filtering, threshold tuning on Imja Tsho | Completed | Extent calibration protocol |
-| **NB10.2** | Five-Lake Scaling | Controlled evaluation across Imja, Thulagi, Tsho Rolpa, Lower Barun, Sabai | Completed | `10_2_five_lake_monitoring_qa.csv` |
+| **NB10.2** | Five-Lake Scaling & QA | Multi-sensor surveillance, strict temporal matching, and SAR failure screening | **Audited & Validated** | `10_2_five_lake_monitoring_qa.csv`, `10_2_five_lake_extent_qa.png` |
+| **NB11** | Ensemble Benchmark | RF + XGBoost regression benchmark, expanding OOF stacking, paired tests | **Completed & Tested** | `11_ensemble_regression_comparison.csv`, `11_best_s1.pkl` |
 
 ---
 
@@ -225,25 +247,36 @@ To eliminate data leakage, models are evaluated exclusively using a **strict tem
 | **VALIDATION** | $\text{AREA\_YEAR} = 2022$ | Hyperparameter selection & Early stopping | 1,580 lake-year observations |
 | **TEST** | $\text{AREA\_YEAR} = 2023$ | Final confirmatory benchmark | **1,742 lake-year observations (FROZEN)** |
 
-The 2023 test set was strictly frozen throughout feature development and exploratory modeling. It was evaluated only during confirmatory validation in Notebook 09.
+The 2023 test partition was previously evaluated during confirmatory validation in Notebook 09 and was reused in Notebook 11 strictly as a **reused historical benchmark** for comparative research, **not as a fresh untouched test set**. Further model tuning, feature engineering, or hyperparameter optimization based on this partition is **strictly prohibited**. Candidate model selection and ensemble blending weights were driven exclusively by the 2022 validation split.
 
 ---
 
 ## 8. Current Best ML Model
 
-The primary validated predictive model is the **Cross-Sensor Fused XGBoost Regressor** (`reports/models/09_final_fused_xgboost.pkl`), which combines SAR backscatter morphology from Sentinel-1 with optical spectral features from Sentinel-2.
+The primary validated predictive baseline is the **Cross-Sensor Fused XGBoost Regressor** (`reports/models/09_final_fused_xgboost.pkl`), which combines SAR backscatter morphology from Sentinel-1 with optical spectral features from Sentinel-2 (36 joint features). On the matched dual-sensor cohort (**1,742 matched lake-year observations**), it is the **best observed candidate model**.
 
-### Validated Matched-Test Benchmark (2023 Frozen Set)
+### Validated Matched-Test Benchmark (2023 Reused Historical Benchmark, N = 1,742 Lake-Years)
 
 | Metric | Validated Score | Scientific Interpretation |
 |---|---|---|
-| **MAE** | **0.004792 km²** | Typical error is under $4,800\text{ m}^2$ (~less than half a Sentinel-2 pixel on lake diameter) |
+| **MAE** | **0.004792 km²** (4,792 m²) | Typical error is under $4,800\text{ m}^2$ (~less than half a Sentinel-2 pixel on lake diameter) |
 | **RMSE** | **0.015079 km²** | Robust penalization against large outlier expansions |
 | **$R^2$** | **0.3366** | Explains 33.7% of annual expansion variance across diverse Himalayan lake types |
 
 > [!IMPORTANT]
 > **Statistical Clarification:**  
 > In accordance with rigorous remote sensing standards, **$R^2$ must NOT be referred to as "accuracy"**. $R^2$ represents the coefficient of determination (explained variance). Because natural glacial lake change includes stochastic calving and moraine dam slumping, an $R^2$ of 0.337 with an MAE of 0.0048 km² represents a robust predictive baseline. Notebook 09 confirmed statistical significance via 1,000-iteration bootstrap confidence intervals: MAE 95% CI $[0.0042, 0.0054]\text{ km}^2$.
+
+### NB11 Single-Sensor Ensemble Benchmark & Candidate Status
+In Notebook 11, six candidate regression models (Persistence, Random Forest, XGBoost, Equal Voting, Weighted Blend, Expanding Temporal OOF Stacking) were benchmarked on single-sensor GLO 20-feature sets under fair temporal splits (`AREA_YEAR <= 2021` train, `2022` val, `2023` reused historical benchmark):
+
+- **Sentinel-1 Candidate Status (`11_best_s1.pkl`):** Random Forest achieved lower validation MAE ($0.005442\text{ km}^2$) than XGBoost ($0.006559\text{ km}^2$). On the 2023 test set, paired bootstrap testing yielded:
+  $$\Delta \text{MAE} = -0.000529 \text{ km}^2 = -529 \text{ m}^2 \quad (\text{magnitude } 0.000529 \text{ km}^2 = 529 \text{ m}^2, \text{ NOT } 0.529 \text{ m}^2)$$
+  $$95\% \text{ Bootstrap CI}: [-0.001184, +0.000021] \text{ km}^2 \quad ([-1183.5, +20.7] \text{ m}^2)$$
+  Because the 95% bootstrap confidence interval **includes zero**, the observed difference is **not statistically conclusive** at $\alpha=0.05$. Therefore, `11_best_s1.pkl` is retained strictly as a **candidate S1-only model pending additional validation**, not an approved replacement for the Fused XGBoost baseline.
+- **Sentinel-2 Authoritative Benchmark:** Persistence (no-change) beat all single-sensor optical ML models on both validation (MAE $0.004965\text{ km}^2$) and test (MAE $0.004552\text{ km}^2$ on $N=2507$ standalone; $0.005082\text{ km}^2$ on $N=1742$ matched lake-year observations; all single-sensor S2 ML models achieved negative test $R^2$). The **S2 Persistence baseline is retained as the authoritative benchmark** unless further independent evidence supports another model.
+- **Population Reconciliation:** On the matched cohort (**1,742 matched lake-year observations**), Fused XGBoost remains the **best observed candidate** (test MAE $0.004792\text{ km}^2$, $R^2 = 0.3366$). Unmatched observations (313 S1-only and 765 S2-only observations) reflect differences in sensor inventory inclusion, acquisition geometry, spatial coverage, and observation filtering, described neutrally rather than attributed solely to cloud cover or radar gaps without record-level provenance.
+- **GLOF ML Gate Decision (STRICT NO-GO):** An evidence-based audit of HMAGLOFDB (774 events, 1533–2026) confirmed >88% missingness in impact fields, 95.1% missingness in pre-event lake surface area, absence of true negative controls, risk of circular post-event morphological leakage, and 2 unverified 2026 events (`GF_ID = 773`, `GF_ID = 775`) flagged by maintainers as requiring cross-checking. GLOF occurrence and severity ML modeling is maintained at **STRICT NO-GO** status until credible independent labeled data and suitable comparison observations are established.
 
 ---
 
@@ -293,10 +326,10 @@ uv sync
 ```
 
 ### Verification
-Run the verification suite to ensure dependencies and scripts compile cleanly:
+Run the unified verification suite to ensure all credentials, APIs, and dependencies function:
 
 ```powershell
-python -c "import geopandas, shapely, sklearn, xgboost; print('Environment OK!')"
+python scratch/verify_api_credentials.py
 python scratch/audit_secrets.py
 ```
 
@@ -309,7 +342,7 @@ GlacierGuard-AI supports distributed data processing via **Databricks Connect** 
 1. **Bundle Definition:** Defined in `databricks.yml` targeting the workspace host `https://dbc-0be231d6-04fb.cloud.databricks.com`.
 2. **Local Profile:** Databricks CLI authentication should be configured locally using:
    ```powershell
-   databricks auth login --host https://<your-databricks-instance>.cloud.databricks.com
+   databricks auth login --host https://dbc-0be231d6-04fb.cloud.databricks.com
    ```
 3. **Execution Separation:** Heavy exploratory spatial joins and catalog profiling can execute on Databricks clusters via PySpark (`notebooks/02_glo_databricks_eda.ipynb`), while ML modeling and NRT satellite processing execute locally.
 4. **Security Notice:** Databricks authentication tokens are stored in the local profile (`~/.databrickscfg`) and must **NEVER** be committed to Git.
@@ -318,7 +351,13 @@ GlacierGuard-AI supports distributed data processing via **Databricks Connect** 
 
 ## 12. API Credential Setup
 
-GlacierGuard-AI requires credentials for Copernicus CDS (ERA5) and Copernicus Data Space (NRT Satellite Imagery). All credentials reside outside the Git repository.
+GlacierGuard-AI requires credentials for Copernicus CDS (ERA5), Copernicus Data Space (NRT Satellite Imagery), and Databricks. All credentials reside strictly outside the Git repository. For full instructions, see [DEVELOPER_SETUP.md](DEVELOPER_SETUP.md).
+
+### Interactive Setup Helper
+Configure or verify all credentials with a single command:
+```powershell
+python scratch/configure_credentials.py
+```
 
 ### 1. CDSE / Sentinel Hub OAuth (for NRT Imagery)
 Register an account at [Copernicus Data Space](https://dataspace.copernicus.eu/). Create an OAuth client under your dashboard.
@@ -335,16 +374,17 @@ Alternatively, set them in your terminal session:
 $env:CDSE_CLIENT_ID="your-client-id"
 $env:CDSE_CLIENT_SECRET="your-client-secret"
 ```
-Verify your configuration using the helper tool:
-```powershell
-python scratch/setup_cdse_credentials.py
-```
 
 ### 2. Climate Data Store (CDS API for ERA5-Land)
 Create an account at [Copernicus Climate Data Store](https://cds.climate.copernicus.eu/). Save your key in `~/.cdsapirc`:
 ```ini
 url: https://cds.climate.copernicus.eu/api
 key: your-cds-api-key
+```
+
+### 3. Verify All Services
+```powershell
+python scratch/verify_api_credentials.py
 ```
 
 > [!WARNING]
