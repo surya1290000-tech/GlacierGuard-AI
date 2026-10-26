@@ -29,15 +29,17 @@ To maintain strict scientific defense and research credibility, this roadmap enf
 
 ### 2.1 Git Status & Branch Architecture
 - **Current Branch:** `feature/nrt-five-lake-qa-audit` — pushed to `origin` and open as PR #1.
-- **Remote HEAD:** `65b5d7ee` (`fix: correct paired MAE delta sign convention and add T11 unit tests`).
-- **Branch history (5 commits total; 3 are in PR #1):**
+- **Remote HEAD:** `c158c8b` (`test(ensemble): bind T11 sign-convention tests directly to production paired_mae_comparison`).
+- **Branch history (7 commits total; 5 are in PR #1):**
   - `5b0f537` first commit *(on main; not part of PR)*
   - `5e2a75f` chore: establish collaborative project baseline *(on main; not part of PR)*
   - `d64f665` feat(nrt): complete five-lake operational monitoring QA audit and developer setup baseline *(PR commit 1)*
   - `1f0bc7e` feat(research): establish verified ensemble benchmark, QA audit, and GLOF feasibility baseline *(PR commit 2)*
   - `65b5d7e` fix: correct paired MAE delta sign convention and add T11 unit tests *(PR commit 3)*
+  - `20602e9` docs: correct stale git state, test counts, and CI status in roadmap and README *(PR commit 4)*
+  - `c158c8b` test(ensemble): bind T11 sign-convention tests directly to production paired_mae_comparison *(PR commit 5)*
 - **Working Tree:** Clean — no staged or modified tracked files. Untracked `scratch/` one-off investigation scripts remain unstaged (scratch work, not research artifacts).
-- **PR #1:** Open, not draft, mergeable: True. 3 commits. No CI workflows configured.
+- **PR #1:** Open, not draft, mergeable: True. 5 commits on remote. No CI workflows configured.
 
 ### 2.2 Directory & Artifact Topology
 ```text
@@ -69,7 +71,7 @@ Statuses used:
 
 | Workstream | Status | Evidence Inspected | What is Genuinely Done | Remaining Gap | Risk | Required Next Action |
 |:---|:---:|:---|:---|:---|:---:|:---|
-| **Git & Collaboration Baseline** | `PARTIALLY_COMPLETE` | `git status`, `git branch -a`, commit `5e2a75f`, `DEVELOPER_SETUP.md` | Clean Git ignore rules; collaborative baseline committed on local feature branch. | `feature/nrt-five-lake-qa-audit` not pushed to remote; untracked NB10.2 and docs await commit. | Low | Stage and commit NB10.2, QA reports, and `DEVELOPER_SETUP.md`; push to GitHub. |
+| **Git & Collaboration Baseline** | `VERIFIED_COMPLETE` | `git status`, `git branch -a`, branch `feature/nrt-five-lake-qa-audit` pushed, PR #1 open | Clean Git ignore rules; PR #1 open with 5 commits on GitHub; developer setup documented. | None for baseline; automated CI tracked in Phase 7. | None | Complete review and merge PR #1. |
 | **Dataset Organization & Sharing** | `VERIFIED_COMPLETE` | `scratch/package_shared_datasets.py`, `shared_datasets/` (21 files, 221 MB), `dataset_manifest.csv` | Full audit of raw & processed datasets. OS duplicate `(1).gpkg` filtered. Checksums 100% matched. | Datasets must be transferred out-of-band via cloud zip. | Very Low | Provide compressed zip archive to collaborator. |
 | **Databricks & Exploratory Data Analysis (NB01–NB02)** | `VERIFIED_COMPLETE` | `01_glo_dataset_inspection.ipynb` (54 cells), `02_glo_databricks_eda.ipynb` (49 cells), figures `01_*.png` | Ingested GLO GeoPackages into PySpark and GeoPandas. Validated CRS, lake count, and basin area spread. | Re-execution of NB02 requires active Databricks workspace; local fallback paths documented. | Low | Maintain local fallback execution paths. |
 | **Feature Engineering & Leakage Control (NB03)** | `VERIFIED_COMPLETE` | `03_glo_feature_engineering.ipynb` (16 cells), temporal splits (2017-2021 train, 2022 val, 2023 test) | Constructed lag features ($\text{lag}_1, \text{lag}_2$), morphological indices, missing-year flags without lookahead leakage. | Logic lives inside notebook; not yet packaged into an importable Python library. | Low | Abstract feature generation into `src/glacierguard/features/`. |
@@ -79,7 +81,7 @@ Statuses used:
 | **Final Model Validation (NB09)** | `VERIFIED_COMPLETE` | `09_final_model_validation.ipynb` (19 cells), `09_final_fused_xgboost.pkl`, `09_bootstrap_ci.csv` | Fused XGBoost validated on isolated 2023 test set (MAE 0.00479 km²). Paired t-test ($p < 0.001$), 1,000 bootstrap CIs, SHAP analysis. | Bounded strictly to annual lake-area prediction; must not be claimed as real-time flood warning. | Low | Clarify model scope in presentation and docs. |
 | **API Credentials & Security Layer** | `VERIFIED_COMPLETE` | `scratch/verify_api_credentials.py` output (100% PASS), `DEVELOPER_SETUP.md` | User-local multi-tier credentials resolved for CDSE OAuth, STAC, Processing API, CDS API, and Databricks. Zero secrets in Git. | CDS API key requires collaborator to register their own Copernicus CDS account. | Very Low | Retain automated credential verification script. |
 | **Imja Tsho Extent Calibration (NB10.1)** | `VERIFIED_COMPLETE` | `10_1_imja_extent_calibration.ipynb` (16 cells), `10_1_*.csv`, `10_1_*.png` | Calibrated optical MNDWI > 0.0 + SCL cloud masking and SAR Lee 5x5 + VV < -12 dB against GLO geometry. | Universal S1 threshold does not account for severe gorge layover at other lakes. | Moderate | Incorporate terrain-adaptive backscatter masking. |
-| **Five-Lake Operational Surveillance (NB10.2)** | `FUNCTIONAL_BUT_NEEDS_REVIEW` | `10_2_five_lake_monitoring_qa.ipynb` (8 cells), `10_2_five_lake_monitoring_qa.csv`, 5 lake mask PNGs | Evaluated 50 scenes over 5 lakes. Separated core vs 50m buffer. Added temporal matching flags and operational states. | Changes uncommitted in Git. Tsho Rolpa SAR failure requires gorge layover mask. Thulagi has monsoon optical gap. | Moderate | Commit NB10.2 and QA reports. Document SAR gorge failure clearly. |
+| **Five-Lake Operational Surveillance (NB10.2)** | `FUNCTIONAL_BUT_NEEDS_REVIEW` | `10_2_five_lake_monitoring_qa.ipynb` (8 cells), `10_2_five_lake_monitoring_qa.csv`, 5 lake mask PNGs | Evaluated 50 scenes over 5 lakes. Separated core vs 50m buffer. Added temporal matching flags and operational states. Committed in `d64f665`. | Tsho Rolpa SAR failure requires gorge layover mask. Thulagi has monsoon optical gap. | Moderate | Incorporate terrain-adaptive backscatter masking in Phase 4. |
 | **Ensemble Regression Benchmark (NB11)** | `VERIFIED_COMPLETE` | `11_rf_xgboost_ensemble_benchmark.ipynb`, `11_ensemble_*.csv`, `11_best_s1.pkl`, `manifest.json` | Benchmarked 6 candidate models on fair temporal splits. S1 RF achieved lowest val MAE (0.00544 km²), but test difference vs XGBoost (ΔMAE = -529 m², 95% CI [-1184, +21] m²) includes zero; retained as candidate S1 model. S2 Persistence remains optical benchmark. Reconciled on 1,742 matched lake-year observations. | Evaluated against reused 2023 historical benchmark; further tuning prohibited. | Low | Freeze candidate S1 artifact pending multi-year validation. |
 | **GLOF Event Database Quality Audit** | `VERIFIED_COMPLETE` | `docs/GLOF_CLASSIFICATION_RESEARCH_PLAN.md`, `reports/glof_research/*.csv`, `profile.json` | Audited HMAGLOFDB (774 events, 1533–2026). Documented >88% consequence missingness, 95.1% pre-event area missingness, and circular leakage. Flagged 2 unverified 2026 records. Reaffirmed **STRICT NO-GO** gate decision for predictive ML. | No training or deployment attempted; gate decision enforced. | None | Retain GLOF catalog strictly for descriptive reference. |
 | **Automated Unit Testing & Verification** | `VERIFIED_COMPLETE` | `tests/test_ensemble_benchmark.py` (36 tests), `tests/test_glof_event_database_audit.py` (27 tests) | 63 automated unit tests covering temporal split boundaries, target construction, leakage elimination, OOF expanding windows, paired MAE sign convention (T11), HMAGLOFDB normalization, '+' count handling, and post-2025 QC flags. | Full `src/` modularization remains for Phase 5. No GitHub Actions CI workflow yet configured. | Very Low | Maintain test suite; add CI automation in Phase 7. |
@@ -199,9 +201,9 @@ Automated verification via `scratch/verify_api_credentials.py` confirmed:
 
 ## 7. Known Defects, Risks, and Unresolved Claims
 
-1. **Uncommitted Working State:**
-   - *Defect:* NB10.2, the audited QA report, figures, and developer setup documentation currently reside only in the local working copy.
-   - *Risk:* Collaborators cloning the repository see only commit `5e2a75f` on `main`, missing the entire five-lake surveillance audit.
+1. **Resolved — Git Baseline Synchronized:**
+   - *Status:* NB10.2, the audited QA report, figures, developer setup, ensemble benchmark, and unit tests have all been committed and pushed on `feature/nrt-five-lake-qa-audit` (open as PR #1 with 5 commits).
+   - *Result:* Collaborators can clone, inspect the full audit, and run tests locally.
 2. **Topographic SAR Failure at Tsho Rolpa:**
    - *Defect:* A static SAR threshold of `VV < -12 dB` fails completely in steep, narrow east-west Himalayan gorges (median backscatter rises to -5.2 dB).
    - *Risk:* Prematurely inferring lake shrinkage or sensor malfunction if users do not recognize radar layover and katabatic wave chop.
@@ -231,16 +233,11 @@ graph TD
     P6 --> P8[Phase 8: Research Paper & Project Defense Readiness]
 ```
 
-### Phase 0 — Repository and Environment Stabilization (P0 — Immediate)
+### Phase 0 — Repository and Environment Stabilization (P0 — Completed)
 - **Objective:** Stage, commit, and push the validated NB10.2 five-lake monitoring audit, QA reports, figures, and developer documentation to remote GitHub.
-- **Tasks:**
-  1. Review `git status` and verify clean diffs across `.gitignore`, `README.md`, `reports/`, and `scratch/`.
-  2. Stage `notebooks/10_2_five_lake_monitoring_qa.ipynb`, `DEVELOPER_SETUP.md`, `docs/IMPLEMENTATION_ROADMAP.md`, updated QA reports, and figure PNGs.
-  3. Commit with a structured message establishing the validated five-lake QA baseline.
-  4. Push branch `feature/nrt-five-lake-qa-audit` to remote `origin`.
-- **Files Modified/Created:** `.gitignore`, `README.md`, `DEVELOPER_SETUP.md`, `docs/IMPLEMENTATION_ROADMAP.md`, `notebooks/10_2_five_lake_monitoring_qa.ipynb`, `reports/10_2_five_lake_monitoring_qa.csv`, `reports/figures/10_2_*.png`.
-- **Acceptance Criteria:** `git status` clean; branch visible on `https://github.com/surya1290000-tech/GlacierGuard-AI`.
-- **Estimated Effort:** 1–2 developer-hours.
+- **Status:** **Completed.** Branch `feature/nrt-five-lake-qa-audit` pushed to remote `origin`, PR #1 open, verified clean working tree.
+- **Files Committed:** `.gitignore`, `README.md`, `DEVELOPER_SETUP.md`, `docs/IMPLEMENTATION_ROADMAP.md`, `notebooks/10_2_five_lake_monitoring_qa.ipynb`, `reports/10_2_five_lake_monitoring_qa.csv`, `reports/figures/10_2_*.png`, plus ensemble benchmark (NB11) and test suite.
+- **Acceptance Criteria:** `git status` clean; branch visible on `https://github.com/surya1290000-tech/GlacierGuard-AI`. (Met).
 
 ### Phase 1 — API Credential and Onboarding Verification (P0)
 - **Objective:** Ensure collaborator can clone the repository, run `uv sync`, configure credentials in `<HOME>/.glacierguard/`, and pass the verification suite on their local workstation.
@@ -342,49 +339,17 @@ graph TD
 ## 9. Recommended Immediate Next Task
 
 ### The Single Recommended Next Action:
-**Stage, Commit, and Push the Completed Five-Lake QA Audit & Developer Setup Baseline on branch `feature/nrt-five-lake-qa-audit` to GitHub.**
+**Complete Peer Review and Merge PR #1 on GitHub, Then Begin Phase 1 (Collaborator Onboarding Validation) and Phase 4 (Terrain-Adaptive SAR Masking).**
 
-### Why It Must Be Done First:
-1. **Prevents Loss of Validated Work:** The completed five-lake monitoring notebook (`10_2_five_lake_monitoring_qa.ipynb`), audited QA metrics, water mask maps, and developer setup documentation currently reside only as untracked files on local disk.
-2. **Enables Collaborator Synchronization:** The collaborator cannot access or review NB10.2 until it is committed and pushed to GitHub.
-3. **Unblocks Downstream Engineering:** Reusable module development (`src/`), unit testing (`tests/`), and dashboard creation (`app/`) all require a clean, committed Git baseline.
+### Current Milestone Status:
+1. **Repository Baseline Pushed:** The completed five-lake monitoring notebook (`10_2_five_lake_monitoring_qa.ipynb`), audited QA metrics, water mask maps, developer setup documentation, ensemble benchmark (`11_rf_xgboost_ensemble_benchmark.ipynb`), and the 63-test unit test suite are committed and live on GitHub in PR #1 (`feature/nrt-five-lake-qa-audit`).
+2. **Deterministic Sign-Convention Tests (T11):** Three deterministic unit tests directly invoke the production `paired_mae_comparison` function and verify the candidate-minus-reference convention with bootstrap confidence intervals.
+3. **Cross-Artifact Consistency:** Verified 100% consistent across all CSV reports, figures, manifests, notebooks, and documentation.
 
-### Exact Files to Stage & Commit:
-- `notebooks/10_2_five_lake_monitoring_qa.ipynb`
-- `reports/10_2_five_lake_monitoring_qa.csv`
-- `reports/figures/10_2_five_lake_extent_qa.png`
-- `reports/figures/10_2_imja_tsho_water_mask.png`
-- `reports/figures/10_2_thulagi_water_mask.png`
-- `reports/figures/10_2_tsho_rolpa_water_mask.png`
-- `reports/figures/10_2_lower_barun_water_mask.png`
-- `reports/figures/10_2_sabai_tsho_water_mask.png`
-- `DEVELOPER_SETUP.md`
-- `docs/IMPLEMENTATION_ROADMAP.md`
-- `.gitignore`
-- `README.md`
-- `scratch/verify_api_credentials.py`
-- `scratch/configure_credentials.py`
-- `scratch/package_shared_datasets.py`
-- `scratch/audit_datasets.py`
-- `scratch/execute_nb10_2_qa.py`
-
-### What Must NOT Be Changed:
-- Do NOT modify NB01–NB09 or retrain existing models.
-- Do NOT commit `shared_datasets/` or any raw data (verified excluded by `.gitignore`).
-- Do NOT merge into `main` automatically; keep on `feature/nrt-five-lake-qa-audit`.
-- Do NOT commit any real API credentials.
-
-### Review and Verification Procedure:
-1. Run `git status` to ensure only intended files are staged.
-2. Verify secret scanner passes (`python scratch/audit_secrets.py`).
-3. Commit with:
-   ```bash
-   git commit -m "feat(nrt): complete five-lake operational monitoring QA audit and developer setup baseline"
-   ```
-4. Push branch:
-   ```bash
-   git push -u origin feature/nrt-five-lake-qa-audit
-   ```
+### Next Execution Steps:
+1. Conduct code review and merge PR #1 into `main`.
+2. Support collaborator environment onboarding (`uv sync` + credential setup via `DEVELOPER_SETUP.md`).
+3. Proceed with Phase 4: develop terrain-adaptive SAR backscatter masking for steep gorge lakes (resolving the Tsho Rolpa layover limitation).
 
 ---
 
