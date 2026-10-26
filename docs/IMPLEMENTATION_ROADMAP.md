@@ -29,8 +29,8 @@ To maintain strict scientific defense and research credibility, this roadmap enf
 
 ### 2.1 Git Status & Branch Architecture
 - **Current Branch:** `feature/nrt-five-lake-qa-audit` — pushed to `origin` and open as PR #1.
-- **Remote HEAD:** `c158c8b` (`test(ensemble): bind T11 sign-convention tests directly to production paired_mae_comparison`).
-- **Branch history (7 commits total; 5 are in PR #1):**
+- **Remote HEAD:** `96e1d95` (`docs(roadmap): update scorecard, defects, and next actions to reflect pushed PR #1 baseline`).
+- **Branch history (8 commits total; 6 are in PR #1):**
   - `5b0f537` first commit *(on main; not part of PR)*
   - `5e2a75f` chore: establish collaborative project baseline *(on main; not part of PR)*
   - `d64f665` feat(nrt): complete five-lake operational monitoring QA audit and developer setup baseline *(PR commit 1)*
@@ -38,8 +38,9 @@ To maintain strict scientific defense and research credibility, this roadmap enf
   - `65b5d7e` fix: correct paired MAE delta sign convention and add T11 unit tests *(PR commit 3)*
   - `20602e9` docs: correct stale git state, test counts, and CI status in roadmap and README *(PR commit 4)*
   - `c158c8b` test(ensemble): bind T11 sign-convention tests directly to production paired_mae_comparison *(PR commit 5)*
+  - `96e1d95` docs(roadmap): update scorecard, defects, and next actions to reflect pushed PR #1 baseline *(PR commit 6)*
 - **Working Tree:** Clean — no staged or modified tracked files. Untracked `scratch/` one-off investigation scripts remain unstaged (scratch work, not research artifacts).
-- **PR #1:** Open, not draft, mergeable: True. 5 commits on remote. No CI workflows configured.
+- **PR #1:** Open, not draft, mergeable: True. 6 commits on remote. No CI workflows configured.
 
 ### 2.2 Directory & Artifact Topology
 ```text
