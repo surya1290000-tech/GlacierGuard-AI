@@ -536,4 +536,68 @@ If both developers touched the same file:
 
 ---
 
+## 17. Live Surveillance Platform & Streamlit Dashboard
+
+GlacierGuard-AI includes a live satellite surveillance and decision-support application built on top of the validated remote-sensing pipeline.
+
+### Architecture & Decoupled Design
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ worker.py (Standalone Process / Scheduled Surveillance) │
+│  ┌──────────┐  ┌───────────┐  ┌──────────┐              │
+│  │ DISCOVER │→ │ PREPROCESS│→ │ INFERENCE│→ PERSIST      │
+│  │ (CDSE    │  │ (QA,      │  │ (frozen  │  (SQLite)     │
+│  │  STAC)   │  │  features)│  │  XGBoost)│               │
+│  └──────────┘  └───────────┘  └──────────┘               │
+└─────────────────────────────────────────────────────────┘
+         │ writes observations, alerts, runs
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│ app/dashboard.py (Streamlit Operational UI)             │
+│  - Reads from SQLite persistence (zero ingestion side-effects) │
+│  - Auto-refreshes view periodically via st.fragment     │
+│  - Clear operational status vs. sensor quality separation│
+│  - Provenance trails and physical limitation notes      │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Launching the Dashboard
+
+Launch the interactive multi-view demonstration dashboard:
+
+```powershell
+uv run streamlit run app/dashboard.py
+```
+
+Dashboard views include:
+1. **🌐 System Overview**: Key KPIs, interactive map, and priority status roster.
+2. **🛰️ Live Surveillance**: Freshness indicators, sensor agreement, and extent deltas.
+3. **🗺️ Lake Explorer**: Per-lake deep dives with calibrated water mask figures.
+4. **📡 Satellite Observations**: Catalogue of discovered Sentinel-1 and Sentinel-2 products.
+5. **⚠️ Risk & Change Events**: Auditable alert history with glaciological evidence.
+6. **🧠 Model Insights**: Transparent inspection of the frozen fused XGBoost regressor.
+7. **⚙️ Pipeline Health & Logs**: Execution run traces and manual trigger controls.
+
+### Running the Surveillance Worker
+
+Run the decoupled background surveillance worker to discover new scenes and update SQLite:
+
+```powershell
+# Single-cycle execution across all 5 priority lakes:
+python -m glacierguard.worker --once
+
+# Continuous scheduled polling (e.g. every 6 hours):
+python -m glacierguard.worker --interval-hours 6.0
+```
+
+### Operational Risk Engine & False-SAFE Prevention
+
+The platform enforces strict scientific guardrails:
+- **Zero Fabricated Data**: Only real satellite products discovered via CDSE STAC or verified research baselines are displayed.
+- **False-SAFE Prevention**: Stale observations (>90 days old) or missing scenes can **never** be classified as SAFE.
+- **Risk Indicator, Not GLOF Alarm**: Lake area changes reflect morphological evolution or calving retreat (e.g. Lower Barun) and serve as decision-support indicators, not automated GLOF breach alarms.
+
+---
+
 *GlacierGuard-AI is developed for remote sensing research and environmental risk assessment in High Mountain Asia.*

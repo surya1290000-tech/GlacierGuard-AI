@@ -300,3 +300,70 @@ FROZEN_BENCHMARK = {
         "changes at sub-0.01 km² scale."
     ),
 }
+
+
+def load_dashboard_data_from_db(
+    db_path: Optional[Path] = None,
+    csv_fallback_path: Optional[Path] = None,
+) -> pd.DataFrame:
+    """Load latest surveillance monitoring records from SQLite, falling back to CSV.
+
+    Parameters
+    ----------
+    db_path : Path, optional
+        Path to SQLite database file.
+    csv_fallback_path : Path, optional
+        Fallback CSV path if database is empty or unavailable.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame indexed by ``lake_id``.
+    """
+    from glacierguard.db import get_latest_monitoring_alerts, init_db
+
+    try:
+        init_db(db_path)
+        alerts = get_latest_monitoring_alerts(db_path)
+        if alerts:
+            rows = []
+            for lake_id in CANONICAL_LAKE_ORDER:
+                if lake_id in alerts:
+                    alt = alerts[lake_id]
+                    meta = LAKE_METADATA.get(lake_id, {})
+                    ev = alt.evidence or {}
+                    row = {
+                        "lake_id": alt.lake_id,
+                        "lake_name": meta.get("display_name", alt.lake_id),
+                        "glo_2023_vector_ref_km2": alt.baseline_area_km2,
+                        "latest_s2_date": ev.get("s2_date"),
+                        "s2_area_0m_km2": ev.get("s2_area_0m_km2"),
+                        "s2_area_50m_km2": ev.get("s2_area_km2"),
+                        "latest_s1_date": ev.get("s1_date"),
+                        "s1_area_0m_km2": ev.get("s1_area_0m_km2"),
+                        "s1_area_50m_km2": ev.get("s1_area_km2"),
+                        "temporal_pair_days": alt.temporal_pair_days,
+                        "temporal_matching_flag": alt.temporal_matching_flag or "UNKNOWN",
+                        "cross_sensor_disagreement_pct": alt.cross_sensor_disagreement_pct,
+                        "sensor_agreement_status": alt.sensor_agreement_status or "NO_DATA",
+                        "primary_monitoring_area_km2": alt.primary_area_km2,
+                        "diff_from_glo_2023_km2": alt.area_change_km2,
+                        "diff_from_glo_2023_pct": alt.area_change_pct,
+                        "data_quality": alt.data_quality,
+                        "monitoring_status": alt.status,
+                        "user_facing_status": alt.user_facing_status,
+                        "status_rationale": alt.rationale,
+                        "extraction_limitations": alt.limitations,
+                        "staleness_days": alt.staleness_days,
+                        "last_updated": alt.timestamp,
+                    }
+                    rows.append(row)
+            if rows:
+                df = pd.DataFrame(rows)
+                df = df.set_index("lake_id", drop=False)
+                return df
+    except Exception:
+        pass
+
+    # Fall back to QA CSV
+    return load_qa_csv(csv_fallback_path)
