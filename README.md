@@ -149,12 +149,17 @@ GlacierGuard-AI/
 │       ├── 09_final_fused_xgboost.pkl # Validated cross-sensor fused XGBoost (FROZEN BASELINE)
 │       └── 11_best_s1.pkl          # Standalone S1 RandomForest model
 │
+├── app/                            # Phase 6 operational demonstration dashboard
+│   └── dashboard.py                # Streamlit dashboard (uv run streamlit run app/dashboard.py)
+│
 ├── src/glacierguard/               # Reusable core Python package
+│   ├── dashboard_data.py           # Dashboard data loaders, schema validation & lake metadata
 │   ├── features/                   # Reproducible feature engineering & temporal splits
 │   ├── inference/                  # Frozen fused-XGBoost predictor & evaluation
 │   └── satellite/                  # SAR Lee filter, MNDWI, morphology & QA rules
 │
-├── tests/                          # Automated Pytest validation test suites (84 passing tests)
+├── tests/                          # Automated Pytest validation test suites (123 passing tests)
+│   ├── test_dashboard_data.py      # 39 tests covering data loading, schema, staleness, QA status & integration
 │   ├── test_ensemble_benchmark.py  # 36 tests covering splits, leakage, metrics, OOF, and sign convention (T11)
 │   ├── test_glof_event_database_audit.py # 27 tests covering data audit & normalization
 │   ├── test_features.py            # 5 tests covering feature engineering, lag features & split parity
@@ -402,9 +407,23 @@ python scratch/verify_api_credentials.py
 
 ## 13. How to Run
 
-### Execution Sequence
+### 1. Launch Operational Demonstration Dashboard (Phase 6)
+Start the interactive Streamlit dashboard to explore five-lake operational surveillance, dual-sensor water masks, cross-sensor QA status, and machine learning predictions:
+```powershell
+uv run streamlit run app/dashboard.py
+```
+Then navigate to `http://localhost:8501` in your browser.
 
-To replicate or build upon the pipeline:
+### 2. Run Automated Test Suites
+Execute the full automated test suite (123 passing tests across 6 test modules):
+```powershell
+uv run pytest tests/ -q
+```
+Coverage includes dashboard data loaders, schema validation, temporal splits, leakage prevention, out-of-fold stacking, paired MAE sign conventions (T11), GLOF audit, and satellite QA algorithms.
+
+### 3. Execution Sequence
+
+To replicate or build upon the research notebooks:
 
 ```
 RESEARCH PIPELINE:
@@ -514,6 +533,70 @@ If both developers touched the same file:
 3. Mark resolved: `git add <file>`
 4. Finalize merge: `git commit`
 5. **NEVER force-push (`git push --force`) to shared branches.**
+
+---
+
+## 17. Live Surveillance Platform & Streamlit Dashboard
+
+GlacierGuard-AI includes a live satellite surveillance and decision-support application built on top of the validated remote-sensing pipeline.
+
+### Architecture & Decoupled Design
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ worker.py (Standalone Process / Scheduled Surveillance) │
+│  ┌──────────┐  ┌───────────┐  ┌──────────┐              │
+│  │ DISCOVER │→ │ PREPROCESS│→ │ INFERENCE│→ PERSIST      │
+│  │ (CDSE    │  │ (QA,      │  │ (frozen  │  (SQLite)     │
+│  │  STAC)   │  │  features)│  │  XGBoost)│               │
+│  └──────────┘  └───────────┘  └──────────┘               │
+└─────────────────────────────────────────────────────────┘
+         │ writes observations, alerts, runs
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│ app/dashboard.py (Streamlit Operational UI)             │
+│  - Reads from SQLite persistence (zero ingestion side-effects) │
+│  - Auto-refreshes view periodically via st.fragment     │
+│  - Clear operational status vs. sensor quality separation│
+│  - Provenance trails and physical limitation notes      │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Launching the Dashboard
+
+Launch the interactive multi-view demonstration dashboard:
+
+```powershell
+uv run streamlit run app/dashboard.py
+```
+
+Dashboard views include:
+1. **🌐 System Overview**: Key KPIs, interactive map, and priority status roster.
+2. **🛰️ Live Surveillance**: Freshness indicators, sensor agreement, and extent deltas.
+3. **🗺️ Lake Explorer**: Per-lake deep dives with calibrated water mask figures.
+4. **📡 Satellite Observations**: Catalogue of discovered Sentinel-1 and Sentinel-2 products.
+5. **⚠️ Risk & Change Events**: Auditable alert history with glaciological evidence.
+6. **🧠 Model Insights**: Transparent inspection of the frozen fused XGBoost regressor.
+7. **⚙️ Pipeline Health & Logs**: Execution run traces and manual trigger controls.
+
+### Running the Surveillance Worker
+
+Run the decoupled background surveillance worker to discover new scenes and update SQLite:
+
+```powershell
+# Single-cycle execution across all 5 priority lakes:
+python -m glacierguard.worker --once
+
+# Continuous scheduled polling (e.g. every 6 hours):
+python -m glacierguard.worker --interval-hours 6.0
+```
+
+### Operational Risk Engine & False-SAFE Prevention
+
+The platform enforces strict scientific guardrails:
+- **Zero Fabricated Data**: Only real satellite products discovered via CDSE STAC or verified research baselines are displayed.
+- **False-SAFE Prevention**: Stale observations (>90 days old) or missing scenes can **never** be classified as SAFE.
+- **Risk Indicator, Not GLOF Alarm**: Lake area changes reflect morphological evolution or calving retreat (e.g. Lower Barun) and serve as decision-support indicators, not automated GLOF breach alarms.
 
 ---
 
