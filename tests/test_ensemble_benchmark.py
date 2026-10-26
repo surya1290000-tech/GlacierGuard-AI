@@ -12,6 +12,7 @@ Tests cover:
   T08  Pre-existing model artifact preserved
   T09  Preprocessor fitted on train-only
   T10  Persistence baseline always predicts zero
+  T11  paired_mae_comparison sign-convention (deterministic, synthetic arrays)
 """
 
 import sys, pathlib
@@ -399,3 +400,76 @@ class TestPersistenceBaseline:
         # Sanity: persistence MAE is positive (lakes are not static)
         assert persistence_mae > 0, "Persistence MAE is 0 — all targets are zero (unexpected)"
         print(f"\n  S1 Persistence MAE (no-change floor): {persistence_mae:.6f} km²")
+
+
+# ─── T11 paired_mae_comparison sign convention ────────────────────────────────
+
+class TestPairedMaeSignConvention:
+    """Deterministic tests using small synthetic arrays.
+
+    paired_mae_comparison(y_true, preds_a, preds_b, label_a, label_b)
+    computes delta = mean(|y - preds_b|) - mean(|y - preds_a|)
+                   = candidate_MAE - reference_MAE.
+
+    Sign rules (non-negotiable):
+      delta < 0  →  candidate (preds_b) has LOWER (better) MAE than reference (preds_a)
+      delta > 0  →  candidate (preds_b) has HIGHER (worse)  MAE than reference (preds_a)
+      delta == 0 →  candidate and reference are equivalent
+    """
+
+    # paired_mae_comparison is a closure defined inside run_ensemble_benchmark().
+    # We replicate its delta formula here as a standalone helper to keep tests
+    # self-contained and independent of the full pipeline.
+
+    @staticmethod
+    def _delta(y_true, preds_ref, preds_cand):
+        """Replicate paired_mae_comparison delta (no bootstrap, deterministic)."""
+        err_ref  = np.abs(np.asarray(y_true) - np.asarray(preds_ref))
+        err_cand = np.abs(np.asarray(y_true) - np.asarray(preds_cand))
+        return float(np.mean(err_cand - err_ref))
+
+    def test_negative_delta_means_candidate_better(self):
+        """Candidate closer to truth → delta < 0 → candidate is better."""
+        y_true     = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+        preds_ref  = np.array([0.0, 0.0, 0.0, 0.0, 0.0])   # MAE = 3.0
+        preds_cand = np.array([1.1, 2.1, 3.1, 4.1, 5.1])   # MAE = 0.1
+
+        delta = self._delta(y_true, preds_ref, preds_cand)
+
+        assert delta < 0, (
+            f"Expected delta < 0 (candidate better), but got delta={delta:.6f}. "
+            "A negative delta must indicate lower candidate MAE."
+        )
+        ref_mae  = float(np.mean(np.abs(y_true - preds_ref)))
+        cand_mae = float(np.mean(np.abs(y_true - preds_cand)))
+        assert cand_mae < ref_mae, "Candidate MAE should be lower than reference MAE"
+        assert abs(delta - (cand_mae - ref_mae)) < 1e-12, "delta must equal cand_mae - ref_mae"
+
+    def test_positive_delta_means_candidate_worse(self):
+        """Candidate further from truth → delta > 0 → candidate is worse."""
+        y_true     = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+        preds_ref  = np.array([1.1, 2.1, 3.1, 4.1, 5.1])   # MAE = 0.1
+        preds_cand = np.array([0.0, 0.0, 0.0, 0.0, 0.0])   # MAE = 3.0
+
+        delta = self._delta(y_true, preds_ref, preds_cand)
+
+        assert delta > 0, (
+            f"Expected delta > 0 (candidate worse), but got delta={delta:.6f}. "
+            "A positive delta must indicate higher candidate MAE."
+        )
+        ref_mae  = float(np.mean(np.abs(y_true - preds_ref)))
+        cand_mae = float(np.mean(np.abs(y_true - preds_cand)))
+        assert cand_mae > ref_mae, "Candidate MAE should be higher than reference MAE"
+        assert abs(delta - (cand_mae - ref_mae)) < 1e-12, "delta must equal cand_mae - ref_mae"
+
+    def test_zero_delta_for_identical_predictions(self):
+        """Identical predictions for candidate and reference → delta == 0."""
+        y_true = np.array([0.5, 1.5, -0.3, 2.2, -1.0])
+        preds  = np.array([0.6, 1.4, -0.4, 2.1, -0.9])
+
+        delta = self._delta(y_true, preds, preds)
+
+        assert delta == pytest.approx(0.0, abs=1e-12), (
+            f"Expected delta == 0 for identical predictions, but got delta={delta:.2e}. "
+            "Identical candidate and reference must produce zero difference."
+        )

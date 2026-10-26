@@ -507,11 +507,19 @@ def run_ensemble_benchmark():
     # ── Residual diagnostics and paired comparison ────────────────────────────
     def paired_mae_comparison(y_true, preds_a, preds_b, label_a, label_b,
                                n_boot=2000, rng_seed=RANDOM_STATE):
-        """Bootstrap paired |e_A| - |e_B| confidence interval."""
+        """Bootstrap paired MAE difference: delta = mean(|e_B| - |e_A|).
+
+        Sign convention (candidate = preds_b, reference = preds_a):
+          delta < 0  →  candidate has LOWER (better) MAE than reference
+          delta > 0  →  candidate has HIGHER (worse)  MAE than reference
+          delta == 0 →  candidate and reference are equivalent
+        """
         rng = np.random.default_rng(rng_seed)
         err_a = np.abs(y_true - preds_a)
         err_b = np.abs(y_true - preds_b)
-        delta = np.mean(err_b - err_a)   # positive = B is better
+        # delta = candidate_MAE - reference_MAE
+        # Negative value means candidate is better (lower error).
+        delta = np.mean(err_b - err_a)
         boot_deltas = []
         n = len(y_true)
         for _ in range(n_boot):
@@ -520,7 +528,8 @@ def run_ensemble_benchmark():
         ci_lo = np.percentile(boot_deltas, 2.5)
         ci_hi = np.percentile(boot_deltas, 97.5)
         print(f"  Paired Δ MAE ({label_b} - {label_a}): {delta:+.6f} km²  "
-              f"95% CI [{ci_lo:+.6f}, {ci_hi:+.6f}]")
+              f"95% CI [{ci_lo:+.6f}, {ci_hi:+.6f}]"
+              f"  ({'candidate better' if delta < 0 else 'candidate worse' if delta > 0 else 'equivalent'})")
         return delta, ci_lo, ci_hi
 
     print("\n  Paired comparisons (XGBoost as reference, vs Ensemble, on TEST):")
