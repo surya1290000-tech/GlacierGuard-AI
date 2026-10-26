@@ -267,3 +267,7 @@ constraint-dependencies = [
     "zstandard~=0.23.0",
 ]
 # end managed by databricks environments setup-local
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "scratch"]
+testpaths = ["tests"]

@@ -149,9 +149,17 @@ GlacierGuard-AI/
 │       ├── 09_final_fused_xgboost.pkl # Validated cross-sensor fused XGBoost (FROZEN BASELINE)
 │       └── 11_best_s1.pkl          # Standalone S1 RandomForest model
 │
-├── tests/                          # Automated Pytest validation test suites
+├── src/glacierguard/               # Reusable core Python package
+│   ├── features/                   # Reproducible feature engineering & temporal splits
+│   ├── inference/                  # Frozen fused-XGBoost predictor & evaluation
+│   └── satellite/                  # SAR Lee filter, MNDWI, morphology & QA rules
+│
+├── tests/                          # Automated Pytest validation test suites (84 passing tests)
 │   ├── test_ensemble_benchmark.py  # 36 tests covering splits, leakage, metrics, OOF, and sign convention (T11)
-│   └── test_glof_event_database_audit.py # 27 tests covering data audit & normalization
+│   ├── test_glof_event_database_audit.py # 27 tests covering data audit & normalization
+│   ├── test_features.py            # 5 tests covering feature engineering, lag features & split parity
+│   ├── test_inference.py           # 4 tests covering frozen fused-XGBoost prediction & metadata
+│   └── test_satellite_qa.py        # 12 tests covering SAR, MNDWI, morphology, and lake status QA rules
 │
 ├── docs/                           # Technical documentation & research roadmaps
 │   ├── IMPLEMENTATION_ROADMAP.md   # Project implementation roadmap & status
