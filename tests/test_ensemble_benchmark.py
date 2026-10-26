@@ -37,6 +37,7 @@ from run_ensemble_benchmark import (
     build_preprocessor,
     compute_metrics,
     temporal_oof_predictions,
+    paired_mae_comparison,
     TARGET_COL, NUMERICAL_FEATURES, CATEGORICAL_FEATURES, GLO_FEATURES,
     RANDOM_STATE,
 )
@@ -417,9 +418,9 @@ class TestPairedMaeSignConvention:
       delta == 0 →  candidate and reference are equivalent
     """
 
-    # paired_mae_comparison is a closure defined inside run_ensemble_benchmark().
-    # We replicate its delta formula here as a standalone helper to keep tests
-    # self-contained and independent of the full pipeline.
+    # paired_mae_comparison is defined at module-level in run_ensemble_benchmark.py
+    # and directly imported. We test the production function directly with bootstrap,
+    # and also verify against the standalone deterministic formula helper _delta.
 
     @staticmethod
     def _delta(y_true, preds_ref, preds_cand):
@@ -429,47 +430,80 @@ class TestPairedMaeSignConvention:
         return float(np.mean(err_cand - err_ref))
 
     def test_negative_delta_means_candidate_better(self):
-        """Candidate closer to truth → delta < 0 → candidate is better."""
+        """Candidate closer to truth → delta < 0 → candidate is better.
+        Directly tests the production paired_mae_comparison function.
+        """
         y_true     = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
         preds_ref  = np.array([0.0, 0.0, 0.0, 0.0, 0.0])   # MAE = 3.0
         preds_cand = np.array([1.1, 2.1, 3.1, 4.1, 5.1])   # MAE = 0.1
 
-        delta = self._delta(y_true, preds_ref, preds_cand)
+        # Call production function directly
+        delta, ci_lo, ci_hi = paired_mae_comparison(
+            y_true, preds_ref, preds_cand, 'reference', 'candidate',
+            n_boot=200, rng_seed=42
+        )
 
         assert delta < 0, (
             f"Expected delta < 0 (candidate better), but got delta={delta:.6f}. "
             "A negative delta must indicate lower candidate MAE."
         )
+        assert ci_hi < 0, (
+            f"Expected upper CI < 0 for strictly superior candidate, got ci_hi={ci_hi:.6f}."
+        )
         ref_mae  = float(np.mean(np.abs(y_true - preds_ref)))
         cand_mae = float(np.mean(np.abs(y_true - preds_cand)))
         assert cand_mae < ref_mae, "Candidate MAE should be lower than reference MAE"
         assert abs(delta - (cand_mae - ref_mae)) < 1e-12, "delta must equal cand_mae - ref_mae"
+        assert delta == pytest.approx(self._delta(y_true, preds_ref, preds_cand), abs=1e-12)
 
     def test_positive_delta_means_candidate_worse(self):
-        """Candidate further from truth → delta > 0 → candidate is worse."""
+        """Candidate further from truth → delta > 0 → candidate is worse.
+        Directly tests the production paired_mae_comparison function.
+        """
         y_true     = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
         preds_ref  = np.array([1.1, 2.1, 3.1, 4.1, 5.1])   # MAE = 0.1
         preds_cand = np.array([0.0, 0.0, 0.0, 0.0, 0.0])   # MAE = 3.0
 
-        delta = self._delta(y_true, preds_ref, preds_cand)
+        # Call production function directly
+        delta, ci_lo, ci_hi = paired_mae_comparison(
+            y_true, preds_ref, preds_cand, 'reference', 'candidate',
+            n_boot=200, rng_seed=42
+        )
 
         assert delta > 0, (
             f"Expected delta > 0 (candidate worse), but got delta={delta:.6f}. "
             "A positive delta must indicate higher candidate MAE."
         )
+        assert ci_lo > 0, (
+            f"Expected lower CI > 0 for strictly inferior candidate, got ci_lo={ci_lo:.6f}."
+        )
         ref_mae  = float(np.mean(np.abs(y_true - preds_ref)))
         cand_mae = float(np.mean(np.abs(y_true - preds_cand)))
         assert cand_mae > ref_mae, "Candidate MAE should be higher than reference MAE"
         assert abs(delta - (cand_mae - ref_mae)) < 1e-12, "delta must equal cand_mae - ref_mae"
+        assert delta == pytest.approx(self._delta(y_true, preds_ref, preds_cand), abs=1e-12)
 
     def test_zero_delta_for_identical_predictions(self):
-        """Identical predictions for candidate and reference → delta == 0."""
+        """Identical predictions for candidate and reference → delta == 0.
+        Directly tests the production paired_mae_comparison function.
+        """
         y_true = np.array([0.5, 1.5, -0.3, 2.2, -1.0])
         preds  = np.array([0.6, 1.4, -0.4, 2.1, -0.9])
 
-        delta = self._delta(y_true, preds, preds)
+        # Call production function directly
+        delta, ci_lo, ci_hi = paired_mae_comparison(
+            y_true, preds, preds, 'reference', 'candidate',
+            n_boot=200, rng_seed=42
+        )
 
         assert delta == pytest.approx(0.0, abs=1e-12), (
             f"Expected delta == 0 for identical predictions, but got delta={delta:.2e}. "
             "Identical candidate and reference must produce zero difference."
         )
+        assert ci_lo == pytest.approx(0.0, abs=1e-12), (
+            f"Expected ci_lo == 0 for identical predictions, got ci_lo={ci_lo:.2e}."
+        )
+        assert ci_hi == pytest.approx(0.0, abs=1e-12), (
+            f"Expected ci_hi == 0 for identical predictions, got ci_hi={ci_hi:.2e}."
+        )
+        assert delta == pytest.approx(self._delta(y_true, preds, preds), abs=1e-12)

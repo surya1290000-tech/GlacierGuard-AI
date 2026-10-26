@@ -227,6 +227,36 @@ def temporal_oof_predictions(X_train_df: pd.DataFrame,
     return oof, valid_mask
 
 
+def paired_mae_comparison(y_true, preds_a, preds_b, label_a, label_b,
+                           n_boot=2000, rng_seed=RANDOM_STATE):
+    """Bootstrap paired MAE difference: delta = mean(|e_B| - |e_A|).
+
+    Sign convention (candidate = preds_b, reference = preds_a):
+      delta < 0  →  candidate has LOWER (better) MAE than reference
+      delta > 0  →  candidate has HIGHER (worse)  MAE than reference
+      delta == 0 →  candidate and reference are equivalent
+
+    Module-level so it can be imported and unit-tested directly.
+    """
+    rng = np.random.default_rng(rng_seed)
+    err_a = np.abs(np.asarray(y_true) - np.asarray(preds_a))
+    err_b = np.abs(np.asarray(y_true) - np.asarray(preds_b))
+    # delta = candidate_MAE - reference_MAE
+    # Negative value means candidate is better (lower error).
+    delta = np.mean(err_b - err_a)
+    boot_deltas = []
+    n = len(y_true)
+    for _ in range(n_boot):
+        idx = rng.integers(0, n, n)
+        boot_deltas.append(np.mean(err_b[idx] - err_a[idx]))
+    ci_lo = float(np.percentile(boot_deltas, 2.5))
+    ci_hi = float(np.percentile(boot_deltas, 97.5))
+    print(f"  Paired \u0394 MAE ({label_b} - {label_a}): {delta:+.6f} km\u00b2  "
+          f"95% CI [{ci_lo:+.6f}, {ci_hi:+.6f}]"
+          f"  ({'candidate better' if delta < 0 else 'candidate worse' if delta > 0 else 'equivalent'})")
+    return delta, ci_lo, ci_hi
+
+
 def run_ensemble_benchmark():
     print("=" * 70)
     print("GlacierGuard-AI — NB11 Ensemble Regression Benchmark")
@@ -505,32 +535,8 @@ def run_ensemble_benchmark():
         print(f"    Test MAE={best_row['Test_MAE']:.6f}  RMSE={best_row['Test_RMSE']:.6f}  R²={best_row['Test_R2']:.4f}")
 
     # ── Residual diagnostics and paired comparison ────────────────────────────
-    def paired_mae_comparison(y_true, preds_a, preds_b, label_a, label_b,
-                               n_boot=2000, rng_seed=RANDOM_STATE):
-        """Bootstrap paired MAE difference: delta = mean(|e_B| - |e_A|).
-
-        Sign convention (candidate = preds_b, reference = preds_a):
-          delta < 0  →  candidate has LOWER (better) MAE than reference
-          delta > 0  →  candidate has HIGHER (worse)  MAE than reference
-          delta == 0 →  candidate and reference are equivalent
-        """
-        rng = np.random.default_rng(rng_seed)
-        err_a = np.abs(y_true - preds_a)
-        err_b = np.abs(y_true - preds_b)
-        # delta = candidate_MAE - reference_MAE
-        # Negative value means candidate is better (lower error).
-        delta = np.mean(err_b - err_a)
-        boot_deltas = []
-        n = len(y_true)
-        for _ in range(n_boot):
-            idx = rng.integers(0, n, n)
-            boot_deltas.append(np.mean(err_b[idx] - err_a[idx]))
-        ci_lo = np.percentile(boot_deltas, 2.5)
-        ci_hi = np.percentile(boot_deltas, 97.5)
-        print(f"  Paired Δ MAE ({label_b} - {label_a}): {delta:+.6f} km²  "
-              f"95% CI [{ci_lo:+.6f}, {ci_hi:+.6f}]"
-              f"  ({'candidate better' if delta < 0 else 'candidate worse' if delta > 0 else 'equivalent'})")
-        return delta, ci_lo, ci_hi
+    # paired_mae_comparison is defined at module level for direct importability
+    # and unit-test coverage; call it here without redefining.
 
     print("\n  Paired comparisons (XGBoost as reference, vs Ensemble, on TEST):")
     paired_rows = []
