@@ -150,8 +150,8 @@ GlacierGuard-AI/
 │       └── 11_best_s1.pkl          # Standalone S1 RandomForest model
 │
 ├── tests/                          # Automated Pytest validation test suites
-│   ├── test_ensemble_benchmark.py  # 33 tests covering splits, leakage, metrics, OOF
-│   └── test_glof_event_database_audit.py # 26 tests covering data audit & normalization
+│   ├── test_ensemble_benchmark.py  # 36 tests covering splits, leakage, metrics, OOF, and sign convention (T11)
+│   └── test_glof_event_database_audit.py # 27 tests covering data audit & normalization
 │
 ├── docs/                           # Technical documentation & research roadmaps
 │   ├── IMPLEMENTATION_ROADMAP.md   # Project implementation roadmap & status

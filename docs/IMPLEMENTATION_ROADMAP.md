@@ -28,19 +28,16 @@ To maintain strict scientific defense and research credibility, this roadmap enf
 ## 2. Actual Inspected Repository State
 
 ### 2.1 Git Status & Branch Architecture
-- **Current Branch:** `feature/nrt-five-lake-qa-audit` (Local only; has not yet been pushed to remote `origin`).
-- **Remote `origin` Status:** Only tracks `main` (commit `5e2a75f chore: establish collaborative project baseline`).
-- **Modified Working Copy Files:**
-  - `.gitignore` (updated to exclude `shared_datasets/`).
-  - `README.md` (updated credential and verification instructions).
-  - `reports/10_2_five_lake_monitoring_qa.csv` (audited QA table separating core vs 50m buffer).
-  - `reports/figures/10_2_five_lake_extent_qa.png` (audited multi-sensor 5-lake QA figure).
-  - `scratch/audit_secrets.py` (enhanced secret regex scanner).
-- **Key Untracked Files Awaiting Commit:**
-  - `notebooks/10_2_five_lake_monitoring_qa.ipynb` (fully executed 5-lake monitoring notebook).
-  - `DEVELOPER_SETUP.md` (comprehensive onboarding & multi-tier credential guide).
-  - `reports/figures/10_2_*_water_mask.png` (individual lake water extraction maps).
-  - `scratch/*.py` (operational verification, packaging, and QA scripts).
+- **Current Branch:** `feature/nrt-five-lake-qa-audit` — pushed to `origin` and open as PR #1.
+- **Remote HEAD:** `65b5d7ee` (`fix: correct paired MAE delta sign convention and add T11 unit tests`).
+- **Branch history (5 commits total; 3 are in PR #1):**
+  - `5b0f537` first commit *(on main; not part of PR)*
+  - `5e2a75f` chore: establish collaborative project baseline *(on main; not part of PR)*
+  - `d64f665` feat(nrt): complete five-lake operational monitoring QA audit and developer setup baseline *(PR commit 1)*
+  - `1f0bc7e` feat(research): establish verified ensemble benchmark, QA audit, and GLOF feasibility baseline *(PR commit 2)*
+  - `65b5d7e` fix: correct paired MAE delta sign convention and add T11 unit tests *(PR commit 3)*
+- **Working Tree:** Clean — no staged or modified tracked files. Untracked `scratch/` one-off investigation scripts remain unstaged (scratch work, not research artifacts).
+- **PR #1:** Open, not draft, mergeable: True. 3 commits. No CI workflows configured.
 
 ### 2.2 Directory & Artifact Topology
 ```text
@@ -85,9 +82,9 @@ Statuses used:
 | **Five-Lake Operational Surveillance (NB10.2)** | `FUNCTIONAL_BUT_NEEDS_REVIEW` | `10_2_five_lake_monitoring_qa.ipynb` (8 cells), `10_2_five_lake_monitoring_qa.csv`, 5 lake mask PNGs | Evaluated 50 scenes over 5 lakes. Separated core vs 50m buffer. Added temporal matching flags and operational states. | Changes uncommitted in Git. Tsho Rolpa SAR failure requires gorge layover mask. Thulagi has monsoon optical gap. | Moderate | Commit NB10.2 and QA reports. Document SAR gorge failure clearly. |
 | **Ensemble Regression Benchmark (NB11)** | `VERIFIED_COMPLETE` | `11_rf_xgboost_ensemble_benchmark.ipynb`, `11_ensemble_*.csv`, `11_best_s1.pkl`, `manifest.json` | Benchmarked 6 candidate models on fair temporal splits. S1 RF achieved lowest val MAE (0.00544 km²), but test difference vs XGBoost (ΔMAE = -529 m², 95% CI [-1184, +21] m²) includes zero; retained as candidate S1 model. S2 Persistence remains optical benchmark. Reconciled on 1,742 matched lake-year observations. | Evaluated against reused 2023 historical benchmark; further tuning prohibited. | Low | Freeze candidate S1 artifact pending multi-year validation. |
 | **GLOF Event Database Quality Audit** | `VERIFIED_COMPLETE` | `docs/GLOF_CLASSIFICATION_RESEARCH_PLAN.md`, `reports/glof_research/*.csv`, `profile.json` | Audited HMAGLOFDB (774 events, 1533–2026). Documented >88% consequence missingness, 95.1% pre-event area missingness, and circular leakage. Flagged 2 unverified 2026 records. Reaffirmed **STRICT NO-GO** gate decision for predictive ML. | No training or deployment attempted; gate decision enforced. | None | Retain GLOF catalog strictly for descriptive reference. |
-| **Automated Unit Testing & Verification** | `VERIFIED_COMPLETE` | `tests/test_ensemble_benchmark.py` (33 tests), `tests/test_glof_event_database_audit.py` (27 tests) | 60 automated unit tests covering temporal split boundaries, target construction, leakage elimination, OOF expanding windows, HMAGLOFDB normalization, '+' count handling, and post-2025 QC flags. | Full `src/` modularization remains for Phase 5. | Very Low | Maintain test suite with CI automation. |
+| **Automated Unit Testing & Verification** | `VERIFIED_COMPLETE` | `tests/test_ensemble_benchmark.py` (36 tests), `tests/test_glof_event_database_audit.py` (27 tests) | 63 automated unit tests covering temporal split boundaries, target construction, leakage elimination, OOF expanding windows, paired MAE sign convention (T11), HMAGLOFDB normalization, '+' count handling, and post-2025 QC flags. | Full `src/` modularization remains for Phase 5. No GitHub Actions CI workflow yet configured. | Very Low | Maintain test suite; add CI automation in Phase 7. |
 | **Operational Demonstration Dashboard** | `NOT_STARTED` | Static figures exist in `reports/figures/`; no UI codebase found | High-quality analytical figures demonstrate visual reporting capability. | Interactive web dashboard (Streamlit / FastAPI) not yet implemented. | Low | Build lightweight demonstration dashboard in Phase 6. |
-| **User & Collaborator Documentation** | `VERIFIED_COMPLETE` | `README.md`, `DEVELOPER_SETUP.md`, `shared_datasets/README.md` | Detailed setup guides, credential guides, data catalogs, and workflow instructions available. | `DEVELOPER_SETUP.md` is currently untracked in Git. | Low | Commit `DEVELOPER_SETUP.md` to GitHub. |
+| **User & Collaborator Documentation** | `VERIFIED_COMPLETE` | `README.md`, `DEVELOPER_SETUP.md`, `shared_datasets/README.md` | Detailed setup guides, credential guides, data catalogs, and workflow instructions available. `DEVELOPER_SETUP.md` committed in `d64f665` and visible on PR branch. | No open gaps. | Very Low | Maintain documentation parity with implementation changes. |
 
 ---
 
@@ -214,9 +211,9 @@ Automated verification via `scratch/verify_api_credentials.py` confirmed:
 4. **Lack of Modular Python Architecture:**
    - *Defect:* Core satellite processing, filtering, and extraction routines are duplicated across notebooks and scratch scripts.
    - *Risk:* Divergent implementations of water masks between notebooks and production tools.
-5. **Missing Automated Test Suite:**
-   - *Defect:* No `tests/` directory with `pytest` unit/regression tests exists.
-   - *Risk:* Regressions introduced during code refactoring may go unnoticed without manual script execution.
+5. **Lack of CI Automation:**
+   - *Status:* A `tests/` directory with 63 passing `pytest` unit and regression tests exists (36 in `test_ensemble_benchmark.py`, 27 in `test_glof_event_database_audit.py`). No GitHub Actions CI workflow is yet configured to run these tests automatically on pull requests.
+   - *Risk:* Regressions could be merged without automatic verification if tests are not run manually. See Phase 7 for planned CI setup.
 
 ---
 
