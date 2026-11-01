@@ -121,6 +121,15 @@ class Settings:
     stac_max_retries: int = field(
         default_factory=lambda: int(os.getenv("STAC_MAX_RETRIES", "3"))
     )
+    asset_timeout_seconds: int = field(
+        default_factory=lambda: int(os.getenv("CDSE_ASSET_TIMEOUT_SECONDS", "60"))
+    )
+    processing_cache_dir: Path = field(
+        default_factory=lambda: Path(os.getenv("GLACIERGUARD_CACHE_DIR", str(DATA_DIR / "processing-cache")))
+    )
+    min_valid_fraction: float = field(
+        default_factory=lambda: float(os.getenv("GLACIERGUARD_MIN_VALID_FRACTION", "0.70"))
+    )
 
     # Frozen ML Model Artifact
     model_path: Path = field(

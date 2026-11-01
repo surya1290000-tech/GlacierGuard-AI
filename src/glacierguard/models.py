@@ -57,6 +57,14 @@ class ObservationRecord:
     vv_median_db: Optional[float] = None
     created_at: Optional[str] = None
     notes: Optional[str] = None
+    processing_algorithm: Optional[str] = None
+    processing_version: Optional[str] = None
+    artifact_path: Optional[str] = None
+    crs: Optional[str] = None
+    resolution_m: Optional[float] = None
+    quality_status: str = "UNKNOWN"
+    validation_warnings: List[str] = field(default_factory=list)
+    provenance: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert record to dictionary."""
@@ -73,6 +81,14 @@ class ObservationRecord:
             "vv_median_db": self.vv_median_db,
             "created_at": self.created_at,
             "notes": self.notes,
+            "processing_algorithm": self.processing_algorithm,
+            "processing_version": self.processing_version,
+            "artifact_path": self.artifact_path,
+            "crs": self.crs,
+            "resolution_m": self.resolution_m,
+            "quality_status": self.quality_status,
+            "validation_warnings": self.validation_warnings,
+            "provenance": self.provenance,
         }
 
 

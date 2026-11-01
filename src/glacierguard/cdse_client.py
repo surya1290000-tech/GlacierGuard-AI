@@ -179,7 +179,9 @@ class CDSEClient:
             discovered_at=datetime.datetime.utcnow().isoformat() + "Z",
             metadata={
                 "geometry": feature.get("geometry"),
-                "assets": list(feature.get("assets", {}).keys()),
+                # Keep the STAC asset map: discovery is not imagery access, but
+                # the worker needs the real hrefs to make that transition.
+                "assets": feature.get("assets", {}),
             },
         )
 

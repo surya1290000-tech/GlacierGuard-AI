@@ -853,16 +853,8 @@ def render_pipeline_health():
     col_trig, col_stat = st.columns([2, 3])
 
     with col_trig:
-        st.subheader("🎮 Manual Trigger")
-        st.markdown("Execute a synchronous surveillance discovery cycle across all 5 lakes:")
-        if st.button("🚀 Trigger Surveillance Cycle Now", use_container_width=True):
-            with st.spinner("Executing surveillance discovery cycle..."):
-                worker = MonitoringWorker()
-                runs = worker.run_once()
-                successes = sum(1 for r in runs if r.status == "SUCCESS")
-                st.success(f"Cycle completed: {successes}/{len(runs)} lakes updated.")
-                st.cache_data.clear()
-                st.rerun()
+        st.subheader("🔒 Worker Separation")
+        st.info("This dashboard only reads persisted results. Run the independent worker to discover and process imagery, then refresh this view.")
 
     with col_stat:
         st.subheader("🗄️ Database Diagnostics")

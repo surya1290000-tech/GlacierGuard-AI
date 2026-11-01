@@ -21,14 +21,19 @@ import datetime
 import logging
 import traceback
 from typing import Any, Dict, List, Optional
+from pathlib import Path
+import numpy as np
 import uuid
 
 from glacierguard.cdse_client import CDSEClient
 from glacierguard.config import Settings, default_settings
 from glacierguard.db import (
     get_observations,
+    get_product_processing,
+    save_model_inference_record,
     save_monitoring_alert,
     save_observation,
+    save_product_processing,
     save_pipeline_run,
 )
 from glacierguard.inference.fused_model import load_fused_xgboost_model
@@ -39,6 +44,8 @@ from glacierguard.models import (
     SatelliteProduct,
 )
 from glacierguard.risk_engine import RiskEngine
+from glacierguard.satellite.access import CDSEAssetClient, AssetAccessError
+from glacierguard.satellite.processing import RasterProcessingError, process_sentinel1, process_sentinel2
 
 
 logger = logging.getLogger(__name__)
@@ -51,6 +58,7 @@ class ProcessingPipeline:
         self.settings = settings or default_settings
         self.cdse_client = CDSEClient(self.settings)
         self.risk_engine = RiskEngine(self.settings)
+        self.asset_client = CDSEAssetClient(self.settings)
         self._model_predictor = None
 
     def _get_predictor(self):
@@ -61,6 +69,66 @@ class ProcessingPipeline:
             except Exception as exc:
                 logger.warning("Could not load frozen XGBoost model: %s", exc)
         return self._model_predictor
+
+    @staticmethod
+    def _asset_key_map(assets: Any, sensor: str) -> Dict[str, Dict[str, Any]]:
+        """Resolve common STAC asset labels without guessing nonexistent assets."""
+        if not isinstance(assets, dict):
+            return {}
+        resolved: Dict[str, Dict[str, Any]] = {}
+        aliases = ({"B03": ("B03", "b03", "green"), "B11": ("B11", "b11", "swir16"), "SCL": ("SCL", "scl")}
+                   if sensor == "SENTINEL-2" else {"VV": ("VV", "vv")})
+        for canonical, names in aliases.items():
+            for name in names:
+                if name in assets and isinstance(assets[name], dict):
+                    resolved[canonical] = assets[name]
+                    break
+        return resolved
+
+    def _process_product(self, product: SatelliteProduct, lake_id: str) -> Optional[ObservationRecord]:
+        sensor = "SENTINEL-2" if product.collection.lower() == "sentinel-2-l2a" else "SENTINEL-1" if product.collection.lower() == "sentinel-1-grd" else None
+        if sensor is None:
+            return None
+        algorithm_version = "s2-mndwi-scl-v1" if sensor == "SENTINEL-2" else "s1-vv-lee-v1"
+        previous = get_product_processing(product.product_id, algorithm_version, self.settings.db_path)
+        if previous and previous["status"] == "COMPLETED":
+            return None
+        save_product_processing(product.product_id, algorithm_version, lake_id, "QUEUED", "QUEUED", self.settings.db_path)
+        assets = self._asset_key_map(product.metadata.get("assets"), sensor)
+        required = {"B03", "B11", "SCL"} if sensor == "SENTINEL-2" else {"VV"}
+        if set(assets) != required:
+            reason = f"Missing required {sensor} assets: {sorted(required - set(assets))}"
+            save_product_processing(product.product_id, algorithm_version, lake_id, "SKIPPED", "ACCESS", self.settings.db_path, reason)
+            return None
+        try:
+            save_product_processing(product.product_id, algorithm_version, lake_id, "RUNNING", "DOWNLOADING", self.settings.db_path)
+            local = {key: self.asset_client.fetch(product.product_id, key, asset).path for key, asset in assets.items()}
+            save_product_processing(product.product_id, algorithm_version, lake_id, "RUNNING", "PROCESSING", self.settings.db_path)
+            if sensor == "SENTINEL-2":
+                mask, metrics = process_sentinel2(local, self.settings.min_valid_fraction)
+            else:
+                mask, metrics = process_sentinel1(local, self.settings.get_lake_config(lake_id).sar_physically_reliable)
+            artifact_dir = self.settings.processing_cache_dir / "masks"
+            artifact_dir.mkdir(parents=True, exist_ok=True)
+            artifact = artifact_dir / f"{product.product_id}_{algorithm_version}.npy"
+            np.save(artifact, mask)
+            obs = ObservationRecord(
+                observation_id=f"obs_{product.product_id}_{algorithm_version}", lake_id=lake_id, sensor=sensor,
+                acquisition_date=product.acquisition_date, product_id=product.product_id,
+                area_0m_km2=float(metrics["area_km2"]), area_50m_km2=float(metrics["area_km2"]),
+                valid_frac=float(metrics["valid_frac"]), cloud_frac=metrics.get("cloud_frac"), vv_median_db=metrics.get("vv_median_db"),
+                processing_algorithm="MNDWI_SCL" if sensor == "SENTINEL-2" else "LEE_VV", processing_version=algorithm_version,
+                artifact_path=str(artifact), crs=str(metrics["crs"]), resolution_m=float(metrics["resolution_m"]), quality_status="QA_VALID",
+                provenance={"source_product_id": product.product_id, "asset_keys": sorted(local), "collection": product.collection},
+            )
+            save_observation(obs, self.settings.db_path)
+            save_product_processing(product.product_id, algorithm_version, lake_id, "COMPLETED", "COMPLETED", self.settings.db_path, diagnostics=dict(metrics))
+            return obs
+        except (AssetAccessError, RasterProcessingError) as exc:
+            status = "REQUIRES_REVIEW" if "requires review" in str(exc).lower() else "FAILED"
+            save_product_processing(product.product_id, algorithm_version, lake_id, status, "QA_VALIDATION", self.settings.db_path, str(exc))
+            logger.warning("Product %s was not converted into an observation: %s", product.product_id, exc)
+            return None
 
     def run_for_lake(
         self,
@@ -126,12 +194,15 @@ class ProcessingPipeline:
             run.stage = "INGEST"
             save_pipeline_run(run, self.settings.db_path)
 
-            # Retrieve latest observations (or use mock if provided)
+            # Convert only successfully accessed and QA-approved products into
+            # observations.  Catalogue rows alone are never observations.
             if mock_observations is not None:
                 for obs in mock_observations:
                     save_observation(obs, self.settings.db_path)
                 obs_list = mock_observations
             else:
+                for product in products:
+                    self._process_product(product, lake_id)
                 obs_list = get_observations(lake_id=lake_id, limit=20, db_path=self.settings.db_path)
 
             # Separate latest S1 and S2 observations
@@ -164,17 +235,22 @@ class ProcessingPipeline:
 
             # Note: The frozen XGBoost model predicts annual delta given annual lag features.
             # In live per-scene monitoring, we document this boundary clearly.
-            if predictor is not None and "AREA_LAG1" in features:
+            inference_status = "MODEL_INFERENCE_SKIPPED_INSUFFICIENT_FEATURES"
+            if predictor is not None and all(key in features and features[key] is not None for key in predictor.required_features):
                 try:
                     import pandas as pd
                     feat_df = pd.DataFrame([features])
                     preds = predictor.predict(feat_df)
                     if len(preds) > 0:
                         model_pred = float(preds[0])
+                        inference_status = "COMPLETED"
                 except Exception as exc:
-                    logger.debug("Model inference skipped or encountered error: %s", exc)
+                    inference_status = "MODEL_INFERENCE_INVALID_INPUT"
+                    logger.debug("Annual model inference rejected input: %s", exc)
 
             run.model_prediction = model_pred
+            run.metadata["model_inference_status"] = inference_status
+            save_model_inference_record(f"inf_{run_id}", lake_id, inference_status, features, model_pred, None if model_pred is not None else "Annual compatible temporal feature schema unavailable", self.settings.db_path)
             save_pipeline_run(run, self.settings.db_path)
 
             # ── Stage 6: EVALUATE (Operational Risk Engine) ───────────────────

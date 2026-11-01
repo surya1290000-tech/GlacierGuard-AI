@@ -295,6 +295,14 @@ In Notebook 11, six candidate regression models (Persistence, Random Forest, XGB
 
 ## 9. Near-Real-Time Monitoring
 
+### Phase 8 image-to-observation path
+
+The worker treats catalogue discovery and a lake observation as separate events:
+`DISCOVERED -> QUEUED -> DOWNLOADING -> PROCESSING -> QA_VALIDATION -> OBSERVATION_CREATED -> RISK_EVALUATED`.
+It uses declared STAC asset links, CDSE OAuth client credentials, retrying cache-aware downloads, and raster-backed S2 (B03/B11/SCL) or S1 (VV) extraction. A failed asset fetch, missing band, invalid projected CRS, insufficient clear pixels, or known SAR geometry limitation is persisted as a product-processing outcome and never creates a measurement. The frozen XGBoost artifact remains an annual predictor; scene monitoring records `MODEL_INFERENCE_SKIPPED_INSUFFICIENT_FEATURES` unless its full annual schema is genuinely available.
+
+`rasterio` is required for GeoTIFF processing. Configure `CDSE_CLIENT_ID` and `CDSE_CLIENT_SECRET` only for raw asset access; catalogue discovery can still run without them. Run the worker independently with `uv run python -m glacierguard.worker --once` or `uv run python -m glacierguard.worker --interval-hours 6.0`; the dashboard only reads persisted state.
+
 The operational surveillance layer (Notebooks 10, 10.1, and 10.2) interfaces with the Copernicus Data Space Ecosystem to track priority glacial lakes:
 
 ### Operational Processing Protocol

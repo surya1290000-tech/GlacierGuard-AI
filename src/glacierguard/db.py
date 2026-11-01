@@ -54,6 +54,20 @@ DDL_STATEMENTS = [
     );
     """,
     """
+    CREATE TABLE IF NOT EXISTS product_processing (
+        product_id TEXT NOT NULL, algorithm_version TEXT NOT NULL,
+        lake_id TEXT NOT NULL, status TEXT NOT NULL, stage TEXT NOT NULL,
+        started_at TEXT, ended_at TEXT, error_message TEXT, diagnostics_json TEXT,
+        PRIMARY KEY (product_id, algorithm_version)
+    );
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS model_inference_records (
+        inference_id TEXT PRIMARY KEY, lake_id TEXT NOT NULL, created_at TEXT NOT NULL,
+        model_version TEXT, status TEXT NOT NULL, features_json TEXT, prediction REAL, reason TEXT
+    );
+    """,
+    """
     CREATE TABLE IF NOT EXISTS pipeline_runs (
         run_id TEXT PRIMARY KEY,
         lake_id TEXT NOT NULL,
@@ -128,6 +142,16 @@ def init_db(db_path: Optional[Path] = None) -> None:
         with conn:
             for stmt in DDL_STATEMENTS:
                 conn.execute(stmt)
+            # Additive migration: old Phase 7 databases remain readable.
+            existing = {row[1] for row in conn.execute("PRAGMA table_info(observations)")}
+            additions = {
+                "processing_algorithm": "TEXT", "processing_version": "TEXT",
+                "artifact_path": "TEXT", "crs": "TEXT", "resolution_m": "REAL",
+                "quality_status": "TEXT", "validation_warnings_json": "TEXT", "provenance_json": "TEXT",
+            }
+            for name, type_name in additions.items():
+                if name not in existing:
+                    conn.execute(f"ALTER TABLE observations ADD COLUMN {name} {type_name}")
 
 
 # ── Satellite Products ───────────────────────────────────────────────────────
@@ -243,8 +267,10 @@ def save_observation(
                 INSERT OR REPLACE INTO observations (
                     observation_id, lake_id, sensor, acquisition_date,
                     product_id, area_0m_km2, area_50m_km2, valid_frac,
-                    cloud_frac, vv_median_db, created_at, notes
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    cloud_frac, vv_median_db, created_at, notes, processing_algorithm,
+                    processing_version, artifact_path, crs, resolution_m, quality_status,
+                    validation_warnings_json, provenance_json
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     obs.observation_id,
@@ -259,6 +285,14 @@ def save_observation(
                     obs.vv_median_db,
                     obs.created_at or datetime.datetime.utcnow().isoformat() + "Z",
                     obs.notes,
+                    obs.processing_algorithm,
+                    obs.processing_version,
+                    obs.artifact_path,
+                    obs.crs,
+                    obs.resolution_m,
+                    obs.quality_status,
+                    json.dumps(obs.validation_warnings),
+                    json.dumps(obs.provenance),
                 ),
             )
 
@@ -307,9 +341,44 @@ def get_observations(
                 vv_median_db=r["vv_median_db"],
                 created_at=r["created_at"],
                 notes=r["notes"],
+                processing_algorithm=r["processing_algorithm"],
+                processing_version=r["processing_version"],
+                artifact_path=r["artifact_path"],
+                crs=r["crs"],
+                resolution_m=r["resolution_m"],
+                quality_status=r["quality_status"] or "UNKNOWN",
+                validation_warnings=json.loads(r["validation_warnings_json"]) if r["validation_warnings_json"] else [],
+                provenance=json.loads(r["provenance_json"]) if r["provenance_json"] else {},
             )
         )
     return results
+
+
+def get_product_processing(product_id: str, algorithm_version: str, db_path: Optional[Path] = None) -> Optional[Dict[str, Any]]:
+    """Return product-level lifecycle state; COMPLETED rows are idempotency keys."""
+    init_db(db_path)
+    with get_db_connection(db_path) as conn:
+        row = conn.execute("SELECT * FROM product_processing WHERE product_id=? AND algorithm_version=?", (product_id, algorithm_version)).fetchone()
+    return dict(row) if row else None
+
+
+def save_product_processing(product_id: str, algorithm_version: str, lake_id: str, status: str, stage: str, db_path: Optional[Path] = None, error_message: Optional[str] = None, diagnostics: Optional[Dict[str, Any]] = None) -> None:
+    init_db(db_path)
+    now = datetime.datetime.utcnow().isoformat() + "Z"
+    with get_db_connection(db_path) as conn:
+        with conn:
+            conn.execute("""INSERT INTO product_processing(product_id, algorithm_version, lake_id, status, stage, started_at, ended_at, error_message, diagnostics_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(product_id, algorithm_version) DO UPDATE SET status=excluded.status, stage=excluded.stage, ended_at=excluded.ended_at, error_message=excluded.error_message, diagnostics_json=excluded.diagnostics_json""",
+                (product_id, algorithm_version, lake_id, status, stage, now, now if status in {"COMPLETED", "FAILED", "SKIPPED", "REQUIRES_REVIEW"} else None, error_message, json.dumps(diagnostics or {})))
+
+
+def save_model_inference_record(inference_id: str, lake_id: str, status: str, features: Optional[Dict[str, Any]], prediction: Optional[float], reason: Optional[str], db_path: Optional[Path] = None) -> None:
+    init_db(db_path)
+    with get_db_connection(db_path) as conn:
+        with conn:
+            conn.execute("""INSERT OR REPLACE INTO model_inference_records
+            (inference_id, lake_id, created_at, model_version, status, features_json, prediction, reason)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", (inference_id, lake_id, datetime.datetime.utcnow().isoformat()+"Z", "09_final_fused_xgboost", status, json.dumps(features) if features else None, prediction, reason))
 
 
 # ── Pipeline Runs ────────────────────────────────────────────────────────────
