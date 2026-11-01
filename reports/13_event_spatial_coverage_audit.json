@@ -1,0 +1,103 @@
+{
+  "audit_metadata": {
+    "title": "Phase 9.1.2 Spatial Coverage and Data Integration Audit",
+    "date": "2026-11-01",
+    "lead_ml_engineer": "GlacierGuard-AI Lead ML Engineer",
+    "git_branch": "feature/phase9-dual-ensemble"
+  },
+  "langtang_lirung_event": {
+    "event_name": "Langtang Lirung Avalanche Source",
+    "coordinates": {
+      "lat": 28.288708,
+      "lon": 85.528159
+    },
+    "point_in_glo_lake_polygon": false,
+    "nearest_glo_s2_lake": {
+      "glo_id": "GLO_85.56616_28.29086",
+      "distance_m": 3677.1,
+      "distance_km": 3.68,
+      "area_dissolved_km2": 0.004821289322222583
+    },
+    "nearest_glo_s1_lake": {
+      "glo_id": "GLO_85.57884_28.3294",
+      "distance_m": 6639.5,
+      "distance_km": 6.64
+    },
+    "glo_lake_counts_within_radii": {
+      "within_5km": 1,
+      "within_10km": 14,
+      "within_20km": 117
+    },
+    "rgi_glacier_proximity": {
+      "point_inside_glacier": false,
+      "nearest_glacier_rgi_id": "RGI60-15.04173",
+      "nearest_glacier_name": "None",
+      "nearest_glacier_dist_m": 42.4,
+      "nearest_glacier_area_km2": 3.134
+    },
+    "distance_to_glacierguard_monitored_lakes_km": {
+      "imja_tsho": 144.3,
+      "thulagi": 104.2,
+      "tsho_rolpa": 104.9,
+      "lower_barun": 161.3,
+      "sabai_tsho": 120.7
+    }
+  },
+  "budhi_gandaki_event": {
+    "event_name": "Budhi Gandaki Flood (Chumchet Reach)",
+    "coordinates": {
+      "lat": 28.457,
+      "lon": 84.975
+    },
+    "point_in_glo_lake_polygon": false,
+    "nearest_glo_s2_lake": {
+      "glo_id": "GLO_85.00833_28.38773",
+      "distance_m": 8273.3,
+      "distance_km": 8.27,
+      "area_dissolved_km2": 0.007730688236742746
+    },
+    "nearest_glo_s1_lake": {
+      "glo_id": "GLO_85.08356_28.41058",
+      "distance_m": 11732.9,
+      "distance_km": 11.73
+    },
+    "glo_lake_counts_within_radii": {
+      "within_5km": 0,
+      "within_10km": 2,
+      "within_20km": 13
+    },
+    "rgi_glacier_proximity": {
+      "point_inside_glacier": false,
+      "nearest_glacier_rgi_id": "RGI60-15.03975",
+      "nearest_glacier_name": "None",
+      "nearest_glacier_dist_m": 5353.3,
+      "nearest_glacier_area_km2": 3.127
+    },
+    "distance_to_glacierguard_monitored_lakes_km": {
+      "imja_tsho": 201.6,
+      "thulagi": 47.6,
+      "tsho_rolpa": 161.9,
+      "lower_barun": 218.7,
+      "sabai_tsho": 177.7
+    }
+  },
+  "hydrological_and_corridor_evaluation": {
+    "langtang_hydrology": {
+      "headwaters": "Upper Lhende Khola cirque below Langtang Lirung NW face",
+      "tributary_junction": "Lhende Khola joins Bhote Koshi at Rasuwagadhi (Nepal-China border)",
+      "downstream_axis": "Bhote Koshi -> Trishuli River -> Betrawati -> Devghat (Narayani confluence)",
+      "relationship_to_monitored_lakes": "None of the 5 monitored lakes (Imja, Tsho Rolpa, Thulagi, Lower Barun, Sabai) are hydrologically connected to Lhende Khola or Bhote Koshi. Closest monitored lake is Tsho Rolpa (104.9 km east in Tama Koshi) and Thulagi (104.2 km west in Marshyangdi)."
+    },
+    "budhi_gandaki_hydrology": {
+      "headwaters": "Tibetan border transboundary catchments flowing south into Shiar Khola and Upper Budhi Gandaki",
+      "tributary_junction": "Shiar Khola confluence near Chumchet / Chhekampar",
+      "downstream_axis": "Budhi Gandaki mainstem -> Philim -> Jagat -> Arughat -> Benighat (Trishuli confluence)",
+      "relationship_to_monitored_lakes": "Thulagi Lake is 47.6 km west in the Marshyangdi basin, separated by the massive Manaslu-Larkya mountain divide. Zero hydrological drainage overlap."
+    }
+  },
+  "representation_in_ml_training_features": {
+    "is_source_location_in_training_data": false,
+    "is_affected_corridor_in_training_data": false,
+    "scientific_rationale": "GlacierGuard-AI's feature pipeline is trained exclusively on GLO lake polygons (2017-2024). Steep mountain rock-ice faces, hanging glaciers, and river corridor landslide blockages are entirely absent from the training matrix. Basin-level Gandaki or Koshi metadata cannot be conflated with local spatial representation."
+  }
+}

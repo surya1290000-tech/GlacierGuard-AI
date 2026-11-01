@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0.0",
+  "description": "GlacierGuard-AI Versioned Cryospheric and Cascading Hazard Event Catalogue (Nepal 2026)",
+  "allowed_primary_hazard_types": [
+    "ROCK_ICE_AVALANCHE",
+    "GLACIAL_LAKE_OUTBURST",
+    "LANDSLIDE_DAM_BREACH",
+    "DEBRIS_FLOW",
+    "DOWNSTREAM_FLOOD"
+  ],
+  "events": [
+    {
+      "event_id": "NEPAL-2026-08-26-LANGTANG",
+      "name": "Langtang Lirung / Lhende Khola Rock-Ice Avalanche and Cascading Flood",
+      "event_date": "2026-08-26",
+      "primary_type": "ROCK_ICE_AVALANCHE",
+      "cascading_types": [
+        "DEBRIS_FLOW",
+        "DOWNSTREAM_FLOOD"
+      ],
+      "source_location": {
+        "latitude": 28.288708,
+        "longitude": 85.528159,
+        "elevation_approx_m": 6200,
+        "coordinate_system": "EPSG:4326 (WGS84)",
+        "spatial_precision_m": 150.0,
+        "description": "Steep north-northwest face of Langtang Lirung massif, above upper Lhende Khola cirque"
+      },
+      "catchment": "Lhende Khola (tributary to Bhote Koshi / Trishuli)",
+      "major_basin": "Trishuli / Narayani (Gandaki)",
+      "affected_river_corridor": "Lhende Khola -> Bhote Koshi (Gyirong / Rasuwagadhi border corridor) -> Trishuli River -> Betrawati",
+      "mechanism_confidence": "HIGH",
+      "is_provisional": false,
+      "evidence_sources": [
+        "ICIMOD Special Report: Understanding the Gyirong-Rasuwa disaster of 26 August 2026",
+        "Copernicus Sentinel-1 SLC/GRD SAR imagery",
+        "Copernicus Sentinel-2 L2A optical imagery",
+        "EarthArXiv preprint 10.31223/x59n5n",
+        "Regional seismic network shock detections",
+        "Nepal National Disaster Risk Reduction & Management Authority (NDRRMA) bulletins"
+      ],
+      "event_summary": "Catastrophic detachment of high-relief rock and hanging glacier ice (estimated ~132 million m3) on the NW face of Langtang Lirung. The mass plunged into the Lhende Khola gorge, generating a hyperconcentrated debris flow and temporary valley damming followed by a cascading outburst surge down the Bhote Koshi. NOT a conventional moraine-dammed glacial lake outburst (GLOF).",
+      "relationship_to_existing_ml": {
+        "is_glo_lake_expansion": false,
+        "is_in_glo_lake_training_footprint": false,
+        "predictable_by_fused_xgboost_regressor": false,
+        "predictable_by_annual_lake_classifier": false,
+        "note": "Existing ML models predict annual glacial lake boundary expansion (NEXT_AREA_CHANGE) for mapped GLO water bodies. They have zero capability to predict steep-wall rock-ice avalanches or slope failures."
+      }
+    },
+    {
+      "event_id": "NEPAL-2026-10-11-BUDHI-GANDAKI",
+      "name": "Budhi Gandaki River Surge / Flood near Chumchet, Gorkha",
+      "event_date": "2026-10-11",
+      "primary_type": "LANDSLIDE_DAM_BREACH",
+      "cascading_types": [
+        "DOWNSTREAM_FLOOD"
+      ],
+      "source_location": {
+        "latitude": 28.457,
+        "longitude": 84.975,
+        "elevation_approx_m": 2200,
+        "coordinate_system": "EPSG:4326 (WGS84)",
+        "spatial_precision_m": 2500.0,
+        "description": "Approximate reach near Chumchet village and Shiar Khola / Budhi Gandaki confluence, Chumanwri Rural Municipality, Gorkha District"
+      },
+      "catchment": "Upper Budhi Gandaki River / Shiar Khola",
+      "major_basin": "Budhi Gandaki / Narayani (Gandaki)",
+      "affected_river_corridor": "Budhi Gandaki mainstem downstream through Philim, Jagat, Tatopani, Soti Khola, Arughat",
+      "mechanism_confidence": "PROVISIONAL_LOW",
+      "is_provisional": true,
+      "evidence_sources": [
+        "District Administration Office Gorkha incident report",
+        "Nepal NDRRMA situational monitoring update",
+        "Local eyewitness accounts and river gauge level fluctuations"
+      ],
+      "event_summary": "Sudden anomalous flood wave and sediment pulse along the Budhi Gandaki river corridor near Chumchet. Preliminary observations indicate temporary landslide damming or tributary debris blockage in the deeply incised gorge followed by rapid overtopping/breach. No pre-existing moraine lake outburst identified in headwaters. Mechanism remains provisional pending post-monsoon high-resolution satellite mapping.",
+      "relationship_to_existing_ml": {
+        "is_glo_lake_expansion": false,
+        "is_in_glo_lake_training_footprint": false,
+        "predictable_by_fused_xgboost_regressor": false,
+        "predictable_by_annual_lake_classifier": false,
+        "note": "River valley landslide damming and breach events occur outside mapped glacial lake perimeters and are not captured by annual lake area ML models."
+      }
+    }
+  ]
+}
