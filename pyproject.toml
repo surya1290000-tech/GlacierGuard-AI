@@ -10,6 +10,9 @@ dependencies = [
     "matplotlib",
     "scikit-learn",
     "xgboost",
+    "streamlit>=1.30",
+    "plotly>=5.24",
+    "rasterio>=1.3",
 ]
 
 [dependency-groups]
