@@ -1,0 +1,44 @@
+{
+  "audit_metadata": {
+    "title": "Phase 9.1 Classification Label Audit & Feasibility",
+    "date": "2026-11-01",
+    "lead_ml_engineer": "GlacierGuard-AI Lead ML Engineer",
+    "git_branch": "feature/phase9-dual-ensemble",
+    "audit_objective": "Audit candidate lake-condition classification targets (STABLE, EXPANDING, UNUSUAL_CHANGE), evaluate measurement-uncertainty noise floor, investigate label sensitivity, and prevent rule-derived label leakage."
+  },
+  "target_definitions": {
+    "delta_area_km2": "AREA(t+1) - AREA(t)",
+    "relative_change_pct": "100.0 * delta_area / AREA(t)",
+    "combined_uncertainty_sigma_delta": "0.5 * sqrt(sigma_s1_t^2 + sigma_s1_t1^2 + sigma_s2_t^2 + sigma_s2_t1^2) [km\u00b2]"
+  },
+  "candidate_classes": {
+    "STABLE": "Annual lake area change within defensible measurement noise floor (|delta| <= 1.0 sigma_delta OR |rel| <= 5% OR non-catastrophic shrinkage).",
+    "EXPANDING": "Statistically meaningful expansion exceeding observation uncertainty (> 1.0 sigma_delta) up to exceptional thresholds (<= 3.0 sigma_delta, <= 20% relative expansion).",
+    "UNUSUAL_CHANGE": "Independently verified exceptional events: massive rapid growth (>3.0 sigma_delta and >20% relative) or severe sudden drainage/GLOF (<-3.0 sigma_delta and <-20% relative)."
+  },
+  "measurement_uncertainty_findings": {
+    "median_combined_uncertainty_km2": 0.007000000000000001,
+    "median_absolute_change_km2": 0.0017230764497027616,
+    "fraction_within_1_sigma_noise_floor_pct": 90.07,
+    "fraction_within_2_sigma_pct": 97.37,
+    "fraction_exceeding_3_sigma_pct": 1.03,
+    "scientific_interpretation": "Over 90% of observed annual changes in the 11,849 matched cohort are smaller than the single-observation edge-pixel delineation uncertainty. Models predicting raw classes without uncertainty awareness will fit to satellite segmentation noise."
+  },
+  "operational_rules_vs_ground_truth_isolation": {
+    "rule_based_risk_engine_status": "RiskEngine statuses (SAFE/NORMAL, WATCH, ELEVATED/UNUSUAL_CHANGE, STALE, INSUFFICIENT_DATA) are heuristic operational alert tiers combining sensor discordance, staleness, and arbitrary percentage thresholds. They must NEVER be used as ground-truth training labels.",
+    "abstention_separation": "WATCH and INSUFFICIENT_DATA are operational quality/abstention states, NOT physical lake-change categories.",
+    "independent_target_formulation": "Supervised labels are constructed strictly from consecutive physical area observations and GLO AREA_UNCERTAINTY, completely independent of the operational rule engine."
+  },
+  "asymmetry_and_contraction_handling": {
+    "physical_reality": "Glacial lakes expand gradually over years via calving/ice melt, but can contract gradually via summer evaporation, seasonal freeze-thaw border variations, or drainage. Moderate contraction is NOT an emergency.",
+    "moderate_shrinkage_records": 4869,
+    "label_assignment": "Moderate contractions are assigned to STABLE (representing normal seasonal fluctuation), while only catastrophic drainage (<-3.0 sigma AND <-20%) triggers UNUSUAL_CHANGE."
+  },
+  "class_imbalance": {
+    "stable_pct": 90.84,
+    "expanding_pct": 4.87,
+    "unusual_change_pct": 4.29,
+    "imbalance_ratio": "21.2 : 1 (Stable to Unusual)",
+    "mitigation_plan": "Cost-sensitive loss weighting (scale_pos_weight / class_weight), focal loss, and PR-AUC/macro-F1 optimization. Synthetic oversampling (SMOTE) is strictly prohibited on validation/test sets."
+  }
+}

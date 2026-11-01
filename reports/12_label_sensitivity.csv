@@ -1,0 +1,8 @@
+Schema,Description,STABLE_N,STABLE_Pct,EXPANDING_N,EXPANDING_Pct,UNUSUAL_N,UNUSUAL_Pct,Ambiguous_N,Feasibility_Assessment
+Relative_5_20,"Pure relative change: Stable [-5%, +5%], Expanding (+5%, +20%], Unusual (>20% or <-5%)",5404,45.61,2118,17.87,4327,36.52,0,Flawed: artificial small-lake noise triggers excessive unusual labels
+Relative_10_25,"Pure relative change: Stable [-10%, +10%], Expanding (+10%, +25%], Unusual (>25% or <-10%)",7720,65.15,1258,10.62,2871,24.23,0,Flawed: artificial small-lake noise triggers excessive unusual labels
+Relative_15_30,"Pure relative change: Stable [-15%, +15%], Expanding (+15%, +30%], Unusual (>30% or <-15%)",8944,75.48,818,6.9,2087,17.61,0,Flawed: artificial small-lake noise triggers excessive unusual labels
+Sigma_1.0_2.5,"Uncertainty-aware: Stable <=1.0 sigma, Expanding (1.0, 2.5] sigma, Unusual >2.5 sigma or <-1.0 sigma",10672,90.07,536,4.52,641,5.41,0,Viable: grounded strictly in empirical measurement uncertainty
+Sigma_1.5_3.0,"Uncertainty-aware: Stable <=1.5 sigma, Expanding (1.5, 3.0] sigma, Unusual >3.0 sigma or <-1.5 sigma",11299,95.36,232,1.96,318,2.68,0,Viable: grounded strictly in empirical measurement uncertainty
+Sigma_2.0_4.0,"Uncertainty-aware: Stable <=2.0 sigma, Expanding (2.0, 4.0] sigma, Unusual >4.0 sigma or <-2.0 sigma",11537,97.37,143,1.21,169,1.43,0,Viable: grounded strictly in empirical measurement uncertainty
+Hybrid_1s_3s_20pct,"Recommended Hybrid: Stable (within 1 sigma OR |rel|<=5% OR moderate shrinkage), Expanding (>1s, <=3s, rel<=20%), Unusual (>3s and >20% or catastrophic drainage <-3s and <-20%)",10760,90.81,77,0.65,115,0.97,897,Recommended: hybridises noise-floor clearance with relative magnitude

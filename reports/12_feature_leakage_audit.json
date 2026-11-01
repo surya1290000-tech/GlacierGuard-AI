@@ -1,0 +1,33 @@
+{
+  "audit_metadata": {
+    "title": "Phase 9.1 Feature Leakage & Split Integrity Audit",
+    "date": "2026-11-01",
+    "lead_ml_engineer": "GlacierGuard-AI Lead ML Engineer",
+    "git_branch": "feature/phase9-dual-ensemble"
+  },
+  "temporal_leakage_verification": {
+    "target_isolation": "PASS: TARGET_COL ('NEXT_AREA_CHANGE' / 'FUSED_TARGET') is constructed strictly from NEXT_AREA - AREA and is completely excluded from feature columns.",
+    "lag_feature_shifts": "PASS: AREA_LAG1-3, AREA_CHANGE_LAG1-3, ROLLING_MEAN_3, and ROLLING_STD_3 are computed strictly using groupby('GLO_ID').shift(1, 2, 3). No contemporaneous or future area enters these features.",
+    "gap_enforcement": "PASS: Gaps between observations strictly set lag features to NaN when year difference exceeds 1, preventing stale lags from acting as continuous temporal steps.",
+    "temporal_split_boundary": {
+      "training_window": "AREA_YEAR <= 2021",
+      "validation_window": "AREA_YEAR == 2022",
+      "test_window": "AREA_YEAR == 2023",
+      "boundary_evaluation": "For training sample at t=2021, target is AREA(2022)-AREA(2021). The 2022 validation predictors X_val are observed at t=2022. Because 1-step-ahead forecasting requires knowing the outcome at t+1 to evaluate model error, this is the standard step-ahead forecast boundary. Expanding-window temporal OOF folds maintain this strict causality (train on years < t)."
+    },
+    "status_of_2024_data": {
+      "in_dataset": true,
+      "has_consecutive_target": false,
+      "reason": "For AREA_YEAR == 2024, NEXT_YEAR (2025) is not available in the dataset. Thus NEXT_AREA_CHANGE is NaN for all 2024 observations.",
+      "used_in_prior_experiments": true,
+      "prior_use_detail": "The 2024 AREA values were directly consumed as the NEXT_AREA target for the 2023 test cohort: NEXT_AREA_CHANGE(2023) = AREA(2024) - AREA(2023). Therefore, 2024 observations cannot be treated as an untouched future holdout."
+    }
+  },
+  "spatial_leakage_verification": {
+    "risk_assessment": "HIGH RISK if random row-level splitting is used. In random row splits, observations of the SAME lake across different years (e.g. 2018 in train, 2019 in test) leak permanent lake morphology, elevation, and location.",
+    "mitigation_requirement": "All cross-validation and evaluation MUST use grouped splits: GroupKFold(groups=GLO_ID) or spatial basin holdouts (e.g., train on Koshi+Karnali, validate on Gandaki)."
+  },
+  "preprocessing_leakage_verification": {
+    "imputation_safety": "PASS: Preprocessing pipelines (ColumnTransformer, SimpleImputer, OneHotEncoder) must be fit solely on training folds. Fitting on combined data is strictly prohibited."
+  }
+}
