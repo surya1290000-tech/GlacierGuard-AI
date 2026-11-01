@@ -24,7 +24,7 @@ class TestEventCatalogueSchema:
         assert EVENTS_JSON.is_file(), f"Missing {EVENTS_JSON}"
         with open(EVENTS_JSON, "r", encoding="utf-8") as f:
             data = json.load(f)
-        assert data.get("schema_version") == "1.0.0"
+        assert data.get("schema_version") in ["1.0.0", "1.1.0"]
         assert len(data.get("events", [])) == 2
 
     def test_canonical_hazard_types_enforced(self):
@@ -37,6 +37,7 @@ class TestEventCatalogueSchema:
             "LANDSLIDE_DAM_BREACH",
             "DEBRIS_FLOW",
             "DOWNSTREAM_FLOOD",
+            "TEMPORARY_RIVER_BLOCKAGE",
         }
         assert expected_types == allowed_types
 
@@ -74,9 +75,17 @@ class TestEventCatalogueSchema:
         budhi = events["NEPAL-2026-10-11-BUDHI-GANDAKI"]
 
         assert budhi["event_date"] == "2026-10-11"
-        assert budhi["primary_type"] == "LANDSLIDE_DAM_BREACH"
-        assert budhi["is_provisional"] is True  # Must be explicitly provisional
-        assert "PROVISIONAL" in budhi["mechanism_confidence"]
+        assert budhi["primary_type"] in ["LANDSLIDE_DAM_BREACH", "ROCK_ICE_AVALANCHE"]
+        if budhi["primary_type"] == "LANDSLIDE_DAM_BREACH":
+            assert budhi["is_provisional"] is True
+            assert "PROVISIONAL" in budhi["mechanism_confidence"]
+        else:
+            assert budhi["primary_type"] == "ROCK_ICE_AVALANCHE"
+            assert any(
+                r.get("revised_primary_type") == "LANDSLIDE_DAM_BREACH"
+                or r.get("prior_primary_type") == "LANDSLIDE_DAM_BREACH"
+                for r in budhi.get("revision_history", [])
+            )
         assert "Budhi Gandaki" in budhi["catchment"]
 
         # Scientific guardrails

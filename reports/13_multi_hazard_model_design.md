@@ -39,50 +39,85 @@ GlacierGuard-AI's existing machine learning stack is strictly partitioned into t
 
 ---
 
-## 2. Event-Level Dataset Schema & Sampling Strategy
+## 2. Standardized Multi-Hazard Process Taxonomy
 
-### 2.1 The Unit of Analysis
-- **Hazard Susceptibility Patch:** A $500	ext{ m} 	imes 500	ext{ m}$ spatial grid cell over high-relief mountain terrain ($> 3,500	ext{ m}$ a.s.l., slope $> 30^\circ$).
-- **River Reach Segment:** A $1	ext{ km}$ buffer along major Himalayan river corridors (e.g. Lhende Khola, Bhote Koshi, Budhi Gandaki).
+The cryospheric hazard catalogue establishes six mutually distinct process types:
 
-### 2.2 Positive Event Cohort (Case Studies)
+1. **`ROCK_ICE_AVALANCHE`**: Sudden high-velocity detachment and free-fall/slide of rock and glacial ice masses from steep mountain headwalls and cirques.
+2. **`GLACIAL_LAKE_OUTBURST` (GLOF)**: Rapid, uncontrolled drainage of a proglacial, supraglacial, or moraine-dammed lake due to dam collapse, piping, or displacement wave.
+3. **`LANDSLIDE_DAM_BREACH`**: Catastrophic incision and failure of an impounded natural dam formed by valley wall slope collapse or rotational slide.
+4. **`DEBRIS_FLOW`**: High-velocity saturated slurry of water, mud, gravel, boulders, and pulverized ice traversing tributary channels or gorges.
+5. **`DOWNSTREAM_FLOOD`**: High-discharge fluvial surge traveling along mainstream river valleys, producing bank overtopping and infrastructure destruction.
+6. **`TEMPORARY_RIVER_BLOCKAGE`**: Short-duration obstruction of a river channel caused by tributary debris deposition, avalanche debris, or transient ponding that creates multi-pulse releases, distinct from consolidated rotational landslide dams.
+
+---
+
+## 3. Units of Analysis: Event Units vs. Lake Monitoring Units
+
+To eliminate ambiguity between lake-level models and multi-hazard surveillance, units of analysis are strictly differentiated:
+
+| Attribute | Lake Monitoring Unit (Systems A & B) | Multi-Hazard Cryospheric Unit (System C) |
+| :--- | :--- | :--- |
+| **Primary Geographic Entity** | Closed lake surface water polygon | Steep mountain face patch ($500\,\text{m} \times 500\,\text{m}$) or river corridor reach ($1\,\text{km}$) |
+| **Identifier Scheme** | Lake ID (e.g., `GLO_ID_10425` or `GL085448E28236N`) | Event ID (e.g., `NEPAL-2026-08-26-LANGTANG-LIRUNG`) |
+| **Domain Scope** | Lacustrine water boundaries ($\le 15^\circ$ slope) | High-relief headwalls ($> 3,500\,\text{m}$, slope $> 30^\circ$) & valley channels |
+| **Temporal Frequency** | Annual composites & multi-week cadence | Sub-daily to weekly satellite overpasses & seismic feeds |
+| **Prediction Target** | Lake area change ($\text{km}^2$) / lake condition class | Slope detachment susceptibility / valley impoundment index |
+| **Training Pipeline** | GLO 2017–2024 annual lake database | Independent multi-hazard inventory (never mixed with GLO) |
+
+---
+
+## 4. Metadata Discovery vs. Raster Processing Semantics
+
+All satellite inventories distinguish catalogued metadata from downloaded/processed raster data:
+
+- **`DISCOVERED_IN_CATALOGUE`**: The satellite scene has been queried, resolved, and verified via the Copernicus Data Space Ecosystem (CDSE) STAC catalogue. Metadata, asset keys, sensing geometries, cloud cover, and access feasibility have been audited and catalogued. No local raster extraction has been executed.
+- **`DOWNLOADED_PENDING_PREPROCESSING`**: Full product assets (e.g., SAFE or GeoTIFF) are staged on local disk or cloud cache.
+- **`PREPROCESSED_ANALYSIS_READY`**: Calibrated, coregistered, terrain-corrected, and reprojected raster grids ready for feature extraction.
+
+---
+
+## 5. Event-Level Dataset Schema & Sampling Strategy
+
+### 5.1 Positive Event Cohort (Case Studies)
 Positive training samples require independently documented, expert-verified historical cryospheric mass wasting events in the Hindu Kush Himalaya:
 1. **2026 Langtang Lirung** (Rock–ice avalanche & debris surge, Nepal)
-2. **2021 Chamoli Disaster** (Ronti peak hanging glacier / rock detachment, India)
-3. **2021 Melamchi Disaster** (Bremdang cirque sediment surge & river damming, Nepal)
-4. **2018 Sedongpu Landslide/Avalanche** (Repeated Yarlung Tsangpo blockage, Tibet)
-5. **2017 Bhotekoshi Outburst** (Tibetan transboundary breach)
+2. **2026 Budhi Gandaki** (Rock–ice avalanche, tributary blockage & cascading surge, Nepal)
+3. **2021 Chamoli Disaster** (Ronti peak hanging glacier / rock detachment, India)
+4. **2021 Melamchi Disaster** (Bremdang cirque sediment surge & river damming, Nepal)
+5. **2018 Sedongpu Landslide/Avalanche** (Repeated Yarlung Tsangpo blockage, Tibet)
+6. **2017 Bhotekoshi Outburst** (Tibetan transboundary breach)
 
-### 2.3 Non-Event Control Sampling (Negative Cohort)
+### 5.2 Non-Event Control Sampling (Negative Cohort)
 To prevent extreme selection bias and false positives:
-- **Terrain-Matched Controls:** Sample high-altitude hanging glaciers and steep mountain flanks with similar elevation ($> 5,000	ext{ m}$), slope ($35^\circ	ext{--}60^\circ$), aspect, and glacier thermal regime that did **not** experience catastrophic failure.
+- **Terrain-Matched Controls:** Sample high-altitude hanging glaciers and steep mountain flanks with similar elevation ($> 5,000\,\text{m}$), slope ($35^\circ\text{--}60^\circ$), aspect, and glacier thermal regime that did **not** experience catastrophic failure.
 - **Ratio:** Minimum of **$10 : 1$** control patches to event patches.
 - **Stratification:** Matched across Western, Central, and Eastern Himalayan climatic zones.
 
 ---
 
-## 3. Preventing Spatial and Temporal Leakage
+## 6. Preventing Spatial and Temporal Leakage
 
 1. **Strict Temporal Cutoff:**
-   - All pre-collapse predictors for an event must be extracted strictly from $t \le t_{	ext{event}} - 48	ext{ hours}$.
+   - All pre-collapse predictors for an event must be extracted strictly from $t \le t_{\text{event}} - 48\,\text{hours}$.
    - Post-event imagery (scars, deposition) must never enter precursor prediction features.
 2. **Spatial Basin Isolation:**
    - Cross-validation must strictly use **Leave-One-Mountain-Massif-Out (LOMO)**:
      - Fold 1: Train on Karakoram + Western Himalaya; Validate on Central Himalaya (Langtang / Ganesh).
      - Fold 2: Train on Central Himalaya; Validate on Eastern Himalaya / Tibet.
-   - Spatial buffers of at least **$25	ext{ km}$** around any event source must be quarantined to prevent spatial autocorrelation leakage into control patches.
+   - Spatial buffers of at least **$25\,\text{km}$** around any event source must be quarantined to prevent spatial autocorrelation leakage into control patches.
 
 ---
 
-## 4. Feature Space for Multi-Hazard Monitoring
+## 7. Feature Space for Multi-Hazard Monitoring
 
 1. **Kinematic / InSAR Features:**
-   - 12-day and 24-day line-of-sight displacement velocity ($v_{	ext{LOS}}$ in $	ext{mm/day}$).
+   - 12-day and 24-day line-of-sight displacement velocity ($v_{\text{LOS}}$ in $\text{mm/day}$).
    - Temporal coherence loss gradient ($\Delta \gamma / \Delta t$).
    - Spatial strain rate / displacement gradient ($\partial d / \partial x$).
 2. **Topographic / Geomorphic Features:**
    - Slope angle, profile curvature, planform curvature.
-   - Upstream contributing catchment area and relief energy ($H_{	ext{peak}} - H_{	ext{toe}}$).
+   - Upstream contributing catchment area and relief energy ($H_{\text{peak}} - H_{\text{toe}}$).
    - Distance to major structural faults / shear zones.
 3. **Thermal & Cryospheric Features:**
    - Permafrost thaw index / active layer thickness anomalies (ERA5-Land reanalysis).
@@ -90,11 +125,11 @@ To prevent extreme selection bias and false positives:
    - Cumulative positive degree days (PDD) prior to event.
 4. **Hydrological Corridor Features:**
    - Valley confinement ratio (channel width vs. valley floor width).
-   - SAR backscatter anomalous drop ($\Delta \sigma^0 < -3	ext{ dB}$) indicating river ponding/impoundment.
+   - SAR backscatter anomalous drop ($\Delta \sigma^0 < -3\,\text{dB}$) indicating river ponding/impoundment.
 
 ---
 
-## 5. Gate Criteria Before Phase 9.4 Implementation
+## 8. Gate Criteria Before Phase 9.4 Implementation
 - [ ] At least 15 verified high-mountain mass-wasting event polygons catalogued with field/satellite ground truth.
 - [ ] 150 terrain-matched negative control patches established.
 - [ ] Containerized InSAR coregistration and coherence pipeline deployed.

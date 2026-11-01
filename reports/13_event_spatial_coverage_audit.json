@@ -41,6 +41,24 @@
       "tsho_rolpa": 104.9,
       "lower_barun": 161.3,
       "sabai_tsho": 120.7
+    },
+    "spatial_ambiguity_assessment": {
+      "point_in_polygon_raw": false,
+      "nearest_glacier_dist_m": 42.4,
+      "reported_precision_m": 150.0,
+      "status": "SPATIALLY_AMBIGUOUS_WITHIN_REPORTED_PRECISION",
+      "scientific_interpretation": "A 42.4 m distance is strictly smaller than the 150 m coordinate precision uncertainty. Under geometric buffering by reported precision (150 m), the source coordinate overlaps glacier outline RGI60-15.04173. The raw point-in-polygon False result does not prove the detachment initiated in ice-free rock.",
+      "rgi_provenance": {
+        "version": "RGI 6.0",
+        "release_year": 2017,
+        "is_exact_2026_boundary": false,
+        "limitation": "RGI 6.0 historical outlines do not reflect instantaneous 2026 terminus positions or high-altitude hanging glacier retreat."
+      },
+      "elevation_provenance": {
+        "catalogue_elevation_m": 6200,
+        "reported_literature_breakline_m": "5000-5200",
+        "reconciliation": "Detachment headwall initiated at ~6,200 m (NW face cliff), while lower breaklines and deposition throat into Lhende gorge occurred at ~5,100 m."
+      }
     }
   },
   "budhi_gandaki_event": {
@@ -79,6 +97,18 @@
       "tsho_rolpa": 161.9,
       "lower_barun": 218.7,
       "sabai_tsho": 177.7
+    },
+    "location_clarification": {
+      "source_coordinates": null,
+      "source_status": "UNRESOLVED_PENDING_SURFACE_SURVEY",
+      "candidate_source_region": "Shringri Himal cirque, upstream of Udilung Khola",
+      "chumchet_reference_coordinates": {
+        "lat": 28.457,
+        "lon": 84.975
+      },
+      "chumchet_role": "AFFECTED_REACH_REFERENCE_ONLY",
+      "chumchet_precision_m": 2500.0,
+      "blockage_reach": "Confluence of Udilung and Syar Khola"
     }
   },
   "hydrological_and_corridor_evaluation": {
