@@ -46,18 +46,41 @@
       "point_in_polygon_raw": false,
       "nearest_glacier_dist_m": 42.4,
       "reported_precision_m": 150.0,
+      "uncertainty_semantics": "UNKNOWN",
+      "hypothetical_buffer_scenario": {
+        "description": "Hypothetical scenario: If the 150 m precision were assumed to be an isotropic circular error radius, a 150 m buffer would overlap glacier polygon RGI60-15.04173 (since 42.4 m < 150 m). However, the original publication does not define the error distribution, ellipse geometry, or confidence interval for this figure, so treating 150 m as a confirmed isotropic buffer is scientifically unverified.",
+        "is_confirmed_buffer": false
+      },
+      "glacier_containment_status": "UNRESOLVED",
       "status": "SPATIALLY_AMBIGUOUS_WITHIN_REPORTED_PRECISION",
-      "scientific_interpretation": "A 42.4 m distance is strictly smaller than the 150 m coordinate precision uncertainty. Under geometric buffering by reported precision (150 m), the source coordinate overlaps glacier outline RGI60-15.04173. The raw point-in-polygon False result does not prove the detachment initiated in ice-free rock.",
+      "scientific_interpretation": "Raw point-in-polygon evaluation against RGI 6.0 yields False at a distance of 42.4 m. Because coordinate uncertainty semantics are UNKNOWN in the source and RGI 6.0 represents historical 2000\u20132010 boundaries, available evidence neither proves nor disproves that the detachment initiated inside glacierized terrain.",
       "rgi_provenance": {
         "version": "RGI 6.0",
         "release_year": 2017,
         "is_exact_2026_boundary": false,
         "limitation": "RGI 6.0 historical outlines do not reflect instantaneous 2026 terminus positions or high-altitude hanging glacier retreat."
       },
+      "rgi7_comparison": {
+        "status": "TABULAR_ATTRIBUTES_ONLY",
+        "notes": "RGI 7.0 tabular data show glacier RGI2000-v7.0-G-15-05732 with centroid at (28.2780 N, 85.5368 E, 1,461 m south), but vector boundary polygons for Region 15 are not bundled in local workspace shapefiles; comparison remains anchored on reproducible RGI 6.0 vector outlines."
+      },
       "elevation_provenance": {
-        "catalogue_elevation_m": 6200,
-        "reported_literature_breakline_m": "5000-5200",
-        "reconciliation": "Detachment headwall initiated at ~6,200 m (NW face cliff), while lower breaklines and deposition throat into Lhende gorge occurred at ~5,100 m."
+        "catalogue_nominal_elevation_m": 6200,
+        "source_scar_elevation_range_m": [
+          5500,
+          6800
+        ],
+        "lower_runout_breakline_m": [
+          5000,
+          5200
+        ],
+        "deposition_elevation_m": 3800,
+        "citations": {
+          "source_scar": "ICIMOD (13 Oct 2026), https://lib.icimod.org/records/qdvc1-tc123",
+          "lower_runout": "Early situational media/bulletins",
+          "deposition": "Topographic map estimation of Lhende gorge floor"
+        },
+        "reconciliation": "Detachment headwall initiated within the ~5,500\u20136,800 m NW face cliff band (nominal point approximation 6,200 m), while lower breaklines and gorge constriction occurred at ~5,000\u20135,200 m, with valley deposition around ~3,800 m."
       }
     }
   },

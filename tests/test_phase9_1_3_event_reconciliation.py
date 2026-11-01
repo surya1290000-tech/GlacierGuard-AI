@@ -1,14 +1,16 @@
 """
-Unit tests for Phase 9.1.3: Event Evidence Reconciliation & Spatial Audit Hardening
-===================================================================================
+Unit tests for Phase 9.1.3 & Phase 9.1.3.1:
+Event Evidence Reconciliation, Spatial Audit Hardening, and Security Remediation
+================================================================================
 Tests verify:
 1. Budhi Gandaki primary classification as ROCK_ICE_AVALANCHE and cascade sequence.
 2. Preservation of 11 Oct ICIMOD preliminary report in revision history.
 3. No false assertion of Chumchet impact coordinates as exact avalanche source.
 4. Unresolved source coordinates represented as null.
 5. TEMPORARY_RIVER_BLOCKAGE recognized as distinct allowed event type.
-6. Langtang source point classified as SPATIALLY_AMBIGUOUS_WITHIN_REPORTED_PRECISION.
-7. RGI polygon metadata/provenance required (e.g. RGI 6.0, not 2026 ground truth).
+6. Langtang source point classified with UNKNOWN uncertainty semantics;
+   150 m buffer treated strictly as a hypothetical scenario without asserting containment.
+7. RGI polygon metadata/provenance required (RGI 6.0, historical limitations documented).
 8. S1 acquisition grouping retains both SLC and GRD products within each group.
 9. S2 multi-tile acquisition grouping correctly preserves multiple granules.
 10. Product totals in updated catalogue reconcile with product-level CSVs.
@@ -17,12 +19,18 @@ Tests verify:
 13. Distinction between scene discovery and raster processing maintained across records.
 14. Event records cannot be integrated into GLO lake regression training targets.
 15. Frozen XGBoost model SHA-256 matches frozen baseline byte-for-byte.
-16. No raw credentials or tokens appear in any report, CSV, or JSON output.
+16. Security Remediation: Repository-wide secret scan with generic patterns,
+    no literal credentials embedded in test code, all matches redacted.
+17. Verify test source code contains zero literal credentials or sensitive tokens.
+18. Traceable elevation provenance distinguishing source point, scar range, breakline, and deposition.
+19. Accurate source publication dates and repository URLs (ICIMOD 13 Oct 2026, Sah preprint 6 Sep 2026).
 """
 
 import hashlib
 import json
 from pathlib import Path
+import re
+import subprocess
 import pandas as pd
 import pytest
 
@@ -37,6 +45,13 @@ MULTI_HAZARD_MD = REPO_ROOT / "reports" / "13_multi_hazard_model_design.md"
 FROZEN_MODEL_PKL = REPO_ROOT / "reports" / "models" / "09_final_fused_xgboost.pkl"
 
 EXPECTED_FROZEN_SHA256 = "5c5bec942c316a8c4a3f40d7098f7d50a4d7ac34d0f4ba5e308c7d19fc75525f"
+
+# Known exposed credential hashes (SHA-256) used for verification without storing plaintext secrets
+EXPOSED_CREDENTIAL_SHA256_HASHES = {
+    "e50ec2c50e0c4bb89283fb11fbc9cba6c42a29730950ede7aad6796ec0e5ad31",  # Copernicus API Key
+    "677026b30c6025a2ed64b56de7eaa484b14d7f2e36125fed583bb487e5c43cd4",  # CDSE Client ID
+    "b07d7b8f66838aa22a785ddb2dbaa7658c558be10ecfaa2e0c49453b1f6164b9",  # CDSE Client Secret
+}
 
 
 class TestBudhiGandakiReconciliation:
@@ -53,7 +68,6 @@ class TestBudhiGandakiReconciliation:
         expected_cascade = ["DEBRIS_FLOW", "TEMPORARY_RIVER_BLOCKAGE", "DOWNSTREAM_FLOOD"]
         assert budhi["cascading_types"] == expected_cascade
 
-        # Verify sequential cascade stage details
         stages = [s["hazard_process"] for s in budhi.get("cascade_stage_details", [])]
         assert stages == ["ROCK_ICE_AVALANCHE", "DEBRIS_FLOW", "TEMPORARY_RIVER_BLOCKAGE", "DOWNSTREAM_FLOOD"]
 
@@ -66,14 +80,12 @@ class TestBudhiGandakiReconciliation:
         rev_history = budhi.get("revision_history", [])
         assert len(rev_history) >= 2
 
-        # Check initial revision preserves 11 Oct report
         init_rev = rev_history[0]
         assert init_rev["revision_date"] == "2026-10-11"
         assert init_rev["revised_primary_type"] == "LANDSLIDE_DAM_BREACH"
         assert "landslide" in init_rev["reason"].lower()
         assert "icimod" in init_rev["source_ref"].lower()
 
-        # Check evidence sources contain preliminary superseded tag
         evidence = budhi.get("evidence_sources_comprehensive", [])
         oct11 = next(
             s for s in evidence
@@ -87,17 +99,14 @@ class TestBudhiGandakiReconciliation:
             data = json.load(f)
         budhi = next(e for e in data["events"] if e["event_id"] == "NEPAL-2026-10-11-BUDHI-GANDAKI")
 
-        # Top-level source_location coordinates must NOT be Chumchet
         assert budhi["source_location"]["latitude"] is None
         assert budhi["source_location"]["longitude"] is None
 
-        # Chumchet coordinates must be explicitly marked as affected reach
         aff = budhi.get("affected_reach_location", {})
         assert aff.get("latitude") == pytest.approx(28.457, abs=1e-3)
         assert aff.get("longitude") == pytest.approx(84.975, abs=1e-3)
         assert "NOT the avalanche source" in aff.get("description", "")
 
-        # Spatial audit must also document Chumchet as affected reach only
         with open(SPATIAL_AUDIT_JSON, "r", encoding="utf-8") as f:
             sp_data = json.load(f)
         bg_sp = sp_data["budhi_gandaki_event"]["location_clarification"]
@@ -131,28 +140,38 @@ class TestTaxonomyAndSpatialAmbiguity:
         assert "LANDSLIDE_DAM_BREACH" in allowed
         assert "TEMPORARY_RIVER_BLOCKAGE" != "LANDSLIDE_DAM_BREACH"
 
-    def test_06_langtang_spatially_ambiguous_within_precision(self):
-        """6. Langtang source point classified as SPATIALLY_AMBIGUOUS_WITHIN_REPORTED_PRECISION."""
+    def test_06_langtang_spatial_uncertainty_and_hypothetical_buffer(self):
+        """6. Langtang uncertainty semantics are UNKNOWN; 150 m buffer is strictly hypothetical."""
         with open(EVENTS_JSON, "r", encoding="utf-8") as f:
             data = json.load(f)
         langtang = next(e for e in data["events"] if e["event_id"] == "NEPAL-2026-08-26-LANGTANG")
         recon = langtang["spatial_uncertainty_reconciliation"]
 
-        assert recon["spatial_status"] == "SPATIALLY_AMBIGUOUS_WITHIN_REPORTED_PRECISION"
-        dist = recon["distance_to_nearest_rgi_glacier_m"]
-        prec = recon["reported_coordinate_precision_m"]
-        assert dist == pytest.approx(42.4, abs=0.1)
-        assert prec == pytest.approx(150.0, abs=0.1)
-        assert dist < prec, "Distance to glacier must be strictly smaller than coordinate precision"
+        # Raw point-in-polygon is False at 42.4 m
+        assert recon["raw_point_in_polygon"] is False
+        assert recon["distance_to_nearest_rgi_glacier_m"] == pytest.approx(42.4, abs=0.1)
+        assert recon["reported_coordinate_precision_m"] == pytest.approx(150.0, abs=0.1)
+
+        # Semantics must be recorded as UNKNOWN
+        assert recon["uncertainty_semantics"] == "UNKNOWN"
+
+        # Buffer scenario must be marked as hypothetical, not confirmed
+        hypo = recon["hypothetical_buffer_scenario"]
+        assert hypo["is_confirmed_buffer"] is False
+        assert "hypothetical" in hypo["description"].lower()
+
+        # Glacier containment must be UNRESOLVED, not asserted
+        assert recon["glacier_containment_status"] == "UNRESOLVED"
 
         with open(SPATIAL_AUDIT_JSON, "r", encoding="utf-8") as f:
             sp_data = json.load(f)
         lt_sp = sp_data["langtang_lirung_event"]["spatial_ambiguity_assessment"]
-        assert lt_sp["status"] == "SPATIALLY_AMBIGUOUS_WITHIN_REPORTED_PRECISION"
-        assert lt_sp["nearest_glacier_dist_m"] < lt_sp["reported_precision_m"]
+        assert lt_sp["uncertainty_semantics"] == "UNKNOWN"
+        assert lt_sp["hypothetical_buffer_scenario"]["is_confirmed_buffer"] is False
+        assert lt_sp["glacier_containment_status"] == "UNRESOLVED"
 
     def test_07_rgi_polygon_metadata_and_provenance(self):
-        """7. RGI polygon metadata and provenance required (RGI 6.0, not 2026 ground truth)."""
+        """7. RGI polygon metadata and provenance required (RGI 6.0, historical limitations)."""
         with open(EVENTS_JSON, "r", encoding="utf-8") as f:
             data = json.load(f)
         langtang = next(e for e in data["events"] if e["event_id"] == "NEPAL-2026-08-26-LANGTANG")
@@ -178,7 +197,6 @@ class TestSatelliteGroupingAndInventories:
         s1 = df[df["collection"].str.contains("sentinel-1")]
         assert len(s1) == 46, f"Expected 46 S1 products, found {len(s1)}"
 
-        # Every S1 group must have exactly 2 products: 1 SLC and 1 GRD
         for gid, grp in s1.groupby("acquisition_group_id"):
             colls = set(grp["collection"].tolist())
             assert "sentinel-1-slc" in colls, f"Group {gid} missing SLC"
@@ -191,7 +209,6 @@ class TestSatelliteGroupingAndInventories:
         s2 = df[df["collection"].str.contains("sentinel-2")]
         assert len(s2) == 46, f"Expected 46 S2 products, found {len(s2)}"
 
-        # Check multi-tile group exists
         grp_counts = s2.groupby("acquisition_group_id").size()
         multi_tile = grp_counts[grp_counts > 1]
         assert len(multi_tile) >= 1
@@ -209,9 +226,8 @@ class TestSatelliteGroupingAndInventories:
         """11. Acquisition group totals in summary reconcile with independent acquisition counts."""
         df_acq = pd.read_csv(LANGTANG_ACQ_CSV)
         assert len(df_acq) == 68, f"Expected 68 independent acquisitions, found {len(df_acq)}"
-        assert df_acq["product_count"].sum() == 92, "Product counts across acquisitions must sum to 92"
+        assert df_acq["product_count"].sum() == 92
 
-        # Check SAR vs Optical split
         sar_count = len(df_acq[df_acq["sensor_family"] == "SAR"])
         optical_count = len(df_acq[df_acq["sensor_family"] == "OPTICAL"])
         assert sar_count == 23
@@ -239,8 +255,8 @@ class TestSatelliteGroupingAndInventories:
                 assert "ANALYSIS_READY" not in status
 
 
-class TestModelIsolationAndSecurity:
-    """Tests 14-16: ML target isolation, frozen XGBoost SHA-256, and secrets prevention."""
+class TestModelIsolationAndScientificGuardrails:
+    """Tests 14-15: ML target isolation and frozen XGBoost SHA-256."""
 
     def test_14_event_records_cannot_integrate_into_glo_lake_targets(self):
         """14. Event records cannot be integrated into GLO lake regression training targets."""
@@ -272,34 +288,123 @@ class TestModelIsolationAndSecurity:
             f"Frozen model SHA-256 changed!\nExpected: {EXPECTED_FROZEN_SHA256}\nFound:    {current_sha}"
         )
 
-    def test_16_no_credentials_or_tokens_in_reports(self):
-        """16. No raw credentials, tokens, or client secrets appear in any report, CSV, or JSON."""
-        # Forbidden tokens or patterns
-        forbidden_substrings = [
-            "sh-75fe6fab",
-            "wyThLEsXUfqapN6BBLhMiqYrXzXskC8n",
-            "3de8696c-69ae-482a-a9e3-c9fa946ee12c",
-            "client_secret=",
-            "Bearer eyJ",
-            "CDSE_PASSWORD=",
-            "COPERNICUS_PASSWORD="
+
+class TestSecurityAndEvidenceTraceability:
+    """Tests 16-19: Generic secret scanning, elevation provenance, and evidence dates/URLs."""
+
+    def test_16_generic_secret_scan_repository_wide(self):
+        """16. Repository-wide secret scan using generic patterns with redacted log outputs."""
+        generic_patterns = [
+            (re.compile(r'(?i)(?:api_key|apikey|secret_key|client_secret|access_token)\s*[:=]\s*["\']([^"\'\s<>{}\$]{12,})["\']'), "Secret Key Assignment"),
+            (re.compile(r'(?i)bearer\s+eyJ[a-zA-Z0-9_\-\.]{25,}'), "Bearer JWT Token"),
+            (re.compile(r'-----BEGIN\s+(?:RSA\s+)?PRIVATE\s+KEY-----'), "Private Key Header"),
+            (re.compile(r'(?i)(?:password|passwd|pwd)\s*[:=]\s*["\']([^"\'\s<>{}\$]{8,})["\']'), "Password Assignment"),
         ]
 
-        # Scan reports directory and data/events directory
-        paths_to_scan = list(REPO_ROOT.glob("reports/**/*.json")) + \
-                        list(REPO_ROOT.glob("reports/**/*.csv")) + \
-                        list(REPO_ROOT.glob("reports/**/*.md")) + \
-                        list(REPO_ROOT.glob("data/events/**/*.json"))
+        try:
+            tracked_files = subprocess.check_output(["git", "ls-files"], cwd=REPO_ROOT, text=True).splitlines()
+        except Exception:
+            tracked_files = [
+                str(p.relative_to(REPO_ROOT))
+                for p in REPO_ROOT.glob("**/*")
+                if p.is_file() and ".git" not in p.parts and ".venv" not in p.parts
+            ]
 
-        assert len(paths_to_scan) > 0
+        allowlisted_files = {
+            ".env.example",  # Template placeholders
+            "README.md",     # Documentation placeholders
+        }
 
-        for path in paths_to_scan:
+        detected_violations = []
+
+        for rel_path_str in tracked_files:
+            if rel_path_str in allowlisted_files:
+                continue
+
+            file_path = REPO_ROOT / rel_path_str
+            if not file_path.is_file():
+                continue
+
+            suffix = file_path.suffix.lower()
+            if suffix not in [".py", ".json", ".csv", ".md", ".yml", ".yaml", ".txt", ".sh", ".toml"]:
+                continue
+
             try:
-                content = path.read_text(encoding="utf-8", errors="ignore")
-                for forbidden in forbidden_substrings:
-                    assert forbidden not in content, (
-                        f"Credential or secret found in {path.relative_to(REPO_ROOT)}: {forbidden}"
-                    )
+                content = file_path.read_text(encoding="utf-8", errors="ignore")
+                for pat, label in generic_patterns:
+                    for match in pat.finditer(content):
+                        full_m = match.group(0)
+                        redacted = f"{label} (length {len(full_m)}) [REDACTED]"
+                        detected_violations.append((rel_path_str, redacted))
             except Exception as e:
-                pytest.fail(f"Could not read {path}: {e}")
+                pytest.fail(f"Could not read tracked file {rel_path_str}: {e}")
 
+        assert len(detected_violations) == 0, (
+            f"Generic secret scan failed! Detected {len(detected_violations)} matches across tracked files:\n"
+            + "\n".join(f"  {f}: {red}" for f, red in detected_violations)
+        )
+
+    def test_17_no_literal_credentials_in_test_source(self):
+        """17. Verify test source code contains zero literal credentials via SHA-256 hash checks."""
+        # Check every test file in tests/
+        test_files = list((REPO_ROOT / "tests").glob("*.py"))
+        assert len(test_files) > 0
+
+        for tf in test_files:
+            text = tf.read_text(encoding="utf-8")
+            # Extract potential tokens of length 20 to 64
+            tokens = re.findall(r'[A-Za-z0-9_\-]{20,64}', text)
+            for token in tokens:
+                token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+                assert token_hash not in EXPOSED_CREDENTIAL_SHA256_HASHES, (
+                    f"Exposed credential hash detected in {tf.name}! Literal secret must be removed."
+                )
+
+    def test_18_elevation_provenance_traceability(self):
+        """18. Elevation profile distinguishes source point, scar range, breakline, and deposition with citations."""
+        with open(EVENTS_JSON, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        langtang = next(e for e in data["events"] if e["event_id"] == "NEPAL-2026-08-26-LANGTANG")
+        elev = langtang["elevation_reconciliation"]
+
+        # 1. Catalogue nominal elevation preserved
+        assert elev["catalogue_nominal_elevation_m"] == 6200
+
+        # 2. Source scar range from ICIMOD
+        scar = elev["source_scar_elevation_range_m"]
+        assert scar["range"] == [5500, 6800]
+        assert "lib.icimod.org/records/qdvc1-tc123" in scar["source_citation"]
+        assert scar["status"] == "TRACEABLE_OFFICIAL_REPORT"
+
+        # 3. Lower runout breakline
+        breakline = elev["lower_runout_elevation_m"]
+        assert breakline["range"] == [5000, 5200]
+        assert breakline["status"] == "HISTORICAL_CLAIM_PROVISIONAL"
+
+        # 4. Valley floor deposition
+        dep = elev["deposition_elevation_m"]
+        assert dep["approx_elevation_m"] == 3800
+        assert dep["status"] == "APPROXIMATE_RUNOUT_FLOOR"
+
+    def test_19_source_publication_dates_and_urls_correct(self):
+        """19. Correct repository URLs and dates for ICIMOD (13 Oct 2026) and Sah preprint (6 Sep 2026)."""
+        with open(EVENTS_JSON, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        langtang = next(e for e in data["events"] if e["event_id"] == "NEPAL-2026-08-26-LANGTANG")
+        sources = {s["source_org"]: s for s in langtang.get("evidence_sources_comprehensive", [])}
+
+        # Check ICIMOD Langtang report
+        assert "ICIMOD" in sources
+        icimod = sources["ICIMOD"]
+        assert icimod["url"] == "https://lib.icimod.org/records/qdvc1-tc123"
+        assert icimod["publication_date"] == "2026-10-13"
+        assert icimod["evidence_type"] == "OFFICIAL_REPORT"
+
+        # Check Sah EarthArXiv preprint
+        assert "EarthArXiv" in sources
+        sah = sources["EarthArXiv"]
+        assert "10.31223/x59n5n" in sah["url"]
+        assert sah["publication_date"] == "2026-09-06"
+        assert sah["date_updated"] == "2026-09-08"
+        assert sah["evidence_type"] == "PREPRINT"
+        assert sah["confidence"] == "PREPRINT_UNREVIEWED"
