@@ -66,21 +66,25 @@
       },
       "elevation_provenance": {
         "catalogue_nominal_elevation_m": 6200,
+        "catalogue_nominal_status": "NOMINAL_CATALOGUE_UNVERIFIED",
         "source_scar_elevation_range_m": [
           5500,
           6800
         ],
+        "source_scar_status": "UNVERIFIED_PENDING_PAGE_CITATION",
+        "icimod_public_summary_slope_elevation_m": [
+          5000,
+          5500
+        ],
+        "icimod_public_summary_status": "PUBLIC_EVENT_SUMMARY_ESTIMATE",
         "lower_runout_breakline_m": [
           5000,
           5200
         ],
+        "lower_runout_status": "PROVISIONAL_UNVERIFIED",
         "deposition_elevation_m": 3800,
-        "citations": {
-          "source_scar": "ICIMOD (13 Oct 2026), https://lib.icimod.org/records/qdvc1-tc123",
-          "lower_runout": "Early situational media/bulletins",
-          "deposition": "Topographic map estimation of Lhende gorge floor"
-        },
-        "reconciliation": "Detachment headwall initiated within the ~5,500\u20136,800 m NW face cliff band (nominal point approximation 6,200 m), while lower breaklines and gorge constriction occurred at ~5,000\u20135,200 m, with valley deposition around ~3,800 m."
+        "deposition_status": "APPROXIMATE_UNVERIFIED",
+        "provenance_notes": "A citation is not considered traceable merely because a URL exists; specific tabular, cartographic, or altimetric page references are required. Direct page/table citations for the 5,500\u20136,800 m range are absent in the ICIMOD report, while ICIMOD's public event summary describes the north-face slope at ~5,000\u20135,500 m. Conflicting values are preserved as unverified."
       }
     }
   },

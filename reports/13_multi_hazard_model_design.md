@@ -1,7 +1,7 @@
 # GlacierGuard-AI — Multi-Hazard Cryospheric Monitoring Pipeline Design
-**Document ID:** GG-DES-13-MULTIHZ  
-**Date:** 2026-11-01  
-**Lead ML Engineer & Geospatial Architect:** Lead ML Engineer  
+**Document ID:** GG-DES-13-MULTIHZ
+**Date:** 2026-11-01
+**Lead ML Engineer & Geospatial Architect:** Lead ML Engineer
 **Status:** PROPOSED RESEARCH SPECIFICATION (Audit Only — Training Prohibited)
 
 ---
@@ -32,9 +32,9 @@ GlacierGuard-AI's existing machine learning stack is strictly partitioned into t
 ```
 
 > [!IMPORTANT]
-> **Zero Architectural Contamination:**  
-> Systems A and B predict annual lake area evolution on closed water polygons.  
-> System C operates on steep bedrock/ice flanks, hanging glaciers, and river valleys.  
+> **Zero Architectural Contamination:**
+> Systems A and B predict annual lake area evolution on closed water polygons.
+> System C operates on steep bedrock/ice flanks, hanging glaciers, and river valleys.
 > **No training of System C may occur until event and control sample feasibility is established.**
 
 ---
@@ -46,7 +46,7 @@ The cryospheric hazard catalogue establishes six mutually distinct process types
 1. **`ROCK_ICE_AVALANCHE`**: Sudden high-velocity detachment and free-fall/slide of rock and glacial ice masses from steep mountain headwalls and cirques.
 2. **`GLACIAL_LAKE_OUTBURST` (GLOF)**: Rapid, uncontrolled drainage of a proglacial, supraglacial, or moraine-dammed lake due to dam collapse, piping, or displacement wave.
 3. **`LANDSLIDE_DAM_BREACH`**: Catastrophic incision and failure of an impounded natural dam formed by valley wall slope collapse or rotational slide.
-4. **`DEBRIS_FLOW`**: High-velocity saturated slurry of water, mud, gravel, boulders, and pulverized ice traversing tributary channels or gorges.
+4. **`DEBRIS_FLOW`**: High-velocity saturated slurry of water, mud, gravel, boulders, and pulverized ice traversing tributary channels or gorges (not classified as hyperconcentrated without rheological proof).
 5. **`DOWNSTREAM_FLOOD`**: High-discharge fluvial surge traveling along mainstream river valleys, producing bank overtopping and infrastructure destruction.
 6. **`TEMPORARY_RIVER_BLOCKAGE`**: Short-duration obstruction of a river channel caused by tributary debris deposition, avalanche debris, or transient ponding that creates multi-pulse releases, distinct from consolidated rotational landslide dams.
 
@@ -59,7 +59,7 @@ To eliminate ambiguity between lake-level models and multi-hazard surveillance, 
 | Attribute | Lake Monitoring Unit (Systems A & B) | Multi-Hazard Cryospheric Unit (System C) |
 | :--- | :--- | :--- |
 | **Primary Geographic Entity** | Closed lake surface water polygon | Steep mountain face patch ($500\,\text{m} \times 500\,\text{m}$) or river corridor reach ($1\,\text{km}$) |
-| **Identifier Scheme** | Lake ID (e.g., `GLO_ID_10425` or `GL085448E28236N`) | Event ID (e.g., `NEPAL-2026-08-26-LANGTANG-LIRUNG`) |
+| **Identifier Scheme** | Lake ID (e.g., `GLO_ID_10425` or `GL085448E28236N`) | Event ID (e.g., `NEPAL-2026-08-26-LANGTANG`) |
 | **Domain Scope** | Lacustrine water boundaries ($\le 15^\circ$ slope) | High-relief headwalls ($> 3,500\,\text{m}$, slope $> 30^\circ$) & valley channels |
 | **Temporal Frequency** | Annual composites & multi-week cadence | Sub-daily to weekly satellite overpasses & seismic feeds |
 | **Prediction Target** | Lake area change ($\text{km}^2$) / lake condition class | Slope detachment susceptibility / valley impoundment index |
@@ -109,23 +109,37 @@ To prevent extreme selection bias and false positives:
 
 ---
 
-## 7. Feature Space for Multi-Hazard Monitoring
+## 7. Feature Space for Multi-Hazard Monitoring & Research Literature Provenance
 
-1. **Kinematic / InSAR Features:**
-   - 12-day and 24-day line-of-sight displacement velocity ($v_{\text{LOS}}$ in $\text{mm/day}$).
-   - Temporal coherence loss gradient ($\Delta \gamma / \Delta t$).
-   - Spatial strain rate / displacement gradient ($\partial d / \partial x$).
-2. **Topographic / Geomorphic Features:**
-   - Slope angle, profile curvature, planform curvature.
-   - Upstream contributing catchment area and relief energy ($H_{\text{peak}} - H_{\text{toe}}$).
-   - Distance to major structural faults / shear zones.
-3. **Thermal & Cryospheric Features:**
-   - Permafrost thaw index / active layer thickness anomalies (ERA5-Land reanalysis).
-   - Hanging glacier thickness and thermal state (cold-based vs. polythermal).
-   - Cumulative positive degree days (PDD) prior to event.
-4. **Hydrological Corridor Features:**
-   - Valley confinement ratio (channel width vs. valley floor width).
-   - SAR backscatter anomalous drop ($\Delta \sigma^0 < -3\,\text{dB}$) indicating river ponding/impoundment.
+### 7.1 Kinematic / InSAR Features & Scientific Limits
+- 12-day and 24-day line-of-sight displacement velocity ($v_{\text{LOS}}$ in $\text{mm/day}$).
+- Temporal coherence loss gradient ($\Delta \gamma / \Delta t$).
+- Spatial strain rate / displacement gradient ($\partial d / \partial x$).
+
+> [!NOTE]
+> **Interferometric Detection Limits (DOI `10.31223/X5GZ3J`):**
+> As demonstrated by Ajay Kumar Sah (EarthArXiv, 18 Sept 2026, `PREPRINT_UNREVIEWED`), steep Himalayan terrain imposes a single-pair phase unwrapping ceiling at C-band. When pre-detachment displacement gradients exceed $\lambda / (2 \cdot \Delta x)$, phase aliasing prevents standard 2D unwrappers from resolving true kinematic displacement. InSAR features must account for track-dependent look angles and slope geometry.
+
+### 7.2 SAR Amplitude Sensitivity & Negative Precursor Provenance
+- SAR backscatter anomalous drop ($\Delta \sigma^0 < -3\,\text{dB}$) indicating river ponding/impoundment.
+
+> [!NOTE]
+> **Backscatter Amplitude Precursor Baseline (DOI `10.31223/X59N5N`):**
+> In a separate study, Ajay Kumar Sah (EarthArXiv, 6 Sept 2026, updated 8 Sept 2026, `PREPRINT_UNREVIEWED`) demonstrated that Sentinel-1 Level-1 GRD backscatter amplitude ($\sigma^0$) exhibited **no detectable precursor** over the Langtang detachment face. Sub-resolution coherent creep shifts interferometric phase but does not alter macro-roughness or dielectric properties until macroscopic tearing occurs. Therefore, amplitude features cannot serve as early kinematic creep predictors.
+
+### 7.3 Topographic / Geomorphic Features
+- Slope angle, profile curvature, planform curvature.
+- Upstream contributing catchment area and relief energy ($H_{\text{peak}} - H_{\text{toe}}$).
+- Distance to major structural faults / shear zones.
+
+### 7.4 Thermal & Cryospheric Features
+- Permafrost thaw index / active layer thickness anomalies (ERA5-Land reanalysis).
+- Hanging glacier thickness and thermal state (cold-based vs. polythermal).
+- Cumulative positive degree days (PDD) prior to event.
+
+### 7.5 Hydrological Corridor Features
+- Valley confinement ratio (channel width vs. valley floor width).
+- Tributary junction blockage susceptibility index.
 
 ---
 
@@ -133,4 +147,5 @@ To prevent extreme selection bias and false positives:
 - [ ] At least 15 verified high-mountain mass-wasting event polygons catalogued with field/satellite ground truth.
 - [ ] 150 terrain-matched negative control patches established.
 - [ ] Containerized InSAR coregistration and coherence pipeline deployed.
+- [ ] Separate attribution of amplitude baseline (`10.31223/X59N5N`) vs interferometric limits (`10.31223/X5GZ3J`).
 - [ ] Zero overlap with GLO annual lake area models.

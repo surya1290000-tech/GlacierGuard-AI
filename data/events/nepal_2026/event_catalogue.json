@@ -50,34 +50,43 @@
       },
       "elevation_reconciliation": {
         "catalogue_nominal_elevation_m": 6200,
+        "catalogue_nominal_status": "NOMINAL_CATALOGUE_UNVERIFIED",
         "source_coordinate_elevation": {
           "elevation_m": 6200,
-          "provenance": "Nominal point estimate for detachment scarp on the NW flank of Langtang Lirung; unverified by direct differential in-situ survey.",
-          "status": "NOMINAL_ESTIMATE"
+          "provenance": "Nominal point estimate for detachment scarp on the NW flank of Langtang Lirung; unverified by direct differential in-situ survey or stereoscopic DEM differencing.",
+          "status": "NOMINAL_CATALOGUE_UNVERIFIED"
         },
         "source_scar_elevation_range_m": {
           "range": [
             5500,
             6800
           ],
-          "source_citation": "ICIMOD (13 October 2026), 'Understanding the Gyirong\u2013Rasuwa disaster of 26 August 2026', https://lib.icimod.org/records/qdvc1-tc123",
-          "status": "TRACEABLE_OFFICIAL_REPORT"
+          "source_citation": "ICIMOD preliminary working notes; lacks specific page, figure, or table in published report (lib.icimod.org/records/qdvc1-tc123).",
+          "status": "UNVERIFIED_PENDING_PAGE_CITATION"
+        },
+        "icimod_public_summary_slope_elevation_m": {
+          "range": [
+            5000,
+            5500
+          ],
+          "source_citation": "ICIMOD (13 October 2026), Gyirong-Rasuwa disaster public event briefing / summary describing north-face detachment slope.",
+          "status": "PUBLIC_EVENT_SUMMARY_ESTIMATE"
         },
         "lower_runout_elevation_m": {
           "range": [
             5000,
             5200
           ],
-          "source_citation": "Preliminary situational bulletins / news media accounts describing lower breakline and plunge throat into Lhende Khola gorge.",
-          "status": "HISTORICAL_CLAIM_PROVISIONAL"
+          "source_citation": "Preliminary situational bulletins / news media accounts describing lower breakline and plunge throat into Lhende Khola gorge; exact primary source unidentified.",
+          "status": "PROVISIONAL_UNVERIFIED"
         },
         "deposition_elevation_m": {
           "approx_elevation_m": 3800,
           "valley_reach": "Lhende Khola valley floor constriction above Rasuwagadhi border corridor (~1,800 m).",
           "source_citation": "Topographic map estimation of Lhende Khola gorge floor.",
-          "status": "APPROXIMATE_RUNOUT_FLOOR"
+          "status": "APPROXIMATE_UNVERIFIED"
         },
-        "reconciliation_notes": "The 6,200 m catalogue elevation is a nominal point estimate within the 5,500\u20136,800 m detachment scar range reported by ICIMOD (2026). Conflicting historical news reports citing 5,000\u20135,200 m correspond to the lower breakline into the gorge rather than the initiation crown. Deposition in the upper Lhende valley floor occurred around ~3,800 m. Full 3D vertical profiling remains pending reproducible high-resolution stereoscopic DEM differencing."
+        "reconciliation_notes": "The 6,200 m catalogue elevation is a nominal point estimate preserved from historical entries, explicitly unverified. The 5,500\u20136,800 m range was cited in preliminary working notes but lacks specific page, figure, or table attribution in the ICIMOD report. In contrast, ICIMOD's public event briefing describes the north-face slope at approximately 5,000\u20135,500 m. Conflicting values are preserved as unverified. Lower breakline (5,000\u20135,200 m) and valley floor deposition (~3,800 m) remain provisional and unverified pending sub-meter stereoscopic DEM differencing."
       },
       "spatial_uncertainty_reconciliation": {
         "raw_point_in_polygon": false,
@@ -110,7 +119,7 @@
           "url": "https://lib.icimod.org/records/qdvc1-tc123",
           "publication_date": "2026-10-13",
           "evidence_type": "OFFICIAL_REPORT",
-          "claim_supported": "Pre-collapse InSAR LOS displacement up to 40 cm between 7 July and 24 August 2026; detachment scar on NW face of Langtang Lirung spanning ~5,500\u20136,800 m.",
+          "claim_supported": "Pre-collapse InSAR LOS displacement up to 40 cm between 7 July and 24 August 2026.",
           "confidence": "HIGH",
           "last_reviewed_date": "2026-11-01"
         },
@@ -118,11 +127,24 @@
           "source_org": "EarthArXiv",
           "authors": "Ajay Kumar Sah",
           "title": "No detectable precursor in Sentinel-1 backscatter before the 26 August 2026 Langtang Lirung rock\u2013ice avalanche, Nepal",
-          "url": "https://doi.org/10.31223/x59n5n",
+          "doi": "10.31223/X59N5N",
+          "url": "https://doi.org/10.31223/X59N5N",
           "publication_date": "2026-09-06",
           "date_updated": "2026-09-08",
           "evidence_type": "PREPRINT",
-          "claim_supported": "Systematic Sentinel-1 GRD amplitude analysis finding no detectable precursory anomaly in backscatter intensity; analytical derivation of single-pair C-band phase unwrapping limits in steep terrain.",
+          "claim_supported": "Sentinel-1 Level-1 GRD backscatter amplitude (sigma0) time series analysis showed no anomalous precursory deviation.",
+          "confidence": "PREPRINT_UNREVIEWED",
+          "last_reviewed_date": "2026-11-01"
+        },
+        {
+          "source_org": "EarthArXiv",
+          "authors": "Ajay Kumar Sah",
+          "title": "The single-pair unwrapping ceiling is a property of the track, not of the radar: Sentinel-1 interferometric detection limits in high-relief Himalayan terrain",
+          "doi": "10.31223/X5GZ3J",
+          "url": "https://doi.org/10.31223/X5GZ3J",
+          "publication_date": "2026-09-18",
+          "evidence_type": "PREPRINT",
+          "claim_supported": "Track-dependent Sentinel-1 interferometric phase unwrapping ceiling, phase aliasing, and detection limits in steep terrain.",
           "confidence": "PREPRINT_UNREVIEWED",
           "last_reviewed_date": "2026-11-01"
         }

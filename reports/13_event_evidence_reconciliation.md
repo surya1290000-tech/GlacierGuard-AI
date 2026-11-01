@@ -1,6 +1,6 @@
 # GlacierGuard-AI — Event Evidence Reconciliation & Spatial Audit Hardening
 **Document ID:** GG-RPT-13-RECON
-**Version:** 1.1.0 (Phase 9.1.3.1 Security & Scientific Corrections)
+**Version:** 1.2.0 (Phase 9.1.3.2 Security Scanner Coverage & Scientific Provenance Closure)
 **Date:** 2026-11-01
 **Lead Geospatial ML Engineer:** Lead Geospatial ML Engineer
 **Branch:** `feature/phase9-dual-ensemble`
@@ -9,7 +9,7 @@
 
 ## 1. Executive Summary & Purpose
 
-Phase 9.1.3.1 establishes scientific defensibility, strict spatial uncertainty semantics, elevation provenance, and security remediation across the registered 2026 Nepal cryospheric events:
+Phase 9.1.3.2 establishes rigorous security scanning coverage, completes scientific provenance closure, resolves elevation ambiguities, and separates distinct research preprints across the registered 2026 Nepal cryospheric events:
 1. **26 August 2026 Langtang Lirung / Lhende Khola Rock–Ice Avalanche**
 2. **11 October 2026 Budhi Gandaki River Surge / Cascading Flood (near Chumchet, Gorkha)**
 
@@ -18,7 +18,7 @@ Phase 9.1.3.1 establishes scientific defensibility, strict spatial uncertainty s
 - **Model Isolation:** Frozen XGBoost artifact (`reports/models/09_final_fused_xgboost.pkl`, SHA-256: `5c5bec942c316a8c4a3f40d7098f7d50a4d7ac34d0f4ba5e308c7d19fc75525f`) preserved byte-for-byte.
 - **GLO Dataset Integrity:** Neither event is integrated into the GLO 2017–2024 annual lake area training dataset.
 - **PR #2 Preserved:** PR #2 remains open, untouched, and unmerged.
-- **Security Remediation:** Zero literal credentials stored in test code or fixtures. Generic repository-wide secret scanning enforced.
+- **Security Remediation:** Current working tree verified with zero detected secret matches across all tracked text files (including notebooks, configuration files, and code). No Git history rewrite was executed.
 
 ---
 
@@ -84,54 +84,73 @@ $$\text{Distance to Polygon } (42.4\,\text{m}) < \text{Coordinate Precision Metr
 
 ### 3.2 Glacier Inventory Metadata Provenance
 - **RGI 6.0:** Randolph Glacier Inventory 6.0 (Region 15 South Asia East) based on Landsat composites from **2000–2010**. These historical outlines do not reflect instantaneous 2026 ice boundaries or high-altitude hanging glacier retreat.
-- **RGI 7.0 Comparison:** Tabular attributes in `raw/RGI/rgi7_region15_glaciers.csv` list nearby glacier `RGI2000-v7.0-G-15-05732` (centroid at 28.2780° N, 85.5368° E, area 9.842 km², 1,461 m south). Official RGI 7.0 vector polygon shapefiles for Region 15 are pending in the local workspace; reproducible spatial testing remains anchored on RGI 6.0 vector geometry.
+- **RGI 7.0 Comparison:** Tabular attributes in `raw/RGI/rgi7_region15_glaciers.csv` list nearby glacier `RGI2000-v7.0-G-15-05732` (centroid 1,461 m south at 28.2780° N, 85.5368° E, area 9.842 km²). Because official RGI 7.0 vector polygon shapefiles for Region 15 are pending in the local workspace, spatial testing remains reproducibly anchored on RGI 6.0 vector geometry.
 
-### 3.3 Elevation Provenance & Reconciliation
-Every elevation value is explicitly partitioned and cross-referenced against traceable sources:
+### 3.3 Elevation Provenance & Unresolved Statuses
+A citation is not considered traceable merely because a report URL exists; specific tabular, cartographic, or altimetric references are required. Conflicting elevation claims are deconstructed below:
 
-| Elevation Segment | Value / Range | Traceable Source & Citation | Status |
+| Elevation Segment | Value / Range | Source & Evidence Context | Scientific Provenance Status |
 | :--- | :--- | :--- | :--- |
-| **Source Coordinate (Point)** | ~6,200 m | Nominal catalogue point estimate for NW face detachment scarp | `NOMINAL_ESTIMATE` |
-| **Source Detachment Scar** | 5,500–6,800 m | ICIMOD (13 Oct 2026), *Understanding the Gyirong–Rasuwa disaster*, [lib.icimod.org/records/qdvc1-tc123](https://lib.icimod.org/records/qdvc1-tc123) | `TRACEABLE_OFFICIAL_REPORT` |
-| **Lower Runout / Breakline** | 5,000–5,200 m | Preliminary news bulletins and situational reports describing plunge throat into gorge | `HISTORICAL_CLAIM_PROVISIONAL` |
-| **Valley Floor Deposition** | ~3,800 m | Topographic map estimation of Lhende Khola upper gorge floor | `APPROXIMATE_RUNOUT_FLOOR` |
+| **Source Coordinate (Point)** | ~6,200 m | Historical catalogue nominal approximation on NW headwall face; unverified by in-situ survey or DEM differencing. | `NOMINAL_CATALOGUE_UNVERIFIED` |
+| **Detachment Scar (Working Note)** | 5,500–6,800 m | Preliminary working notes; lacks specific page, figure, or table attribution in published ICIMOD report. | `UNVERIFIED_PENDING_PAGE_CITATION` |
+| **Detachment Slope (ICIMOD Briefing)** | 5,000–5,500 m | ICIMOD (13 Oct 2026) public event briefing describing the north-face detachment slope. | `PUBLIC_EVENT_SUMMARY_ESTIMATE` |
+| **Lower Runout / Breakline** | 5,000–5,200 m | Early situational media reports describing the lower plunge throat into the gorge; exact primary source unidentified. | `PROVISIONAL_UNVERIFIED` |
+| **Valley Floor Deposition** | ~3,800 m | Topographic map estimation of Lhende Khola upper gorge floor; unverified by DEM difference mapping. | `APPROXIMATE_UNVERIFIED` |
+
+- Conflicting figures (5,000–5,500 m vs 5,500–6,800 m vs 6,200 m) are explicitly preserved rather than silently harmonized.
+- Precise 3D detachment geometry and volume profiling remain **`UNRESOLVED`** pending post-event stereoscopic DEM differencing.
 
 ---
 
-## 4. Satellite Catalogue Product vs. Acquisition Normalization
+## 4. Distinct Sentinel-1 Research Preprints (Sah 2026)
 
-### 4.1 Langtang Lirung Satellite Normalization
-- **Total Product Records in Catalogue:** **92 products**
-  - Sentinel-1 SLC: 23 records
-  - Sentinel-1 GRD: 23 records
-  - Sentinel-2 L2A: 46 records
-- **Total Independent Physical Overpass Acquisitions:** **68 acquisitions**
-  - **Sentinel-1:** Exactly **23 physical acquisitions** across Orbits 19, 85, and 121. Every S1 SLC has a concurrent S1 GRD representing the identical physical overpass at different processing levels.
-  - **Sentinel-2:** Exactly **45 physical acquisitions** (44 single-granule overpasses + 1 dual-granule overpass on 2026-08-14, both tiles preserved under `ACQ_S2B_20260814_0446_ORB076`).
-- **Deliverables:**
-  - `reports/13_satellite_scene_availability.csv`: Product-level records with stable `acquisition_group_id`.
-  - `reports/13_acquisition_group_summary.csv`: Acquisition-level summary table.
+Two distinct preprints authored by Ajay Kumar Sah address separate aspects of Sentinel-1 radar capabilities for the 26 August 2026 Langtang Lirung event. These studies are separate records with different DOIs and publication dates:
 
-### 4.2 Budhi Gandaki Satellite Scene Inventory
-- **Separate AOI Bounding Box:** `[84.78°E, 28.02°N, 85.08°E, 28.58°N]` (`BUDHI_GANDAKI_BASIN`, completely separate from `LANGTANG_LIRUNG_AOI`).
-- **Total Product Records Discovered:** **50 products**
-  - Pre-Event (1 Sep – 10 Oct 2026): 6 S1 SLC, 6 S1 GRD, 20 S2 L2A (32 products)
-  - Event Day (11 Oct 2026): 1 S1 SLC, 1 S1 GRD, 2 S2 L2A (4 products; S2 cloud cover 15.5% and 20.4%)
-  - Post-Event (12 Oct – 31 Oct 2026): 2 S1 SLC, 2 S1 GRD, 10 S2 L2A (14 products)
-- **Deliverable:** `reports/13_budhi_gandaki_scene_availability.csv`.
-- **Processing Status:** All records catalogued as `DISCOVERED_IN_CATALOGUE`.
+### 4.1 Amplitude Precursor Analysis (DOI `10.31223/X59N5N`)
+- **Title:** *No detectable precursor in Sentinel-1 backscatter before the 26 August 2026 Langtang Lirung rock–ice avalanche, Nepal*
+- **DOI / URL:** [https://doi.org/10.31223/X59N5N](https://doi.org/10.31223/X59N5N)
+- **Publication Date:** **6 September 2026** (updated **8 September 2026**)
+- **Category:** `PREPRINT` (Status: `PREPRINT_UNREVIEWED`)
+- **Core Claim:** Systematic analysis of Sentinel-1 Level-1 GRD radar backscatter amplitude ($\sigma^0$) at 12-day intervals showed no anomalous precursory deviation prior to collapse. Coherent sub-centimeter creep does not alter macroscopic surface roughness.
+- **Guardrail:** Phase-unwrapping findings are **not** attributed to this DOI.
+
+### 4.2 Interferometric Unwrapping Limits (DOI `10.31223/X5GZ3J`)
+- **Title:** *The single-pair unwrapping ceiling is a property of the track, not of the radar: Sentinel-1 interferometric detection limits in high-relief Himalayan terrain*
+- **DOI / URL:** [https://doi.org/10.31223/X5GZ3J](https://doi.org/10.31223/X5GZ3J)
+- **Publication Date:** **18 September 2026**
+- **Category:** `PREPRINT` (Status: `PREPRINT_UNREVIEWED`)
+- **Core Claim:** High-relief steep mountain slopes impose severe phase unwrapping ceilings on 12-day C-band interferograms when displacement gradients exceed $\lambda / (2 \cdot \Delta x)$. Phase aliasing prevents standard 2D unwrappers from resolving rapid pre-collapse acceleration.
 
 ---
 
 ## 5. Comprehensive Evidence Provenance Table
 
-| Category | Organization / Author | Publication Date | URL | Key Claim Supported | Scientific Status & Confidence |
+| Category | Organization / Author | Publication Date | URL / DOI | Key Claim Supported | Scientific Status & Confidence |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Official Report** | **ICIMOD** | 2026-10-13 | [lib.icimod.org/records/qdvc1-tc123](https://lib.icimod.org/records/qdvc1-tc123) | Pre-collapse InSAR LOS displacement up to 40 cm between 7 July and 24 Aug 2026; detachment scar on NW face spanning ~5,500–6,800 m. | `HIGH (Confirmed Official Report)` |
+| **Official Report** | **ICIMOD** | 2026-10-13 | [lib.icimod.org/records/qdvc1-tc123](https://lib.icimod.org/records/qdvc1-tc123) | Pre-collapse InSAR LOS displacement up to 40 cm between 7 July and 24 Aug 2026. | `HIGH (Confirmed Official Report)` |
 | **Official Report** | **ICIMOD** | 2026-10-11 | [icimod.org/.../landslide-dam-breach...](https://www.icimod.org/press-releases/landslide-dam-breach-may-have-triggered-budhi-gandaki-flash-flood/) | Initial flood surge observation; hypothesized landslide dam. | `PRELIMINARY_SUPERSEDED` |
 | **Official Report** | **ICIMOD** | 2026-10-13 | [icimod.org/.../second-major-himalayan-flood...](https://www.icimod.org/press-releases/second-major-himalayan-flood-in-seven-weeks-raises-new-questions-about-mountain-risk/) | Confirmed high-mountain rock avalanche and glacier collapse trigger for Budhi Gandaki. | `HIGH (Confirmed Official Report)` |
 | **Field Report** | **Nepal Red Cross** | 2026-10-17 | [nrcs.org/.../gorkha-sitrep3/](https://nrcs.org/resources/news-and-events/gorkha-sitrep3/) | Downstream flood corridor impact, infrastructure damage in Gorkha. | `HIGH (Field Humanitarian)` |
 | **Field Report** | **Nepal Red Cross** | 2026-10-29 | [nrcs.org/.../gorkha-floodresponse-sitrep4/](https://nrcs.org/resources/news-and-events/gorkha-floodresponse-sitrep4/) | Upper catchment ice-debris avalanche; debris damming at Ungdilung/Syar confluence; multiple surge pulses. | `HIGH (Field Geomorphic)` |
-| **Preprint** | **A. K. Sah (EarthArXiv)** | 2026-09-06 *(upd 2026-09-08)* | [doi.org/10.31223/x59n5n](https://doi.org/10.31223/x59n5n) | Reconciles GRD amplitude vs InSAR phase; documents C-band phase unwrapping limits in steep relief. | `PREPRINT_UNREVIEWED (Study-Specific)` |
+| **Preprint** | **A. K. Sah (EarthArXiv)** | 2026-09-06 *(upd 2026-09-08)* | [doi.org/10.31223/X59N5N](https://doi.org/10.31223/X59N5N) | GRD amplitude backscatter shows no detectable amplitude precursor prior to Langtang collapse. | `PREPRINT_UNREVIEWED (Study-Specific)` |
+| **Preprint** | **A. K. Sah (EarthArXiv)** | 2026-09-18 | [doi.org/10.31223/X5GZ3J](https://doi.org/10.31223/X5GZ3J) | Track-dependent Sentinel-1 interferometric unwrapping ceiling and detection limits in steep terrain. | `PREPRINT_UNREVIEWED (Study-Specific)` |
 | **Preprint** | **EarthArXiv 15540** | 2026-10-25 | [eartharxiv.org/repository/view/15540/](https://eartharxiv.org/repository/view/15540/) | Study-specific SAR amplitude backscatter analysis reporting no detectable pre-collapse precursor. | `PREPRINT_UNREVIEWED (Study-Specific)` |
 | **Secondary Research** | **HGR (N. Parajuli)** | 2026-10-20 | [parajulinawaraj.com.np/.../budi-gandaki-2026/](https://www.parajulinawaraj.com.np/HGR/events/budi-gandaki-2026/index.html) | Candidate detachment zone on Shringri Himal flank via 6 Oct vs 13 Oct optical comparisons. | `CANDIDATE_SECONDARY (Unresolved Geometry)` |
+
+---
+
+## 6. Current-Tree vs. Git-History Secret Audit Findings
+
+### 6.1 Current Working Tree Scan
+- **Methodology:** Content-based binary detection (`b'\x00'` null-byte evaluation) on all tracked files from `git ls-files`.
+- **Scan Coverage:**
+  - Total Tracked Files: **287**
+  - Text Files Scanned: **205** (including 14 Jupyter notebooks, all Python code, Markdown reports, JSON catalogues, CSVs, YAML, TOML, and shell scripts)
+  - Binary Files Safely Skipped: **80** (images, model pickle files, shapefiles, archives)
+  - Allowlisted Files: **2** (`.env.example` and `README.md`, containing explicit documentation placeholder templates)
+- **Current Tree Result:** **Zero detected matches.**
+
+### 6.2 Git History Audit
+- **Findings:** Historical commit `1187161` added literal secret fixtures to `tests/test_phase9_1_3_event_reconciliation.py`. These were eliminated in commit `cddef45`.
+- **Policy Enforcement:** Git history was not rewritten in this task.
+- **Mandatory Credential Rotation Advisory:** Any credentials committed to Git history in commit `1187161` must be independently rotated and revoked in the respective service provider accounts (Copernicus CDSE and CDS portals).
