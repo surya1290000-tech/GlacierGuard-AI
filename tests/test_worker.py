@@ -41,7 +41,7 @@ class TestMonitoringWorker:
             runs = worker.run_once()
 
             assert len(runs) == 5
-            assert all(r.status == "SUCCESS" for r in runs)
+            assert all(r.status == "COMPLETED_NO_NEW_ELIGIBLE_DATA" for r in runs)
 
             # Verify runs persisted to DB
             stored_runs = get_pipeline_runs(db_path=worker_settings.db_path)

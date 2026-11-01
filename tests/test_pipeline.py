@@ -55,7 +55,8 @@ class TestProcessingPipelineLifecycle:
         )
 
         assert isinstance(run, PipelineRun)
-        assert run.status == "SUCCESS"
+        assert run.status == "COMPLETED_WITH_NEW_OBSERVATION"
+        assert run.metadata.get("run_outcome") == "COMPLETED_WITH_NEW_OBSERVATION"
         assert run.stage == "COMPLETED"
         assert run.end_time is not None
         assert "MOCK_S2_001" in run.input_product_ids
@@ -69,7 +70,8 @@ class TestProcessingPipelineLifecycle:
         with patch.object(pipeline.cdse_client, "discover_and_persist", side_effect=ValueError("Test network fault")):
             run = pipeline.run_for_lake("imja_tsho")
 
-            assert run.status == "FAILED"
+            assert run.status == "SYSTEM_ERROR"
+            assert run.metadata.get("run_outcome") == "SYSTEM_ERROR"
             assert run.error_message is not None
             assert "ValueError" in run.error_message
             assert run.end_time is not None
@@ -85,4 +87,4 @@ class TestProcessingPipelineLifecycle:
             assert len(runs) == 5
             processed_lakes = [r.lake_id for r in runs]
             assert processed_lakes == pipeline_settings.list_lake_ids()
-            assert all(r.status == "SUCCESS" for r in runs)
+            assert all(r.status == "COMPLETED_NO_NEW_ELIGIBLE_DATA" for r in runs)

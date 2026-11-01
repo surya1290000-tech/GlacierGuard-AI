@@ -155,7 +155,7 @@ class CDSEClient:
             properties.get("datetime")
             or properties.get("start_datetime")
             or properties.get("end_datetime")
-            or datetime.datetime.utcnow().isoformat() + "Z"
+            or datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z"
         )
 
         # Cloud cover
@@ -176,7 +176,7 @@ class CDSEClient:
             cloud_cover_pct=float(cloud) if cloud is not None else None,
             platform=str(platform) if platform else None,
             orbit_direction=str(orbit) if orbit else None,
-            discovered_at=datetime.datetime.utcnow().isoformat() + "Z",
+            discovered_at=datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z",
             metadata={
                 "geometry": feature.get("geometry"),
                 # Keep the STAC asset map: discovery is not imagery access, but

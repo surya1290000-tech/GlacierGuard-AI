@@ -37,10 +37,15 @@ def map_status_to_user_facing(
 ) -> str:
     """Map internal monitoring status to user-facing display tier.
 
-    Enforces that stale data can NEVER be presented as SAFE.
+    Enforces that stale or aging data can NEVER be presented as current SAFE.
     """
-    if staleness_days is not None and staleness_days > 90:
+    if staleness_days is None:
+        if status.upper() in ("NORMAL", "SAFE"):
+            return "INSUFFICIENT DATA"
+    elif staleness_days > 90:
         return "STALE DATA"
+    elif staleness_days > 30 and status.upper() in ("NORMAL", "SAFE"):
+        return "WATCH"
 
     mapping = {
         "NORMAL": "SAFE",
@@ -92,7 +97,7 @@ class RiskEngine:
         except KeyError:
             return self._build_unknown_lake_alert(lake_id)
 
-        now_str = datetime.datetime.utcnow().isoformat() + "Z"
+        now_str = datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z"
         ref_date = reference_date or datetime.date.today()
 
         # If both observations are completely missing
@@ -310,7 +315,7 @@ class RiskEngine:
         return MonitoringAlert(
             alert_id=f"alert_unknown_{lake_id}",
             lake_id=lake_id,
-            timestamp=datetime.datetime.utcnow().isoformat() + "Z",
+            timestamp=datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z",
             status="INSUFFICIENT_DATA",
             user_facing_status="INSUFFICIENT DATA",
             data_quality="LOW",

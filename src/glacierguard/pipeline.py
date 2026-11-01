@@ -20,7 +20,7 @@ Pipeline Stages:
 import datetime
 import logging
 import traceback
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 from pathlib import Path
 import numpy as np
 import uuid
@@ -72,63 +72,157 @@ class ProcessingPipeline:
 
     @staticmethod
     def _asset_key_map(assets: Any, sensor: str) -> Dict[str, Dict[str, Any]]:
-        """Resolve common STAC asset labels without guessing nonexistent assets."""
+        """Resolve actual STAC asset keys for Sentinel-1 and Sentinel-2.
+
+        CDSE STAC responses provide specific resolution-labeled keys:
+        - Sentinel-2: B03_20m, B03_10m, B11_20m, SCL_20m
+        - Sentinel-1: VV, measurement, etc.
+        """
         if not isinstance(assets, dict):
             return {}
         resolved: Dict[str, Dict[str, Any]] = {}
-        aliases = ({"B03": ("B03", "b03", "green"), "B11": ("B11", "b11", "swir16"), "SCL": ("SCL", "scl")}
-                   if sensor == "SENTINEL-2" else {"VV": ("VV", "vv")})
-        for canonical, names in aliases.items():
+        if sensor == "SENTINEL-2":
+            candidates = {
+                "B03": ("B03_20m", "B03_10m", "B03", "b03", "green", "B3"),
+                "B11": ("B11_20m", "B11_10m", "B11", "b11", "swir16", "swir", "B12"),
+                "SCL": ("SCL_20m", "SCL_60m", "SCL", "scl", "scene_classification"),
+            }
+        else:
+            candidates = {
+                "VV": ("VV", "vv", "s1-grd-vv", "vv-grd", "measurement", "amplitude-vv"),
+            }
+
+        for canonical, names in candidates.items():
             for name in names:
                 if name in assets and isinstance(assets[name], dict):
                     resolved[canonical] = assets[name]
                     break
         return resolved
 
-    def _process_product(self, product: SatelliteProduct, lake_id: str) -> Optional[ObservationRecord]:
-        sensor = "SENTINEL-2" if product.collection.lower() == "sentinel-2-l2a" else "SENTINEL-1" if product.collection.lower() == "sentinel-1-grd" else None
+    def _process_product(
+        self, product: SatelliteProduct, lake_id: str
+    ) -> Tuple[Optional[ObservationRecord], str, Optional[str]]:
+        """Process a discovered satellite product into a lake observation.
+
+        Returns (obs, outcome, detail_message) where outcome is one of:
+        'COMPLETED', 'SKIPPED', 'ACCESS_FAILED', 'QA_REJECTED', 'REQUIRES_REVIEW', 'FAILED'.
+        """
+        sensor = (
+            "SENTINEL-2" if product.collection.lower() == "sentinel-2-l2a"
+            else "SENTINEL-1" if product.collection.lower() == "sentinel-1-grd"
+            else None
+        )
         if sensor is None:
-            return None
-        algorithm_version = "s2-mndwi-scl-v1" if sensor == "SENTINEL-2" else "s1-vv-lee-v1"
+            return None, "SKIPPED", f"Unsupported collection: {product.collection}"
+
+        algorithm_version = "s2-mndwi-scl-v2" if sensor == "SENTINEL-2" else "s1-vv-lee-v2"
         previous = get_product_processing(product.product_id, algorithm_version, self.settings.db_path)
         if previous and previous["status"] == "COMPLETED":
-            return None
-        save_product_processing(product.product_id, algorithm_version, lake_id, "QUEUED", "QUEUED", self.settings.db_path)
+            return None, "SKIPPED", "Already processed"
+
+        save_product_processing(
+            product.product_id, algorithm_version, lake_id, "QUEUED", "QUEUED", self.settings.db_path
+        )
         assets = self._asset_key_map(product.metadata.get("assets"), sensor)
         required = {"B03", "B11", "SCL"} if sensor == "SENTINEL-2" else {"VV"}
         if set(assets) != required:
             reason = f"Missing required {sensor} assets: {sorted(required - set(assets))}"
-            save_product_processing(product.product_id, algorithm_version, lake_id, "SKIPPED", "ACCESS", self.settings.db_path, reason)
-            return None
+            save_product_processing(
+                product.product_id, algorithm_version, lake_id, "SKIPPED", "ACCESS", self.settings.db_path, reason
+            )
+            return None, "SKIPPED", reason
+
         try:
-            save_product_processing(product.product_id, algorithm_version, lake_id, "RUNNING", "DOWNLOADING", self.settings.db_path)
-            local = {key: self.asset_client.fetch(product.product_id, key, asset).path for key, asset in assets.items()}
-            save_product_processing(product.product_id, algorithm_version, lake_id, "RUNNING", "PROCESSING", self.settings.db_path)
+            save_product_processing(
+                product.product_id, algorithm_version, lake_id, "RUNNING", "DOWNLOADING", self.settings.db_path
+            )
+            local = {
+                key: self.asset_client.fetch(product.product_id, key, asset).path
+                for key, asset in assets.items()
+            }
+            save_product_processing(
+                product.product_id, algorithm_version, lake_id, "RUNNING", "PROCESSING", self.settings.db_path
+            )
+
             if sensor == "SENTINEL-2":
-                mask, metrics = process_sentinel2(local, self.settings.min_valid_fraction)
+                mask, metrics = process_sentinel2(
+                    local,
+                    min_valid_fraction=self.settings.min_valid_fraction,
+                    lake_id=lake_id,
+                )
             else:
-                mask, metrics = process_sentinel1(local, self.settings.get_lake_config(lake_id).sar_physically_reliable)
+                lake_cfg = self.settings.get_lake_config(lake_id)
+                sar_reliable = lake_cfg.sar_physically_reliable if lake_cfg else True
+                mask, metrics = process_sentinel1(
+                    local,
+                    lake_id=lake_id,
+                    sar_reliable=sar_reliable,
+                )
+
             artifact_dir = self.settings.processing_cache_dir / "masks"
             artifact_dir.mkdir(parents=True, exist_ok=True)
             artifact = artifact_dir / f"{product.product_id}_{algorithm_version}.npy"
             np.save(artifact, mask)
+
+            area_0m = float(metrics.get("area_0m_km2", metrics["area_km2"]))
+            area_50m = float(metrics.get("area_50m_km2", metrics["area_km2"]))
+
             obs = ObservationRecord(
-                observation_id=f"obs_{product.product_id}_{algorithm_version}", lake_id=lake_id, sensor=sensor,
-                acquisition_date=product.acquisition_date, product_id=product.product_id,
-                area_0m_km2=float(metrics["area_km2"]), area_50m_km2=float(metrics["area_km2"]),
-                valid_frac=float(metrics["valid_frac"]), cloud_frac=metrics.get("cloud_frac"), vv_median_db=metrics.get("vv_median_db"),
-                processing_algorithm="MNDWI_SCL" if sensor == "SENTINEL-2" else "LEE_VV", processing_version=algorithm_version,
-                artifact_path=str(artifact), crs=str(metrics["crs"]), resolution_m=float(metrics["resolution_m"]), quality_status="QA_VALID",
-                provenance={"source_product_id": product.product_id, "asset_keys": sorted(local), "collection": product.collection},
+                observation_id=f"obs_{product.product_id}_{algorithm_version}",
+                lake_id=lake_id,
+                sensor=sensor,
+                acquisition_date=product.acquisition_date.split("T")[0] if "T" in product.acquisition_date else product.acquisition_date,
+                product_id=product.product_id,
+                area_0m_km2=area_0m,
+                area_50m_km2=area_50m,
+                valid_frac=float(metrics["valid_frac"]),
+                cloud_frac=metrics.get("cloud_frac"),
+                vv_median_db=metrics.get("vv_median_db"),
+                processing_algorithm="MNDWI_SCL" if sensor == "SENTINEL-2" else "LEE_VV",
+                processing_version=algorithm_version,
+                artifact_path=str(artifact),
+                crs=str(metrics["crs"]),
+                resolution_m=float(metrics["resolution_m"]),
+                quality_status="QA_VALID",
+                provenance={
+                    "source_product_id": product.product_id,
+                    "asset_keys": sorted(local),
+                    "collection": product.collection,
+                    "geometry_source": metrics.get("geometry_source", "GLO_v1.02_2023"),
+                    "roi_buffer_m": metrics.get("roi_buffer_m", 50.0),
+                },
             )
             save_observation(obs, self.settings.db_path)
-            save_product_processing(product.product_id, algorithm_version, lake_id, "COMPLETED", "COMPLETED", self.settings.db_path, diagnostics=dict(metrics))
-            return obs
-        except (AssetAccessError, RasterProcessingError) as exc:
-            status = "REQUIRES_REVIEW" if "requires review" in str(exc).lower() else "FAILED"
-            save_product_processing(product.product_id, algorithm_version, lake_id, status, "QA_VALIDATION", self.settings.db_path, str(exc))
-            logger.warning("Product %s was not converted into an observation: %s", product.product_id, exc)
-            return None
+            save_product_processing(
+                product.product_id, algorithm_version, lake_id, "COMPLETED", "COMPLETED",
+                self.settings.db_path, diagnostics=dict(metrics)
+            )
+            return obs, "COMPLETED", None
+
+        except AssetAccessError as exc:
+            save_product_processing(
+                product.product_id, algorithm_version, lake_id, "ACCESS_FAILED", "ACCESS",
+                self.settings.db_path, str(exc)
+            )
+            logger.warning("Asset access failed for %s: %s", product.product_id, exc)
+            return None, "ACCESS_FAILED", str(exc)
+
+        except RasterProcessingError as exc:
+            status = "REQUIRES_REVIEW" if "requires review" in str(exc).lower() else "QA_REJECTED"
+            save_product_processing(
+                product.product_id, algorithm_version, lake_id, status, "QA_VALIDATION",
+                self.settings.db_path, str(exc)
+            )
+            logger.warning("Product %s failed QA/processing (%s): %s", product.product_id, status, exc)
+            return None, status, str(exc)
+
+        except Exception as exc:
+            save_product_processing(
+                product.product_id, algorithm_version, lake_id, "FAILED", "PROCESSING",
+                self.settings.db_path, str(exc)
+            )
+            logger.error("Unexpected error processing %s: %s", product.product_id, exc)
+            return None, "FAILED", str(exc)
 
     def run_for_lake(
         self,
@@ -158,8 +252,8 @@ class ProcessingPipeline:
         PipelineRun
             Traceable run record with execution status and artifacts.
         """
-        run_id = f"run_{lake_id}_{datetime.datetime.utcnow().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
-        start_time = datetime.datetime.utcnow().isoformat() + "Z"
+        run_id = f"run_{lake_id}_{datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+        start_time = datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z"
 
         run = PipelineRun(
             run_id=run_id,
@@ -194,20 +288,54 @@ class ProcessingPipeline:
             run.stage = "INGEST"
             save_pipeline_run(run, self.settings.db_path)
 
+            num_products_discovered = len(products)
+            num_products_eligible = len([
+                p for p in products
+                if p.collection.lower() in ("sentinel-2-l2a", "sentinel-1-grd")
+            ])
+            num_assets_accessed = 0
+            num_images_processed = 0
+            num_observations_created = 0
+            num_observations_qa_rejected = 0
+            num_products_requiring_review = 0
+            num_processing_failed = 0
+            product_outcomes: List[str] = []
+
             # Convert only successfully accessed and QA-approved products into
             # observations.  Catalogue rows alone are never observations.
             if mock_observations is not None:
                 for obs in mock_observations:
                     save_observation(obs, self.settings.db_path)
+                num_observations_created += len(mock_observations)
+                num_images_processed += len(mock_observations)
                 obs_list = mock_observations
             else:
                 for product in products:
-                    self._process_product(product, lake_id)
+                    obs, outcome, detail = self._process_product(product, lake_id)
+                    product_outcomes.append(outcome)
+                    if outcome == "COMPLETED":
+                        num_observations_created += 1
+                        num_images_processed += 1
+                        num_assets_accessed += len(product.metadata.get("assets", {}))
+                    elif outcome == "QA_REJECTED":
+                        num_observations_qa_rejected += 1
+                        num_images_processed += 1
+                        num_assets_accessed += len(product.metadata.get("assets", {}))
+                    elif outcome == "REQUIRES_REVIEW":
+                        num_products_requiring_review += 1
+                        num_images_processed += 1
+                        num_assets_accessed += len(product.metadata.get("assets", {}))
+                    elif outcome in ("ACCESS_FAILED", "FAILED"):
+                        num_processing_failed += 1
+
                 obs_list = get_observations(lake_id=lake_id, limit=20, db_path=self.settings.db_path)
 
             # Separate latest S1 and S2 observations
             s2_obs = next((o for o in obs_list if o.sensor.upper() == "SENTINEL-2"), None)
             s1_obs = next((o for o in obs_list if o.sensor.upper() == "SENTINEL-1"), None)
+            operational_evaluation_used_previous_obs = (
+                num_observations_created == 0 and (s2_obs is not None or s1_obs is not None)
+            )
 
             # ── Stage 3: PREPROCESS & QA ─────────────────────────────────────
             logger.info("[%s] Stage 3: PREPROCESS & QA for %s", run_id, lake_id)
@@ -267,33 +395,65 @@ class ProcessingPipeline:
             run.stage = "PERSIST"
             save_monitoring_alert(alert, self.settings.db_path)
 
-            # Mark run as SUCCESS
-            run.status = "SUCCESS"
+            # ── Determine Semantic Pipeline Run Outcome ───────────────────────
+            if num_observations_created > 0 and (
+                num_processing_failed > 0 or num_observations_qa_rejected > 0 or num_products_requiring_review > 0
+            ):
+                run_outcome = "PARTIAL_SUCCESS"
+            elif num_observations_created > 0:
+                run_outcome = "COMPLETED_WITH_NEW_OBSERVATION"
+            elif num_processing_failed > 0:
+                run_outcome = "PROCESSING_FAILED"
+            elif num_products_discovered == 0 or num_products_eligible == 0:
+                run_outcome = "COMPLETED_NO_NEW_ELIGIBLE_DATA"
+            elif num_images_processed == 0 and all(out == "SKIPPED" for out in product_outcomes):
+                run_outcome = "COMPLETED_NO_NEW_ELIGIBLE_DATA"
+            elif num_observations_qa_rejected > 0 or num_products_requiring_review > 0:
+                run_outcome = "COMPLETED_NO_NEW_ELIGIBLE_DATA"
+            else:
+                run_outcome = "DISCOVERY_ONLY"
+
+            run.status = run_outcome
             run.stage = "COMPLETED"
-            run.end_time = datetime.datetime.utcnow().isoformat() + "Z"
-            run.metadata["alert_id"] = alert.alert_id
-            run.metadata["user_facing_status"] = alert.user_facing_status
+            run.end_time = datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z"
+            run.metadata.update({
+                "alert_id": alert.alert_id,
+                "user_facing_status": alert.user_facing_status,
+                "run_outcome": run_outcome,
+                "num_products_discovered": num_products_discovered,
+                "num_products_eligible": num_products_eligible,
+                "num_assets_accessed": num_assets_accessed,
+                "num_images_processed": num_images_processed,
+                "num_observations_created": num_observations_created,
+                "num_observations_qa_rejected": num_observations_qa_rejected,
+                "num_products_requiring_review": num_products_requiring_review,
+                "num_processing_failed": num_processing_failed,
+                "operational_evaluation_used_previous_obs": operational_evaluation_used_previous_obs,
+                "product_outcomes": product_outcomes,
+            })
             save_pipeline_run(run, self.settings.db_path)
 
             logger.info(
-                "[%s] Completed pipeline for %s: %s",
+                "[%s] Completed pipeline for %s: %s (outcome: %s)",
                 run_id,
                 lake_id,
                 alert.user_facing_status,
+                run_outcome,
             )
             return run
 
         except Exception as exc:
             logger.error("[%s] Pipeline failed for %s: %s", run_id, lake_id, exc)
-            run.status = "FAILED"
+            run.status = "SYSTEM_ERROR"
             run.error_message = f"{type(exc).__name__}: {str(exc)}"
-            run.end_time = datetime.datetime.utcnow().isoformat() + "Z"
+            run.end_time = datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z"
+            run.metadata["run_outcome"] = "SYSTEM_ERROR"
             run.metadata["traceback"] = traceback.format_exc()
             save_pipeline_run(run, self.settings.db_path)
 
             # Emit SYSTEM_ERROR alert
             err_alert = MonitoringAlert(
-                alert_id=f"alert_err_{lake_id}_{datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')}",
+                alert_id=f"alert_err_{lake_id}_{datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d%H%M%S')}",
                 lake_id=lake_id,
                 timestamp=run.end_time,
                 status="SYSTEM_ERROR",

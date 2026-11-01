@@ -6,6 +6,7 @@ and seeding from baseline QA CSV.
 """
 
 from pathlib import Path
+from typing import Optional
 import pytest
 
 from glacierguard.db import (
@@ -174,9 +175,81 @@ class TestSeedFromQACSV:
         assert len(alerts) == 5
         assert "imja_tsho" in alerts
         assert "lower_barun" in alerts
-        assert alerts["imja_tsho"].user_facing_status == "SAFE"
+        # Because the baseline date (2026-09-28) is >30 days old relative to current date,
+        # it correctly maps to WATCH rather than presenting stale data as current SAFE.
+        assert alerts["imja_tsho"].user_facing_status == "WATCH"
         assert alerts["lower_barun"].user_facing_status == "ELEVATED ALERT"
+
+        # Verify historical research provenance
+        obs = get_observations("imja_tsho", db_path=test_db_path)
+        assert len(obs) > 0
+        assert all(o.quality_status == "HISTORICAL_RESEARCH_BASELINE" for o in obs)
+        assert all(o.provenance.get("source") == "historical_baseline_research_seed" for o in obs)
 
         # Re-seeding when data already exists should return 0 (idempotent)
         reseed = seed_from_qa_csv(db_path=test_db_path)
         assert reseed == 0
+
+    @pytest.mark.parametrize(
+        "days_ago,expected_user_status",
+        [
+            (10, "SAFE"),
+            (45, "WATCH"),
+            (100, "STALE DATA"),
+            (None, "INSUFFICIENT DATA"),
+        ],
+    )
+    def test_historical_baseline_staleness_status_mapping(
+        self, test_db_path: Path, tmp_path: Path, days_ago: Optional[int], expected_user_status: str
+    ):
+        """Verify historical NORMAL baseline maps truthfully across age boundaries."""
+        import datetime
+        import pandas as pd
+
+        if days_ago is not None:
+            acq_date = (datetime.date.today() - datetime.timedelta(days=days_ago)).isoformat()
+        else:
+            acq_date = None
+
+        csv_content = pd.DataFrame([{
+            "lake_id": "test_lake",
+            "lake_name": "Test Lake",
+            "glo_id": "GLO_TEST",
+            "utm_epsg": 32645,
+            "glo_2023_vector_ref_km2": 1.0,
+            "old_hist_ref_km2": 0.8,
+            "latest_s2_date": acq_date,
+            "s2_valid_frac": 1.0,
+            "s2_cloud_frac": 0.0,
+            "s2_area_0m_km2": 1.0,
+            "s2_area_50m_km2": 1.0,
+            "s2_median_area_km2": 1.0,
+            "s2_cv_pct": 1.0,
+            "latest_s1_date": None,
+            "s1_area_0m_km2": None,
+            "s1_area_50m_km2": None,
+            "s1_median_area_km2": None,
+            "s1_cv_pct": None,
+            "s1_vv_median_db": None,
+            "temporal_pair_days": None,
+            "temporal_matching_flag": "SINGLE_SENSOR",
+            "cross_sensor_disagreement_pct": None,
+            "sensor_agreement_status": "OPTICAL_ONLY",
+            "primary_monitoring_area_km2": 1.0,
+            "diff_from_glo_2023_km2": 0.0,
+            "diff_from_glo_2023_pct": 0.0,
+            "data_quality": "HIGH",
+            "monitoring_status": "NORMAL",
+            "status_rationale": "Stable",
+            "extraction_limitations": "None",
+        }])
+        custom_csv = tmp_path / "test_qa.csv"
+        csv_content.to_csv(custom_csv, index=False)
+
+        custom_db = tmp_path / f"test_stale_{days_ago}.db"
+        seeded = seed_from_qa_csv(csv_path=custom_csv, db_path=custom_db)
+        assert seeded == 1
+
+        alerts = get_latest_monitoring_alerts(custom_db)
+        assert "test_lake" in alerts
+        assert alerts["test_lake"].user_facing_status == expected_user_status

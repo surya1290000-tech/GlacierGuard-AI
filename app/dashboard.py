@@ -677,14 +677,15 @@ def render_lake_explorer(df: pd.DataFrame, lake_id: str):
 # Section 4: Satellite Observations
 # ─────────────────────────────────────────────────────────────────────────
 def render_satellite_observations():
-    """Render catalogued satellite products discovered via CDSE STAC."""
-    st.markdown("## 📡 CDSE STAC Satellite Catalogue")
+    """Render verified lake observations and catalogued satellite scenes."""
+    st.markdown("## 🛰️ Lake Observations & STAC Catalogue")
     st.markdown(
         """
         <div class="provenance-card">
-            Products discovered from the <strong>Copernicus Data Space Ecosystem (CDSE)</strong>
-            STAC v1 catalogue API across monitored lake bounding boxes. Catalogue metadata is ingested
-            without fabrication; scenes are deduplicated into the SQLite database.
+            <strong>Observation Provenance:</strong> Processed observations reflect real surface-water
+            measurements derived from Sentinel-1 GRD and Sentinel-2 L2A rasters clipped to verified
+            GLO v1.02 lake boundaries. Raw discovered STAC scenes are catalogue records and are never
+            confused with verified lake measurements.
         </div>
         """,
         unsafe_allow_html=True,
@@ -697,6 +698,30 @@ def render_satellite_observations():
     )
 
     target_lake = None if lake_filter == "ALL" else lake_filter
+
+    st.subheader("🔬 Extracted Lake Observations")
+    obs_list = get_observations(target_lake, limit=50, db_path=default_settings.db_path)
+    if obs_list:
+        obs_data = [
+            {
+                "Observation ID": o.observation_id[:35] + "..." if len(o.observation_id) > 35 else o.observation_id,
+                "Lake": get_lake_display_name(o.lake_id),
+                "Sensor": o.sensor,
+                "Date": o.acquisition_date,
+                "Core Area (0m)": f"{o.area_0m_km2:.3f} km²" if o.area_0m_km2 is not None else "—",
+                "Envelope (50m)": f"{o.area_50m_km2:.3f} km²" if o.area_50m_km2 is not None else "—",
+                "Valid Frac": f"{o.valid_frac * 100:.1f}%" if o.valid_frac is not None else "—",
+                "Quality Status": o.quality_status,
+                "Geometry Source": (o.provenance or {}).get("geometry_source", "GLO_v1.02_2023"),
+            }
+            for o in obs_list
+        ]
+        st.dataframe(pd.DataFrame(obs_data), use_container_width=True, hide_index=True)
+    else:
+        st.info("No processed lake observations recorded yet.")
+
+    st.markdown("---")
+    st.subheader("📡 Discovered CDSE STAC Catalogue Products")
     products = get_satellite_products(target_lake, limit=50, db_path=default_settings.db_path)
 
     if products:

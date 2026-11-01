@@ -67,11 +67,16 @@ class MonitoringWorker:
         self.setup()
         logger.info("Starting surveillance cycle for %d lakes...", len(self.settings.list_lake_ids()))
         runs = self.pipeline.run_all_lakes(start_date=start_date, end_date=end_date)
-        successes = sum(1 for r in runs if r.status == "SUCCESS")
+        successes = sum(
+            1 for r in runs
+            if r.status in ("COMPLETED_WITH_NEW_OBSERVATION", "COMPLETED_NO_NEW_ELIGIBLE_DATA", "PARTIAL_SUCCESS", "SUCCESS")
+        )
+        new_obs_count = sum(r.metadata.get("num_observations_created", 0) for r in runs)
         logger.info(
-            "Cycle completed: %d/%d lakes processed successfully.",
+            "Cycle completed: %d/%d lakes evaluated (%d new observations created).",
             successes,
             len(runs),
+            new_obs_count,
         )
         return runs
 

@@ -185,7 +185,7 @@ def save_satellite_products(
                         p.cloud_cover_pct,
                         p.platform,
                         p.orbit_direction,
-                        p.discovered_at or datetime.datetime.utcnow().isoformat() + "Z",
+                        p.discovered_at or datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z",
                         json.dumps(p.metadata),
                     ),
                 )
@@ -283,7 +283,7 @@ def save_observation(
                     obs.valid_frac,
                     obs.cloud_frac,
                     obs.vv_median_db,
-                    obs.created_at or datetime.datetime.utcnow().isoformat() + "Z",
+                    obs.created_at or datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z",
                     obs.notes,
                     obs.processing_algorithm,
                     obs.processing_version,
@@ -364,7 +364,7 @@ def get_product_processing(product_id: str, algorithm_version: str, db_path: Opt
 
 def save_product_processing(product_id: str, algorithm_version: str, lake_id: str, status: str, stage: str, db_path: Optional[Path] = None, error_message: Optional[str] = None, diagnostics: Optional[Dict[str, Any]] = None) -> None:
     init_db(db_path)
-    now = datetime.datetime.utcnow().isoformat() + "Z"
+    now = datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z"
     with get_db_connection(db_path) as conn:
         with conn:
             conn.execute("""INSERT INTO product_processing(product_id, algorithm_version, lake_id, status, stage, started_at, ended_at, error_message, diagnostics_json)
@@ -378,7 +378,7 @@ def save_model_inference_record(inference_id: str, lake_id: str, status: str, fe
         with conn:
             conn.execute("""INSERT OR REPLACE INTO model_inference_records
             (inference_id, lake_id, created_at, model_version, status, features_json, prediction, reason)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", (inference_id, lake_id, datetime.datetime.utcnow().isoformat()+"Z", "09_final_fused_xgboost", status, json.dumps(features) if features else None, prediction, reason))
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", (inference_id, lake_id, datetime.datetime.now(datetime.timezone.utc).isoformat()+"Z", "09_final_fused_xgboost", status, json.dumps(features) if features else None, prediction, reason))
 
 
 # ── Pipeline Runs ────────────────────────────────────────────────────────────
@@ -621,11 +621,10 @@ def seed_from_qa_csv(
         return 0
 
     count = 0
-    now_str = datetime.datetime.utcnow().isoformat() + "Z"
+    now_str = datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z"
     for _, row in df.iterrows():
         lake_id = str(row["lake_id"])
         status = str(row["monitoring_status"])
-        user_facing = map_status_to_user_facing(status)
         baseline = float(row["glo_2023_vector_ref_km2"])
         primary = float(row["primary_monitoring_area_km2"])
         diff_km2 = float(row["diff_from_glo_2023_km2"])
@@ -634,15 +633,23 @@ def seed_from_qa_csv(
         s2_date = str(row["latest_s2_date"]) if pd_not_na(row.get("latest_s2_date")) else None
         s1_date = str(row["latest_s1_date"]) if pd_not_na(row.get("latest_s1_date")) else None
 
+        # Determine latest actual observation date (do NOT substitute current time for observation date!)
+        available_dates = [d for d in (s2_date, s1_date) if d]
+        latest_date = max(available_dates) if available_dates else None
+
         # Compute staleness
         from glacierguard.dashboard_data import compute_staleness_days
-        staleness = compute_staleness_days(s2_date)
+        staleness = compute_staleness_days(latest_date) if latest_date else None
 
-        # Create alert record
+        # Pass staleness_days to map_status_to_user_facing so aging/stale data cannot appear as current SAFE
+        user_facing = map_status_to_user_facing(status, staleness_days=staleness)
+
+        # Create alert record with actual acquisition timestamp
+        alert_timestamp = f"{latest_date}T12:00:00Z" if latest_date else now_str
         alert = MonitoringAlert(
-            alert_id=f"seed_{lake_id}_{s2_date or now_str[:10]}",
+            alert_id=f"seed_{lake_id}_{latest_date or 'missing'}",
             lake_id=lake_id,
-            timestamp=f"{s2_date or '2026-09-28'}T12:00:00Z",
+            timestamp=alert_timestamp,
             status=status,
             user_facing_status=user_facing,
             primary_area_km2=primary,
@@ -660,7 +667,9 @@ def seed_from_qa_csv(
             data_quality=str(row.get("data_quality", "MEDIUM")),
             staleness_days=staleness,
             evidence={
-                "source": "10_2_five_lake_monitoring_qa.csv",
+                "source": "historical_baseline_research_seed",
+                "seed_file": "10_2_five_lake_monitoring_qa.csv",
+                "latest_observation_date": latest_date,
                 "s2_date": s2_date,
                 "s1_date": s1_date,
                 "s2_area_0m_km2": float(row["s2_area_0m_km2"]) if pd_not_na(row.get("s2_area_0m_km2")) else None,
@@ -671,7 +680,7 @@ def seed_from_qa_csv(
         )
         save_monitoring_alert(alert, db_path)
 
-        # Also create initial observation records
+        # Also create initial observation records with clear historical provenance
         if s2_date:
             obs_s2 = ObservationRecord(
                 observation_id=f"seed_s2_{lake_id}_{s2_date}",
@@ -682,7 +691,12 @@ def seed_from_qa_csv(
                 area_50m_km2=float(row["s2_area_50m_km2"]) if pd_not_na(row.get("s2_area_50m_km2")) else None,
                 valid_frac=float(row["s2_valid_frac"]) if pd_not_na(row.get("s2_valid_frac")) else None,
                 cloud_frac=float(row["s2_cloud_frac"]) if pd_not_na(row.get("s2_cloud_frac")) else None,
-                notes="Seeded from research baseline QA CSV",
+                quality_status="HISTORICAL_RESEARCH_BASELINE",
+                notes="Seeded from research baseline QA CSV (10_2_five_lake_monitoring_qa.csv)",
+                provenance={
+                    "source": "historical_baseline_research_seed",
+                    "seed_file": "10_2_five_lake_monitoring_qa.csv",
+                },
             )
             save_observation(obs_s2, db_path)
 
@@ -695,7 +709,12 @@ def seed_from_qa_csv(
                 area_0m_km2=float(row["s1_area_0m_km2"]) if pd_not_na(row.get("s1_area_0m_km2")) else None,
                 area_50m_km2=float(row["s1_area_50m_km2"]) if pd_not_na(row.get("s1_area_50m_km2")) else None,
                 vv_median_db=float(row["s1_vv_median_db"]) if pd_not_na(row.get("s1_vv_median_db")) else None,
-                notes="Seeded from research baseline QA CSV",
+                quality_status="HISTORICAL_RESEARCH_BASELINE",
+                notes="Seeded from research baseline QA CSV (10_2_five_lake_monitoring_qa.csv)",
+                provenance={
+                    "source": "historical_baseline_research_seed",
+                    "seed_file": "10_2_five_lake_monitoring_qa.csv",
+                },
             )
             save_observation(obs_s1, db_path)
 
