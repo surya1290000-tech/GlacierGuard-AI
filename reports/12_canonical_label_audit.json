@@ -1,0 +1,185 @@
+{
+  "audit_metadata": {
+    "title": "Phase 9.1.4 Canonical Classification Label Reconciliation & Ground-Truth Formulation",
+    "date": "2026-11-02",
+    "phase": "9.1.4",
+    "lead_ml_engineer": "GlacierGuard-AI Lead Geospatial ML Engineer",
+    "git_branch": "feature/phase9-dual-ensemble",
+    "audit_objective": "Establish deterministic, uncertainty-grounded canonical classification ground truth (STABLE, EXPANDING, UNUSUAL_CHANGE, AMBIGUOUS), resolve historical report discrepancies, and verify observation-level partition integrity prior to Phase 9.2 model training."
+  },
+  "canonical_label_semantics": {
+    "target_definitions": {
+      "delta_area_km2": "FUSED_TARGET = 0.5 * (S1_NEXT_AREA_CHANGE + S2_NEXT_AREA_CHANGE) [km\u00b2]",
+      "mean_area_km2": "MEAN_AREA = 0.5 * (S1_AREA + S2_AREA) [km\u00b2]",
+      "relative_change_pct": "RELATIVE_CHANGE_PCT_FUSED = 100.0 * FUSED_TARGET / MEAN_AREA [%]",
+      "fused_sigma_delta_km2": "FUSED_SIGMA_DELTA = 0.5 * sqrt(sigma_s1_t^2 + sigma_s1_t1^2 + sigma_s2_t^2 + sigma_s2_t1^2) [km\u00b2]"
+    },
+    "class_rules": {
+      "STABLE": {
+        "formula": "(|delta_area| <= 1.0 * sigma_delta) OR (|rel_pct| <= 5.0) OR (delta_area < 0 AND delta_area >= -3.0 * sigma_delta AND rel_pct >= -20.0)",
+        "physical_rationale": "Captures observations within the 1-sigma delineation noise floor, negligible +/-5% relative fluctuations, or moderate non-catastrophic seasonal shrinkage (evaporation/border freeze-thaw)."
+      },
+      "EXPANDING": {
+        "formula": "NOT STABLE AND delta_area > 1.0 * sigma_delta AND delta_area <= 3.0 * sigma_delta AND rel_pct > 5.0 AND rel_pct <= 20.0",
+        "physical_rationale": "Statistically meaningful expansion exceeding observation uncertainty without exhibiting catastrophic multi-sigma surge."
+      },
+      "UNUSUAL_CHANGE": {
+        "formula": "(delta_area > 3.0 * sigma_delta AND rel_pct > 20.0) OR (delta_area < -3.0 * sigma_delta AND rel_pct < -20.0)",
+        "exceptional_growth_count": 68,
+        "catastrophic_drainage_count": 47,
+        "physical_rationale": "High-confidence extreme cryospheric events satisfying BOTH multi-sigma statistical significance and large relative magnitude (>20% or <-20%)."
+      },
+      "AMBIGUOUS": {
+        "formula": "NOT (STABLE OR EXPANDING OR UNUSUAL_CHANGE)",
+        "physical_rationale": "Observations with conflicting signals between relative magnitude and measurement noise floor. Excluded from supervised training; reserved for operational quality abstention."
+      }
+    }
+  },
+  "ambiguous_observations_breakdown": {
+    "total_ambiguous": 897,
+    "total_ambiguous_pct": 7.57,
+    "categories": {
+      "category_a": {
+        "code": "CATEGORY_A_SMALL_LAKE_POS_HIGH_REL_SUB_3SIGMA",
+        "count": 497,
+        "pct_of_ambiguous": 55.41,
+        "physical_interpretation": "Small lakes with relative expansion > 20% but absolute change <= 3.0 sigma (delineation edge noise inflated by small lake area denominator)."
+      },
+      "category_b": {
+        "code": "CATEGORY_B_LARGE_LAKE_POS_HIGH_SIGMA_SUB_20PCT",
+        "count": 3,
+        "pct_of_ambiguous": 0.33,
+        "physical_interpretation": "Large lakes with absolute expansion > 3.0 sigma but relative expansion <= 20% (statistically significant growth exceeding noise, but modest relative percentage)."
+      },
+      "category_c": {
+        "code": "CATEGORY_C_SMALL_LAKE_NEG_HIGH_REL_SUB_3SIGMA",
+        "count": 393,
+        "pct_of_ambiguous": 43.81,
+        "physical_interpretation": "Small lakes with relative contraction < -20% but absolute change >= -3.0 sigma (apparent severe relative shrinkage driven by small lake denominator; within 3-sigma noise floor)."
+      },
+      "category_d": {
+        "code": "CATEGORY_D_LARGE_LAKE_NEG_HIGH_SIGMA_SUB_20PCT",
+        "count": 4,
+        "pct_of_ambiguous": 0.45,
+        "physical_interpretation": "Large lakes with absolute contraction < -3.0 sigma but relative shrinkage >= -20% (statistically significant contraction exceeding 3-sigma noise floor, but non-catastrophic relative percentage)."
+      }
+    }
+  },
+  "root_cause_analysis_previous_inconsistencies": {
+    "summary": "Discrepancies across Phase 12 artifacts arose from inconsistent handling of the 897 ambiguous observations across different reporting scripts.",
+    "discrepancy_details": [
+      {
+        "artifact": "reports/12_label_sensitivity.csv (Row 8 Hybrid)",
+        "reported_counts": {
+          "STABLE": 10760,
+          "EXPANDING": 77,
+          "UNUSUAL": 115,
+          "AMBIGUOUS": 897
+        },
+        "cause": "Accurately recorded the true conjunctions of the hybrid definition, explicitly isolating 897 ambiguous observations."
+      },
+      {
+        "artifact": "reports/12_class_distribution.csv",
+        "reported_counts": {
+          "STABLE": 11157,
+          "EXPANDING": 577,
+          "UNUSUAL": 115,
+          "AMBIGUOUS": 0
+        },
+        "cause": "Script initialized labels to STABLE and set cond_expanding = (~cond_stable) & (~cond_unusual) & (d > 0). This forced 500 positive ambiguous observations into EXPANDING (77 + 500 = 577) and the remaining 397 negative ambiguous observations into STABLE (10760 + 397 = 11157), artificially eliminating ambiguous observations."
+      },
+      {
+        "artifact": "reports/12_validation_design.md & reports/12_classification_data_audit.json",
+        "reported_counts": {
+          "STABLE": 10764,
+          "EXPANDING": 577,
+          "UNUSUAL": 508,
+          "AMBIGUOUS": 0
+        },
+        "cause": "An intermediate formulation reassigned Category C small-lake negative shrinkage (rel < -20%, N=393) to UNUSUAL_CHANGE (115 + 393 = 508), subtracting them from STABLE (11157 - 393 = 10764), while keeping EXPANDING at 577. This directly contradicted the mathematical formulas written in Section 4.1."
+      }
+    ],
+    "resolution": "Phase 9.1.4 establishes the canonical formula where the three physical classes are mutually exclusive, and all 897 ambiguous observations are explicitly accounted for as AMBIGUOUS."
+  },
+  "canonical_partition_counts": {
+    "Train (<=2021)": {
+      "Partition": "Train (<=2021)",
+      "Total_N": 8527,
+      "STABLE_N": 7744,
+      "STABLE_Pct": 90.82,
+      "EXPANDING_N": 47,
+      "EXPANDING_Pct": 0.55,
+      "UNUSUAL_CHANGE_N": 89,
+      "UNUSUAL_CHANGE_Pct": 1.04,
+      "AMBIGUOUS_N": 647,
+      "AMBIGUOUS_Pct": 7.59,
+      "Unambiguous_N": 7880,
+      "Imbalance_Ratio_Stable_to_Unusual": 87.01
+    },
+    "Val (2022)": {
+      "Partition": "Val (2022)",
+      "Total_N": 1580,
+      "STABLE_N": 1440,
+      "STABLE_Pct": 91.14,
+      "EXPANDING_N": 11,
+      "EXPANDING_Pct": 0.7,
+      "UNUSUAL_CHANGE_N": 9,
+      "UNUSUAL_CHANGE_Pct": 0.57,
+      "AMBIGUOUS_N": 120,
+      "AMBIGUOUS_Pct": 7.59,
+      "Unambiguous_N": 1460,
+      "Imbalance_Ratio_Stable_to_Unusual": 160.0
+    },
+    "Test (2023 - Reused Benchmark)": {
+      "Partition": "Test (2023 - Reused Benchmark)",
+      "Total_N": 1742,
+      "STABLE_N": 1576,
+      "STABLE_Pct": 90.47,
+      "EXPANDING_N": 19,
+      "EXPANDING_Pct": 1.09,
+      "UNUSUAL_CHANGE_N": 17,
+      "UNUSUAL_CHANGE_Pct": 0.98,
+      "AMBIGUOUS_N": 130,
+      "AMBIGUOUS_Pct": 7.46,
+      "Unambiguous_N": 1612,
+      "Imbalance_Ratio_Stable_to_Unusual": 92.71
+    },
+    "All Matched (2017-2023)": {
+      "Partition": "All Matched (2017-2023)",
+      "Total_N": 11849,
+      "STABLE_N": 10760,
+      "STABLE_Pct": 90.81,
+      "EXPANDING_N": 77,
+      "EXPANDING_Pct": 0.65,
+      "UNUSUAL_CHANGE_N": 115,
+      "UNUSUAL_CHANGE_Pct": 0.97,
+      "AMBIGUOUS_N": 897,
+      "AMBIGUOUS_Pct": 7.57,
+      "Unambiguous_N": 10952,
+      "Imbalance_Ratio_Stable_to_Unusual": 93.57
+    }
+  },
+  "unambiguous_subcohort_summary": {
+    "total_unambiguous_observations": 10952,
+    "class_distribution_unambiguous_pct": {
+      "STABLE": 98.25,
+      "EXPANDING": 0.7,
+      "UNUSUAL_CHANGE": 1.05
+    },
+    "training_unambiguous_observations": 7880,
+    "validation_unambiguous_observations": 1460,
+    "historical_test_unambiguous_observations": 1612
+  },
+  "operational_rules_vs_ground_truth_isolation": {
+    "rule_based_risk_engine_status": "RiskEngine statuses (SAFE/NORMAL, WATCH, ELEVATED/UNUSUAL_CHANGE, STALE, INSUFFICIENT_DATA) are heuristic operational alert tiers combining sensor discordance, staleness, and arbitrary percentage thresholds. They must NEVER be used as ground-truth training labels.",
+    "abstention_separation": "WATCH and INSUFFICIENT_DATA are operational quality/abstention states, NOT physical lake-change categories.",
+    "independent_target_formulation": "Supervised labels are constructed strictly from consecutive physical area observations and GLO AREA_UNCERTAINTY, completely independent of the operational rule engine."
+  },
+  "scientific_validation_guardrails": {
+    "duplicate_transitions_in_cohort": 0,
+    "exhausted_test_year_2023": "2023 historical test partition (N=1,742) is an exhausted benchmark from NB09. Evaluating 2023 for model selection, thresholding, or hyperparameter tuning is strictly prohibited.",
+    "status_of_year_2024": "2024 area values were consumed to form the 2023 target; 2024 has no consecutive next year (2025 unavailable) and cannot be treated as an untouched future holdout.",
+    "leakage_prevention": "Row-level random splitting is prohibited. Cross-validation must strictly use lake-level grouping (GroupKFold on GLO_ID). Preprocessors must fit strictly on training folds.",
+    "phase9_2_recommendation": "GO \u2014 Canonical labels are deterministic, reproducible, and mathematically reconciled across all artifacts."
+  }
+}

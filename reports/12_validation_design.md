@@ -88,19 +88,22 @@ A new ensemble will be accepted as superior to the frozen baseline **only if**:
 
 ## 4. Classification Ensemble Design (System B)
 
-### 4.1 Ground-Truth Formulation (Hybrid Schema)
+### 4.1 Ground-Truth Formulation (Canonical Hybrid Schema)
 Supervised lake condition classes are defined strictly from physical consecutive changes and GLO measurement uncertainty:
 $$\sigma_{\Delta A} = 0.5\,\sqrt{\sigma_{S1,t}^2 + \sigma_{S1,t+1}^2 + \sigma_{S2,t}^2 + \sigma_{S2,t+1}^2}$$
 
-1. **STABLE ($N=10,764$, $90.84\%$):**
+1. **STABLE ($N=10,760$, $90.81\%$ overall cohort; $N=7,744$ train, $N=1,440$ val, $N=1,576$ test):**
    $$|\Delta A| \le 1.0\,\sigma_{\Delta A} \quad \text{OR} \quad |\%\Delta A| \le 5.0\% \quad \text{OR} \quad \text{moderate shrinkage } (-3\sigma \le \Delta A < 0, \%\Delta A \ge -20\%)$$
-2. **EXPANDING ($N=577$, $4.87\%$):**
+2. **EXPANDING ($N=77$, $0.65\%$ overall cohort; $N=47$ train, $N=11$ val, $N=19$ test):**
    $$\Delta A > 1.0\,\sigma_{\Delta A} \quad \text{AND} \quad \%\Delta A > 5.0\% \quad \text{AND} \quad \Delta A \le 3.0\,\sigma_{\Delta A} \quad \text{AND} \quad \%\Delta A \le 20.0\%$$
-3. **UNUSUAL_CHANGE ($N=508$, $4.29\%$):**
+3. **UNUSUAL_CHANGE ($N=115$, $0.97\%$ overall cohort; $N=89$ train, $N=9$ val, $N=17$ test):**
    $$(\Delta A > 3.0\,\sigma_{\Delta A} \text{ and } \%\Delta A > 20.0\%) \quad \text{OR} \quad (\Delta A < -3.0\,\sigma_{\Delta A} \text{ and } \%\Delta A < -20.0\%)$$
+4. **AMBIGUOUS ($N=897$, $7.57\%$ overall cohort; $N=647$ train, $N=120$ val, $N=130$ test):**
+   $$\neg (\text{STABLE} \lor \text{EXPANDING} \lor \text{UNUSUAL\_CHANGE})$$
+   Excluded from 3-class model supervision; reserved for operational quality abstention.
 
 ### 4.2 Handling Class Imbalance
-With a 21:1 imbalance ratio:
+With an empirical imbalance ratio of 93.6:1 (Stable to Unusual):
 - **Loss Weighting:** Class weights set inversely proportional to frequencies:
   $$w_c = \frac{N}{3 \cdot N_c}$$
 - **Evaluation Metrics:**

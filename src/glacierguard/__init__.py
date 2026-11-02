@@ -42,6 +42,18 @@ from glacierguard.cdse_client import CDSEClient
 from glacierguard.pipeline import ProcessingPipeline
 from glacierguard.risk_engine import RiskEngine, evaluate_lake_status, map_status_to_user_facing
 from glacierguard.worker import MonitoringWorker
+from glacierguard.classification_labels import (
+    CLASS_STABLE,
+    CLASS_EXPANDING,
+    CLASS_UNUSUAL_CHANGE,
+    CLASS_AMBIGUOUS,
+    PHYSICAL_CLASSES,
+    ALL_LABEL_STATES,
+    classify_observation_condition,
+    classify_ambiguous_category,
+    build_canonical_matched_cohort,
+    generate_all_canonical_artifacts,
+)
 
 __all__ = [
     "__version__",
@@ -72,4 +84,14 @@ __all__ = [
     "evaluate_lake_status",
     "map_status_to_user_facing",
     "MonitoringWorker",
+    "CLASS_STABLE",
+    "CLASS_EXPANDING",
+    "CLASS_UNUSUAL_CHANGE",
+    "CLASS_AMBIGUOUS",
+    "PHYSICAL_CLASSES",
+    "ALL_LABEL_STATES",
+    "classify_observation_condition",
+    "classify_ambiguous_category",
+    "build_canonical_matched_cohort",
+    "generate_all_canonical_artifacts",
 ]

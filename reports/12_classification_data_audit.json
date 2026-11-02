@@ -12,9 +12,10 @@
     "combined_uncertainty_sigma_delta": "0.5 * sqrt(sigma_s1_t^2 + sigma_s1_t1^2 + sigma_s2_t^2 + sigma_s2_t1^2) [km\u00b2]"
   },
   "candidate_classes": {
-    "STABLE": "Annual lake area change within defensible measurement noise floor (|delta| <= 1.0 sigma_delta OR |rel| <= 5% OR non-catastrophic shrinkage).",
-    "EXPANDING": "Statistically meaningful expansion exceeding observation uncertainty (> 1.0 sigma_delta) up to exceptional thresholds (<= 3.0 sigma_delta, <= 20% relative expansion).",
-    "UNUSUAL_CHANGE": "Independently verified exceptional events: massive rapid growth (>3.0 sigma_delta and >20% relative) or severe sudden drainage/GLOF (<-3.0 sigma_delta and <-20% relative)."
+    "STABLE": "Annual lake area change within defensible measurement noise floor (|delta| <= 1.0 sigma_delta OR |rel| <= 5% OR moderate non-catastrophic shrinkage: -3.0 sigma <= delta < 0 and rel >= -20%).",
+    "EXPANDING": "Statistically meaningful expansion exceeding observation uncertainty (delta > 1.0 sigma_delta and rel > 5%) up to exceptional thresholds (<= 3.0 sigma_delta, <= 20% relative expansion).",
+    "UNUSUAL_CHANGE": "Independently verified exceptional events: massive rapid growth (>3.0 sigma_delta and >20% relative) or severe sudden drainage/GLOF (<-3.0 sigma_delta and <-20% relative).",
+    "AMBIGUOUS": "Observations failing to satisfy physical class conjunctions (e.g. small lakes with high relative change but sub-3-sigma noise). Explicitly tracked (N=897) and excluded from supervised training."
   },
   "measurement_uncertainty_findings": {
     "median_combined_uncertainty_km2": 0.007000000000000001,
@@ -35,10 +36,26 @@
     "label_assignment": "Moderate contractions are assigned to STABLE (representing normal seasonal fluctuation), while only catastrophic drainage (<-3.0 sigma AND <-20%) triggers UNUSUAL_CHANGE."
   },
   "class_imbalance": {
-    "stable_pct": 90.84,
-    "expanding_pct": 4.87,
-    "unusual_change_pct": 4.29,
-    "imbalance_ratio": "21.2 : 1 (Stable to Unusual)",
+    "canonical_all_matched_counts": {
+      "total_cohort": 11849,
+      "stable_n": 10760,
+      "stable_pct": 90.81,
+      "expanding_n": 77,
+      "expanding_pct": 0.65,
+      "unusual_change_n": 115,
+      "unusual_change_pct": 0.97,
+      "ambiguous_n": 897,
+      "ambiguous_pct": 7.57,
+      "imbalance_ratio_stable_to_unusual": "93.6 : 1"
+    },
+    "unambiguous_physical_cohort": {
+      "total_unambiguous": 10952,
+      "stable_pct": 98.25,
+      "expanding_pct": 0.7,
+      "unusual_change_pct": 1.05,
+      "imbalance_ratio_stable_to_unusual": "93.6 : 1"
+    },
+    "canonical_reconciliation_note": "Previous candidate draft values (90.84% / 4.87% / 4.29%) conflated Category C ambiguous shrinkage (rel < -20%, N=393) with unusual change (115 + 393 = 508) and forced positive ambiguous changes into expanding (577). Canonical reconciliation independently resolves all 11,849 observations into mutually exclusive classes (STABLE=10760, EXPANDING=77, UNUSUAL_CHANGE=115) with 897 explicit ambiguous observations.",
     "mitigation_plan": "Cost-sensitive loss weighting (scale_pos_weight / class_weight), focal loss, and PR-AUC/macro-F1 optimization. Synthetic oversampling (SMOTE) is strictly prohibited on validation/test sets."
   }
 }
