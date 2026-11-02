@@ -118,14 +118,18 @@ To prevent extreme selection bias and false positives:
 
 > [!NOTE]
 > **Interferometric Detection Limits (DOI `10.31223/X5GZ3J`):**
-> As demonstrated by Ajay Kumar Sah (EarthArXiv, 18 Sept 2026, `PREPRINT_UNREVIEWED`), steep Himalayan terrain imposes a single-pair phase unwrapping ceiling at C-band. When pre-detachment displacement gradients exceed $\lambda / (2 \cdot \Delta x)$, phase aliasing prevents standard 2D unwrappers from resolving true kinematic displacement. InSAR features must account for track-dependent look angles and slope geometry.
+> *Indexed Title:* Ajay Kumar Sah (EarthArXiv, 18 Sept 2026, `PREPRINT_UNREVIEWED`), *"The single-pair unwrapping ceiling is a property of the track, not of the radar: Sentinel-1 evidence from rock–ice avalanches at Langtang Lirung and Ronti Peak"*.
+> - **Indexed Study Findings:** Demonstrates across ascending and descending tracks over Langtang Lirung (2026) and Ronti Peak (2021) that single-pair C-band InSAR phase unwrapping ceilings and geometric decorrelation are governed by track acquisition geometry (look angle, heading, local incidence, and slope aspect) rather than radar frequency in isolation. Phase aliasing occurs when displacement exceeds $\sim \lambda/4$ per pixel, preventing 2D phase unwrapping in steep relief (>45°).
+> - **Operational Model Interpretation:** Single-pair C-band InSAR cannot operate as an autonomous standalone early-warning trigger for steep hanging glacier detachments without multi-track ascending/descending combinations, multi-temporal InSAR (MTI) persistence scatterers, or optical offset tracking.
 
 ### 7.2 SAR Amplitude Sensitivity & Negative Precursor Provenance
 - SAR backscatter anomalous drop ($\Delta \sigma^0 < -3\,\text{dB}$) indicating river ponding/impoundment.
 
 > [!NOTE]
 > **Backscatter Amplitude Precursor Baseline (DOI `10.31223/X59N5N`):**
-> In a separate study, Ajay Kumar Sah (EarthArXiv, 6 Sept 2026, updated 8 Sept 2026, `PREPRINT_UNREVIEWED`) demonstrated that Sentinel-1 Level-1 GRD backscatter amplitude ($\sigma^0$) exhibited **no detectable precursor** over the Langtang detachment face. Sub-resolution coherent creep shifts interferometric phase but does not alter macro-roughness or dielectric properties until macroscopic tearing occurs. Therefore, amplitude features cannot serve as early kinematic creep predictors.
+> *Indexed Title:* Ajay Kumar Sah (EarthArXiv, 6 Sept 2026, updated 8 Sept 2026, `PREPRINT_UNREVIEWED`), *"No detectable precursor in Sentinel-1 backscatter before the 26 August 2026 Langtang Lirung rock–ice avalanche, Nepal"*.
+> - **Indexed Study Findings:** Sentinel-1 Level-1 GRD backscatter amplitude ($\sigma^0$) time series analysis in VV and VH polarizations showed **no anomalous precursory deviation** over the Langtang detachment face prior to collapse.
+> - **Stated Temporal & Detection Limits:** Routine 12-day orbital repeat sampling and C-band surface penetration depth constrain sensitivity to sub-surface mechanical degradation or rapid pre-failure deformation occurring between satellite passes. Amplitude features cannot serve as early kinematic creep predictors.
 
 ### 7.3 Topographic / Geomorphic Features
 - Slope angle, profile curvature, planform curvature.

@@ -1,5 +1,5 @@
 """
-Unit tests for Phase 9.1.3 & Phase 9.1.3.1 & Phase 9.1.3.2:
+Unit tests for Phase 9.1.3 through Phase 9.1.3.2.1:
 Event Evidence Reconciliation, Spatial Audit Hardening, and Security Scanner Coverage
 =====================================================================================
 Tests verify:
@@ -51,24 +51,14 @@ FROZEN_MODEL_PKL = REPO_ROOT / "reports" / "models" / "09_final_fused_xgboost.pk
 
 EXPECTED_FROZEN_SHA256 = "5c5bec942c316a8c4a3f40d7098f7d50a4d7ac34d0f4ba5e308c7d19fc75525f"
 
-# Known exposed credential hashes (SHA-256) used for verification without storing plaintext secrets
-EXPOSED_CREDENTIAL_SHA256_HASHES = {
-    "e50ec2c50e0c4bb89283fb11fbc9cba6c42a29730950ede7aad6796ec0e5ad31",  # Copernicus API Key
-    "677026b30c6025a2ed64b56de7eaa484b14d7f2e36125fed583bb487e5c43cd4",  # CDSE Client ID
-    "b07d7b8f66838aa22a785ddb2dbaa7658c558be10ecfaa2e0c49453b1f6164b9",  # CDSE Client Secret
-}
-
-
-def is_binary_content(path: Path) -> bool:
-    """Detect binary files safely by content (checking for null byte in initial 8KB)."""
-    try:
-        with open(path, "rb") as f:
-            chunk = f.read(8192)
-            if b"\x00" in chunk:
-                return True
-        return False
-    except Exception:
-        return True
+from glacierguard.security_scan import (
+    EXACT_ALLOWLISTED_FILES,
+    GENERIC_SECRET_PATTERNS,
+    classify_file,
+    scan_file_content,
+    scan_git_history,
+    scan_repository,
+)
 
 
 class TestBudhiGandakiReconciliation:
@@ -306,175 +296,176 @@ class TestModelIsolationAndScientificGuardrails:
 
 
 class TestSecurityAndEvidenceTraceability:
-    """Tests 16-23: Generic secret scanning, elevation provenance, and evidence dates/URLs."""
+    """Tests 16-25: Reusable secret scanner, provenance traceability, formats, history audit, and allowlists."""
 
     def test_16_generic_secret_scan_repository_wide(self):
         """16. Repository-wide secret scan with content-based binary detection and coverage counts."""
-        generic_patterns = [
-            (re.compile(r'(?i)(?:api_key|apikey|secret_key|client_secret|access_token)\s*[:=]\s*["\']([^"\'\s<>{}\$]{12,})["\']'), "Secret Key Assignment"),
-            (re.compile(r'(?i)bearer\s+eyJ[a-zA-Z0-9_\-\.]{25,}'), "Bearer JWT Token"),
-            (re.compile(r'-----BEGIN\s+(?:RSA\s+)?PRIVATE\s+KEY-----'), "Private Key Header"),
-            (re.compile(r'(?i)(?:password|passwd|pwd)\s*[:=]\s*["\']([^"\'\s<>{}\$]{8,})["\']'), "Password Assignment"),
-        ]
-
-        try:
-            tracked_files = subprocess.check_output(["git", "ls-files"], cwd=REPO_ROOT, text=True).splitlines()
-        except Exception:
-            tracked_files = [
-                str(p.relative_to(REPO_ROOT))
-                for p in REPO_ROOT.glob("**/*")
-                if p.is_file() and ".git" not in p.parts and ".venv" not in p.parts
-            ]
-
-        allowlisted_files = {
-            ".env.example",  # Template placeholders
-            "README.md",     # Documentation placeholders
-        }
-
-        detected_violations = []
-        text_files_scanned = 0
-        binary_files_skipped = 0
-
-        for rel_path_str in tracked_files:
-            if rel_path_str in allowlisted_files:
-                continue
-
-            file_path = REPO_ROOT / rel_path_str
-            if not file_path.is_file():
-                continue
-
-            # Content-based binary check
-            if is_binary_content(file_path):
-                binary_files_skipped += 1
-                continue
-
-            text_files_scanned += 1
-            try:
-                content = file_path.read_text(encoding="utf-8", errors="ignore")
-                for pat, label in generic_patterns:
-                    for match in pat.finditer(content):
-                        full_m = match.group(0)
-                        redacted = f"{label} (length {len(full_m)}) [REDACTED]"
-                        detected_violations.append((rel_path_str, redacted))
-            except Exception as e:
-                pytest.fail(f"Could not read tracked text file {rel_path_str}: {e}")
+        res = scan_repository(repo_root=REPO_ROOT)
 
         # Assert zero detected matches across scanned text files
-        assert len(detected_violations) == 0, (
-            f"Generic secret scan detected {len(detected_violations)} matches across tracked files:\n"
-            + "\n".join(f"  {f}: {red}" for f, red in detected_violations)
+        assert len(res["violations"]) == 0, (
+            f"Generic secret scan detected {len(res['violations'])} matches across tracked files:\n"
+            + "\n".join(f"  {v['path']}: {v['redacted']}" for v in res["violations"])
         )
 
         # Assert meaningful scan coverage
-        assert len(tracked_files) >= 250, f"Expected >= 250 tracked files, found {len(tracked_files)}"
-        assert text_files_scanned >= 180, f"Expected >= 180 text files scanned, found {text_files_scanned}"
-        assert binary_files_skipped >= 50, f"Expected >= 50 binary files skipped, found {binary_files_skipped}"
-        assert allowlisted_files == {".env.example", "README.md"}
+        assert res["tracked_files_count"] >= 250, f"Expected >= 250 tracked files, found {res['tracked_files_count']}"
+        assert res["text_files_scanned"] >= 180, f"Expected >= 180 text files scanned, found {res['text_files_scanned']}"
+        assert res["binary_files_skipped"] >= 50, f"Expected >= 50 binary files skipped, found {res['binary_files_skipped']}"
+        assert res["unreadable_files_count"] == 0, f"Unreadable files detected: {res['unreadable_files']}"
+        assert res["allowlisted_files_count"] == 2
 
     def test_17_no_literal_credentials_in_test_source(self):
-        """17. Verify test source code contains zero literal credentials via SHA-256 hash checks and recursive scan."""
-        # Use rglob to recursively check all Python files under tests/
+        """17. Verify test source code contains zero literal credentials or credential hash fixtures."""
         test_files = list((REPO_ROOT / "tests").rglob("*.py"))
         assert len(test_files) >= 15, f"Expected >= 15 test files, found {len(test_files)}"
 
+        hash_constant_needle = "EXPOSED_CREDENTIAL_" + "SHA256_HASHES ="
+
         for tf in test_files:
             text = tf.read_text(encoding="utf-8")
-            # Extract potential tokens of length 20 to 64
-            tokens = re.findall(r'[A-Za-z0-9_\-]{20,64}', text)
-            for token in tokens:
-                token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
-                assert token_hash not in EXPOSED_CREDENTIAL_SHA256_HASHES, (
-                    f"Exposed credential hash detected in {tf.relative_to(REPO_ROOT)}! Literal secret must be removed."
-                )
+            assert hash_constant_needle not in text, f"Deprecated hash constant definition found in {tf.relative_to(REPO_ROOT)}!"
+
+            findings = scan_file_content(text, rel_path=str(tf.relative_to(REPO_ROOT)))
+            assert len(findings) == 0, (
+                f"Secret pattern detected in {tf.relative_to(REPO_ROOT)}:\n"
+                + "\n".join(f['redacted'] for f in findings)
+            )
 
     def test_18_elevation_provenance_traceability(self):
-        """18. Elevation profile distinguishes source point, scar range, breakline, and deposition with explicit status."""
+        """18. Elevation provenance traceability distinguishing source point, scar range, breakline, and deposition."""
         with open(EVENTS_JSON, "r", encoding="utf-8") as f:
             data = json.load(f)
         langtang = next(e for e in data["events"] if e["event_id"] == "NEPAL-2026-08-26-LANGTANG")
-        elev = langtang["elevation_reconciliation"]
 
-        # 1. Catalogue nominal elevation preserved and marked unverified
+        elev = langtang.get("elevation_reconciliation", {})
         assert elev["catalogue_nominal_elevation_m"] == 6200
-        assert "UNVERIFIED" in elev["catalogue_nominal_status"]
+        assert elev["catalogue_nominal_status"] == "NOMINAL_CATALOGUE_UNVERIFIED"
 
-        # 2. Source scar range from working notes marked unverified pending page citation
-        scar = elev["source_scar_elevation_range_m"]
-        assert scar["range"] == [5500, 6800]
-        assert "UNVERIFIED" in scar["status"]
+        source_coord = elev["source_coordinate_elevation"]
+        assert source_coord["elevation_m"] == 6200
+        assert source_coord["status"] == "NOMINAL_CATALOGUE_UNVERIFIED"
 
-        # 3. ICIMOD public event summary slope elevation
-        pub_slope = elev.get("icimod_public_summary_slope_elevation_m", {})
-        assert pub_slope.get("range") == [5000, 5500]
-        assert "PUBLIC_EVENT_SUMMARY" in pub_slope.get("status", "")
+        scar_range = elev["source_scar_elevation_range_m"]
+        assert scar_range["range"] == [5500, 6800]
+        assert scar_range["status"] == "UNVERIFIED_PENDING_PAGE_CITATION"
 
-        # 4. Lower runout breakline marked provisional unverified
-        breakline = elev["lower_runout_elevation_m"]
-        assert breakline["range"] == [5000, 5200]
-        assert "PROVISIONAL_UNVERIFIED" == breakline["status"]
+        icimod_slope = elev["icimod_public_summary_slope_elevation_m"]
+        assert icimod_slope["range"] == [5000, 5500]
+        assert icimod_slope["status"] == "PUBLIC_EVENT_SUMMARY_ESTIMATE"
+        assert icimod_slope["url"] == "https://www.icimod.org/news/learning-from-disaster-icimod-convenes-international-experts-following-rasuwa-gyirong-flood/"
 
-        # 5. Valley floor deposition marked approximate unverified
-        dep = elev["deposition_elevation_m"]
-        assert dep["approx_elevation_m"] == 3800
-        assert "APPROXIMATE_UNVERIFIED" == dep["status"]
+        lower_runout = elev["lower_runout_elevation_m"]
+        assert lower_runout["range"] == [5000, 5200]
+        assert lower_runout["status"] == "PROVISIONAL_UNVERIFIED"
+
+        deposition = elev["deposition_elevation_m"]
+        assert deposition["approx_elevation_m"] == 3800
+        assert deposition["status"] == "APPROXIMATE_UNVERIFIED"
 
     def test_19_source_publication_dates_and_urls_correct(self):
-        """19. Correct repository URLs and dates for ICIMOD (13 Oct 2026) and separate Sah preprints."""
+        """19. Verify primary source publication dates, URLs, exact indexed preprint titles, and separated findings."""
         with open(EVENTS_JSON, "r", encoding="utf-8") as f:
             data = json.load(f)
         langtang = next(e for e in data["events"] if e["event_id"] == "NEPAL-2026-08-26-LANGTANG")
         sources = langtang.get("evidence_sources_comprehensive", [])
 
         # Check ICIMOD Langtang report
-        icimod = next(s for s in sources if s.get("source_org") == "ICIMOD")
-        assert icimod["url"] == "https://lib.icimod.org/records/qdvc1-tc123"
-        assert icimod["publication_date"] == "2026-10-13"
-        assert icimod["evidence_type"] == "OFFICIAL_REPORT"
+        icimod_rep = next(s for s in sources if s.get("source_org") == "ICIMOD" and s.get("evidence_type") == "OFFICIAL_REPORT")
+        assert icimod_rep["url"] == "https://lib.icimod.org/records/qdvc1-tc123"
+        assert icimod_rep["publication_date"] == "2026-10-13"
+
+        # Check ICIMOD public event briefing
+        icimod_pub = next(s for s in sources if s.get("source_org") == "ICIMOD" and s.get("evidence_type") == "PUBLIC_EVENT_BRIEFING")
+        assert icimod_pub["url"] == "https://www.icimod.org/news/learning-from-disaster-icimod-convenes-international-experts-following-rasuwa-gyirong-flood/"
+        assert icimod_pub["confidence"] == "PUBLIC_EVENT_SUMMARY_ESTIMATE"
 
         # Check Sah Amplitude preprint (DOI 10.31223/X59N5N)
         sah_amp = next(s for s in sources if s.get("doi") == "10.31223/X59N5N")
+        assert sah_amp["title"] == "No detectable precursor in Sentinel-1 backscatter before the 26 August 2026 Langtang Lirung rock–ice avalanche, Nepal"
         assert sah_amp["publication_date"] == "2026-09-06"
         assert sah_amp["date_updated"] == "2026-09-08"
         assert sah_amp["evidence_type"] == "PREPRINT"
         assert sah_amp["confidence"] == "PREPRINT_UNREVIEWED"
         assert "amplitude" in sah_amp["claim_supported"].lower() or "backscatter" in sah_amp["claim_supported"].lower()
         assert "phase" not in sah_amp["claim_supported"].lower()
+        assert "temporal_sampling_limits" in sah_amp
 
         # Check Sah InSAR Unwrapping limits preprint (DOI 10.31223/X5GZ3J)
         sah_unw = next(s for s in sources if s.get("doi") == "10.31223/X5GZ3J")
+        assert sah_unw["title"] == "The single-pair unwrapping ceiling is a property of the track, not of the radar: Sentinel-1 evidence from rock–ice avalanches at Langtang Lirung and Ronti Peak"
         assert sah_unw["publication_date"] == "2026-09-18"
         assert sah_unw["evidence_type"] == "PREPRINT"
         assert sah_unw["confidence"] == "PREPRINT_UNREVIEWED"
-        assert "unwrapping" in sah_unw["claim_supported"].lower()
+        assert "indexed_study_finding" in sah_unw
+        assert "additional_interpretation" in sah_unw
 
-    def test_20_secret_scanner_covers_all_config_and_notebook_formats(self):
-        """20. Prove that scanner text evaluation covers .env, .ipynb, .ini, and .cfg formats."""
-        test_extensions = [".env", ".ipynb", ".ini", ".cfg", ".py", ".json", ".csv", ".md", ".toml", ".yml"]
+    def test_20_scanner_catches_harmless_patterns_in_all_formats(self, tmp_path):
+        """20. Prove that the real scanner catches harmless dummy secret patterns in .env, .ipynb, .ini, and .cfg."""
+        # 1. Test .env (dynamically construct token string so test source has no literal Secret Key Assignment)
+        k_api = "API" + "_KEY"
+        dummy_api = "harmless" + "_sample_api_key_1234567890"
+        env_file = tmp_path / "test.env"
+        env_file.write_text(f"DATABASE_URL=postgres://localhost\n{k_api}=\"{dummy_api}\"\n", encoding="utf-8")
 
-        # Ensure content-based binary check recognizes text files with these extensions as text
-        for ext in test_extensions:
-            # Sample text content mimicking that extension
-            sample_text = f"# Sample test file for {ext}\nparam = 123\n"
-            sample_bytes = sample_text.encode("utf-8")
-            assert b"\x00" not in sample_bytes[:8192], f"Extension {ext} should not be identified as binary"
+        # 2. Test .ipynb
+        k_sec = "client" + "_secret"
+        dummy_sec = "harmless" + "_sample_client_secret_987654321"
+        nb_content = {
+            "cells": [
+                {
+                    "cell_type": "code",
+                    "source": ["# Test notebook\n", f"{k_sec} = '{dummy_sec}'\n"]
+                }
+            ],
+            "metadata": {},
+            "nbformat": 4,
+            "nbformat_minor": 2
+        }
+        ipynb_file = tmp_path / "test.ipynb"
+        ipynb_file.write_text(json.dumps(nb_content), encoding="utf-8")
 
-        # Ensure notebooks in repository were scanned
-        tracked_notebooks = [f for f in subprocess.check_output(["git", "ls-files"], cwd=REPO_ROOT, text=True).splitlines() if f.endswith(".ipynb")]
-        assert len(tracked_notebooks) >= 10, f"Expected >= 10 tracked notebooks, found {len(tracked_notebooks)}"
+        # 3. Test .ini
+        k_pass = "pass" + "word"
+        dummy_pass = "harmless" + "_sample_password_long"
+        ini_file = tmp_path / "test.ini"
+        ini_file.write_text(f"[security]\n{k_pass} = \"{dummy_pass}\"\n", encoding="utf-8")
 
-    def test_21_git_history_audit_separation(self):
-        """21. Distinguish current working tree (zero matches) from historical commit 1187161."""
-        # Current tree verification
-        assert Path("tests/test_phase9_1_3_event_reconciliation.py").is_file()
-        current_content = Path(__file__).read_text(encoding="utf-8")
-        for h in EXPOSED_CREDENTIAL_SHA256_HASHES:
-            # Hash values themselves are permitted, but no token yielding that hash should exist
-            assert h in current_content
+        # 4. Test .cfg
+        k_tok = "access" + "_token"
+        dummy_tok = "harmless" + "_sample_access_token_abcdef123"
+        cfg_file = tmp_path / "test.cfg"
+        cfg_file.write_text(f"[tokens]\n{k_tok} = \"{dummy_tok}\"\n", encoding="utf-8")
 
-        # Verify historical commit 1187161 is present in repository history
-        res = subprocess.run(["git", "cat-file", "-t", "1187161"], cwd=REPO_ROOT, capture_output=True, text=True)
-        assert res.returncode == 0
-        assert res.stdout.strip() == "commit"
+        for fpath in [env_file, ipynb_file, ini_file, cfg_file]:
+            c_type, err = classify_file(fpath)
+            assert c_type == "text", f"{fpath.name} should be classified as text, got {c_type}"
+            assert err is None
+
+            content = fpath.read_text(encoding="utf-8")
+            findings = scan_file_content(content, rel_path=fpath.name)
+            assert len(findings) > 0, f"Scanner failed to detect secret pattern in {fpath.name}!"
+
+            for fd in findings:
+                assert "[REDACTED]" in fd["redacted"]
+                assert "harmless_sample_" not in fd["redacted"]
+
+    def test_21_history_scan_genuinely_executed_and_redacted(self):
+        """21. Genuinely execute Git history scan across feature branch and verify complete redaction."""
+        hist = scan_git_history(repo_root=REPO_ROOT, commit_scope="HEAD")
+
+        assert hist["scanner_name"] == "GlacierGuard-GitHistoryScanner"
+        assert hist["commits_scanned"] >= 15
+
+        found_1187161 = any("1187161" in commit_hdr for commit_hdr in hist["findings_by_commit"])
+        assert found_1187161, f"Historical secret addition in commit 1187161 was not detected! Commits found: {list(hist['findings_by_commit'].keys())}"
+
+        for commit_hdr, findings in hist["findings_by_commit"].items():
+            for f in findings:
+                assert "[REDACTED]" in f, f"Finding in commit {commit_hdr} is not redacted: {f}"
+
+        current_res = scan_repository(repo_root=REPO_ROOT)
+        assert len(current_res["violations"]) == 0
 
     def test_22_elevation_claims_remain_unresolved_without_dem(self):
         """22. Elevation assertions must have explicit provenance status and unresolved flags."""
@@ -484,6 +475,8 @@ class TestSecurityAndEvidenceTraceability:
 
         assert elev_prov["catalogue_nominal_status"] == "NOMINAL_CATALOGUE_UNVERIFIED"
         assert elev_prov["source_scar_status"] == "UNVERIFIED_PENDING_PAGE_CITATION"
+        assert elev_prov["icimod_public_summary_status"] == "PUBLIC_EVENT_SUMMARY_ESTIMATE"
+        assert elev_prov["icimod_public_summary_url"] == "https://www.icimod.org/news/learning-from-disaster-icimod-convenes-international-experts-following-rasuwa-gyirong-flood/"
         assert elev_prov["lower_runout_status"] == "PROVISIONAL_UNVERIFIED"
         assert elev_prov["deposition_status"] == "APPROXIMATE_UNVERIFIED"
 
@@ -495,10 +488,39 @@ class TestSecurityAndEvidenceTraceability:
         assert "10.31223/X59N5N" in text
         assert "10.31223/X5GZ3J" in text
 
-        # Verify X59N5N is associated with amplitude, not phase unwrapping
+        # Verify X59N5N has exact title and amplitude focus
         amp_idx = text.find("10.31223/X59N5N")
-        assert "amplitude" in text[amp_idx-100:amp_idx+300].lower()
+        assert "No detectable precursor in Sentinel-1 backscatter" in text[amp_idx-100:amp_idx+300]
+        assert "amplitude" in text[amp_idx-100:amp_idx+400].lower()
 
-        # Verify X5GZ3J is associated with unwrapping ceiling
+        # Verify X5GZ3J has exact indexed title and unwrapping ceiling focus
         unw_idx = text.find("10.31223/X5GZ3J")
-        assert "unwrapping" in text[unw_idx-100:unw_idx+300].lower()
+        assert "The single-pair unwrapping ceiling is a property of the track, not of the radar" in text[unw_idx-100:unw_idx+300]
+        assert "unwrapping" in text[unw_idx-100:unw_idx+500].lower()
+
+    def test_24_unreadable_and_binary_counts_separated(self, tmp_path):
+        """24. Verify classify_file separates unreadable files from binary files and never silently marks unreadable as binary."""
+        bin_file = tmp_path / "sample.bin"
+        bin_file.write_bytes(b"DATA\x00\x01\x02\x03BINARY")
+        c_bin, err_bin = classify_file(bin_file)
+        assert c_bin == "binary"
+        assert err_bin is None
+
+        txt_file = tmp_path / "sample.txt"
+        txt_file.write_text("Hello world text content\n", encoding="utf-8")
+        c_txt, err_txt = classify_file(txt_file)
+        assert c_txt == "text"
+        assert err_txt is None
+
+        non_existent = tmp_path / "does_not_exist.txt"
+        c_non, err_non = classify_file(non_existent)
+        assert c_non == "unreadable"
+        assert err_non is not None
+        assert c_non != "binary", "Unreadable file must never be classified as binary!"
+
+    def test_25_exact_narrow_allowlist_enforcement(self):
+        """25. Verify allowlist is strictly exact and narrow ({.env.example, README.md})."""
+        assert EXACT_ALLOWLISTED_FILES == {".env.example", "README.md"}
+        disallowed = [".env", ".env.local", ".env.test", "config.ini", "secrets.json", "README.txt"]
+        for d in disallowed:
+            assert d not in EXACT_ALLOWLISTED_FILES, f"File {d} must not be allowlisted!"

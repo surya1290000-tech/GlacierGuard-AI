@@ -70,7 +70,8 @@
             5500
           ],
           "source_citation": "ICIMOD (13 October 2026), Gyirong-Rasuwa disaster public event briefing / summary describing north-face detachment slope.",
-          "status": "PUBLIC_EVENT_SUMMARY_ESTIMATE"
+          "status": "PUBLIC_EVENT_SUMMARY_ESTIMATE",
+          "url": "https://www.icimod.org/news/learning-from-disaster-icimod-convenes-international-experts-following-rasuwa-gyirong-flood/"
         },
         "lower_runout_elevation_m": {
           "range": [
@@ -86,7 +87,7 @@
           "source_citation": "Topographic map estimation of Lhende Khola gorge floor.",
           "status": "APPROXIMATE_UNVERIFIED"
         },
-        "reconciliation_notes": "The 6,200 m catalogue elevation is a nominal point estimate preserved from historical entries, explicitly unverified. The 5,500\u20136,800 m range was cited in preliminary working notes but lacks specific page, figure, or table attribution in the ICIMOD report. In contrast, ICIMOD's public event briefing describes the north-face slope at approximately 5,000\u20135,500 m. Conflicting values are preserved as unverified. Lower breakline (5,000\u20135,200 m) and valley floor deposition (~3,800 m) remain provisional and unverified pending sub-meter stereoscopic DEM differencing."
+        "reconciliation_notes": "The 6,200 m catalogue elevation is a nominal point estimate preserved from historical entries, explicitly unverified. The 5,500–6,800 m range was cited in preliminary working notes but lacks specific page, figure, or table attribution in the ICIMOD report. In contrast, ICIMOD's public event briefing describes the north-face slope at approximately 5,000–5,500 m. Conflicting values are preserved as unverified. Lower breakline (5,000–5,200 m) and valley floor deposition (~3,800 m) remain provisional and unverified pending sub-meter stereoscopic DEM differencing."
       },
       "spatial_uncertainty_reconciliation": {
         "raw_point_in_polygon": false,
@@ -100,7 +101,7 @@
         },
         "glacier_containment_status": "UNRESOLVED",
         "spatial_status": "SPATIALLY_AMBIGUOUS_WITHIN_REPORTED_PRECISION",
-        "precision_interpretation": "Raw point-in-polygon evaluation against RGI 6.0 yields False at a distance of 42.4 m. Because coordinate uncertainty semantics are UNKNOWN in the source and RGI 6.0 represents historical 2000\u20132010 boundaries, available evidence neither proves nor disproves that the detachment initiated inside glacierized terrain.",
+        "precision_interpretation": "Raw point-in-polygon evaluation against RGI 6.0 yields False at a distance of 42.4 m. Because coordinate uncertainty semantics are UNKNOWN in the source and RGI 6.0 represents historical 2000–2010 boundaries, available evidence neither proves nor disproves that the detachment initiated inside glacierized terrain.",
         "rgi_metadata": {
           "inventory_version": "RGI 6.0 (Region 15 South Asia East)",
           "source_era": "Circa 2000-2010 Landsat mapping composites",
@@ -115,7 +116,7 @@
       "evidence_sources_comprehensive": [
         {
           "source_org": "ICIMOD",
-          "title": "Understanding the Gyirong\u2013Rasuwa disaster of 26 August 2026",
+          "title": "Understanding the Gyirong–Rasuwa disaster of 26 August 2026",
           "url": "https://lib.icimod.org/records/qdvc1-tc123",
           "publication_date": "2026-10-13",
           "evidence_type": "OFFICIAL_REPORT",
@@ -126,27 +127,41 @@
         {
           "source_org": "EarthArXiv",
           "authors": "Ajay Kumar Sah",
-          "title": "No detectable precursor in Sentinel-1 backscatter before the 26 August 2026 Langtang Lirung rock\u2013ice avalanche, Nepal",
+          "title": "No detectable precursor in Sentinel-1 backscatter before the 26 August 2026 Langtang Lirung rock–ice avalanche, Nepal",
           "doi": "10.31223/X59N5N",
           "url": "https://doi.org/10.31223/X59N5N",
           "publication_date": "2026-09-06",
           "date_updated": "2026-09-08",
           "evidence_type": "PREPRINT",
-          "claim_supported": "Sentinel-1 Level-1 GRD backscatter amplitude (sigma0) time series analysis showed no anomalous precursory deviation.",
+          "claim_supported": "Sentinel-1 Level-1 GRD backscatter amplitude (sigma0) time series analysis showed no anomalous precursory deviation; routine 12-day orbital repeat and C-band surface scattering limits constrain early detection of pre-collapse mechanical creep.",
           "confidence": "PREPRINT_UNREVIEWED",
-          "last_reviewed_date": "2026-11-01"
+          "last_reviewed_date": "2026-11-02",
+          "indexed_study_finding": "Sentinel-1 Level-1 GRD backscatter amplitude (sigma0) time series analysis in VV and VH polarizations showed no anomalous precursory deviation prior to the 26 August 2026 collapse.",
+          "temporal_sampling_limits": "Routine 12-day orbital repeat interval and C-band surface penetration depth constrain sensitivity to sub-surface mechanical degradation occurring between satellite passes."
         },
         {
           "source_org": "EarthArXiv",
           "authors": "Ajay Kumar Sah",
-          "title": "The single-pair unwrapping ceiling is a property of the track, not of the radar: Sentinel-1 interferometric detection limits in high-relief Himalayan terrain",
+          "title": "The single-pair unwrapping ceiling is a property of the track, not of the radar: Sentinel-1 evidence from rock–ice avalanches at Langtang Lirung and Ronti Peak",
           "doi": "10.31223/X5GZ3J",
           "url": "https://doi.org/10.31223/X5GZ3J",
           "publication_date": "2026-09-18",
           "evidence_type": "PREPRINT",
-          "claim_supported": "Track-dependent Sentinel-1 interferometric phase unwrapping ceiling, phase aliasing, and detection limits in steep terrain.",
+          "claim_supported": "The single-pair unwrapping ceiling is track-dependent; geometric decorrelation in steep relief (>45 deg) constrains single-pair LOS displacement retrieval.",
           "confidence": "PREPRINT_UNREVIEWED",
-          "last_reviewed_date": "2026-11-01"
+          "last_reviewed_date": "2026-11-02",
+          "indexed_study_finding": "Sentinel-1 C-band single-pair interferometric phase unwrapping ceiling is track-dependent; geometric decorrelation and phase aliasing in steep Himalayan relief (>45 deg) constrain single-pair LOS displacement retrieval.",
+          "additional_interpretation": "Single-pair C-band InSAR is not an autonomous standalone warning trigger for steep hanging glacier detachments without multi-track combination, multi-temporal persistence scatterers, or optical offset tracking."
+        },
+        {
+          "source_org": "ICIMOD",
+          "title": "Learning from disaster: ICIMOD convenes international experts following Rasuwa Gyirong flood",
+          "url": "https://www.icimod.org/news/learning-from-disaster-icimod-convenes-international-experts-following-rasuwa-gyirong-flood/",
+          "publication_date": "2026-09-16",
+          "evidence_type": "PUBLIC_EVENT_BRIEFING",
+          "claim_supported": "North-face detachment slope estimated at approximately 5,000–5,500 m altitude.",
+          "confidence": "PUBLIC_EVENT_SUMMARY_ESTIMATE",
+          "last_reviewed_date": "2026-11-02"
         }
       ]
     },

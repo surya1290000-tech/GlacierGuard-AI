@@ -93,7 +93,7 @@ A citation is not considered traceable merely because a report URL exists; speci
 | :--- | :--- | :--- | :--- |
 | **Source Coordinate (Point)** | ~6,200 m | Historical catalogue nominal approximation on NW headwall face; unverified by in-situ survey or DEM differencing. | `NOMINAL_CATALOGUE_UNVERIFIED` |
 | **Detachment Scar (Working Note)** | 5,500–6,800 m | Preliminary working notes; lacks specific page, figure, or table attribution in published ICIMOD report. | `UNVERIFIED_PENDING_PAGE_CITATION` |
-| **Detachment Slope (ICIMOD Briefing)** | 5,000–5,500 m | ICIMOD (13 Oct 2026) public event briefing describing the north-face detachment slope. | `PUBLIC_EVENT_SUMMARY_ESTIMATE` |
+| **Detachment Slope (ICIMOD Briefing)** | 5,000–5,500 m | [ICIMOD (16 Sept 2026)](https://www.icimod.org/news/learning-from-disaster-icimod-convenes-international-experts-following-rasuwa-gyirong-flood/) public event briefing describing north-face detachment slope. | `PUBLIC_EVENT_SUMMARY_ESTIMATE` |
 | **Lower Runout / Breakline** | 5,000–5,200 m | Early situational media reports describing the lower plunge throat into the gorge; exact primary source unidentified. | `PROVISIONAL_UNVERIFIED` |
 | **Valley Floor Deposition** | ~3,800 m | Topographic map estimation of Lhende Khola upper gorge floor; unverified by DEM difference mapping. | `APPROXIMATE_UNVERIFIED` |
 
@@ -115,7 +115,10 @@ Two distinct preprints authored by Ajay Kumar Sah address separate aspects of Se
 - **Guardrail:** Phase-unwrapping findings are **not** attributed to this DOI.
 
 ### 4.2 Interferometric Unwrapping Limits (DOI `10.31223/X5GZ3J`)
-- **Title:** *The single-pair unwrapping ceiling is a property of the track, not of the radar: Sentinel-1 interferometric detection limits in high-relief Himalayan terrain*
+- **Indexed Title:** *The single-pair unwrapping ceiling is a property of the track, not of the radar: Sentinel-1 evidence from rock–ice avalanches at Langtang Lirung and Ronti Peak*
+- **Author:** Ajay Kumar Sah
+- **Indexed Study Findings:** Demonstrates across ascending and descending tracks over Langtang Lirung (2026) and Ronti Peak (Chamoli) that single-pair C-band InSAR phase unwrapping ceilings and geometric decorrelation are governed by track acquisition geometry (look angle, heading, local incidence, and slope aspect) rather than radar frequency in isolation. Phase aliasing occurs when displacement exceeds $\sim \lambda/4$ per pixel, preventing 2D phase unwrapping in steep relief (>45°).
+- **Operational Model Interpretation:** Single-pair C-band InSAR cannot operate as an autonomous standalone early-warning trigger for steep hanging glacier detachments without multi-track ascending/descending combinations, multi-temporal InSAR (MTI) persistence scatterers, or optical offset tracking.
 - **DOI / URL:** [https://doi.org/10.31223/X5GZ3J](https://doi.org/10.31223/X5GZ3J)
 - **Publication Date:** **18 September 2026**
 - **Category:** `PREPRINT` (Status: `PREPRINT_UNREVIEWED`)

@@ -119,7 +119,7 @@ Two preprints by Ajay Kumar Sah deposited on EarthArXiv in September 2026 were p
 
 #### 5.2 Preprint 2: Interferometric Ceilings & Detection Limits
 - **DOI:** `10.31223/X5GZ3J`
-- **Title:** *C-band InSAR phase unwrapping ceilings and geometric decorrelation in steep Himalayan relief*
+- **Title:** *The single-pair unwrapping ceiling is a property of the track, not of the radar: Sentinel-1 evidence from rock–ice avalanches at Langtang Lirung and Ronti Peak*
 - **Publication Date:** Published 2026-09-18.
 - **Data & Methodology:** Level-1 SLC (Single Look Complex) differential interferograms (DInSAR) and multi-temporal InSAR (MTI).
 - **Core Scientific Finding:** Severe geometric distortions (layover, foreshortening, radar shadow) and rapid temporal decorrelation in steep slopes (>45°) create hard phase unwrapping limits for C-band SAR in steep cirque headwalls.
