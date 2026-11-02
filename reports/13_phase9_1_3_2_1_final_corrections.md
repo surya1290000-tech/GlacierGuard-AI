@@ -47,7 +47,7 @@ The repository secret scanning logic was extracted into a reusable, production-r
 
 #### 2.2 Direct Pattern Testing with Temporary Files (`test_20`)
 Rather than relying on null-byte checks as a proxy for secret detection, `test_20` creates temporary test files on disk via pytest's `tmp_path` fixture across all four critical formats:
-1. `.env`: Contains dummy API key assignment (`API_KEY="harmless_sample_api_key_1234567890"`).
+1. `.env`: Contains dummy API key assignment (synthetic dummy assignment).
 2. `.ipynb`: Valid Jupyter Notebook JSON structure containing dummy client secret assignment.
 3. `.ini`: Standard INI configuration containing dummy password assignment.
 4. `.cfg`: Standard CFG file containing dummy access token assignment.
