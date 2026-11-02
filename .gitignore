@@ -63,3 +63,8 @@ desktop.ini
 # - reports/*.csv (all benchmark, ablation, and validation reports)
 # - reports/figures/*.png (publication & analytical figures)
 # - reports/models/*.pkl (frozen ML models: S1, S2, fused XGBoost)
+
+# ── Local SQLite Database (Dynamic Runtime Data) ──────────────────────────────
+data/*.db
+data/*.sqlite*
+*.db

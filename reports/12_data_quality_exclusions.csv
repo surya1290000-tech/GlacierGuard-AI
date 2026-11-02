@@ -1,0 +1,16 @@
+Sensor,Stage,Count,Unique_Lakes,Reason
+Sentinel-1,Raw Catalogue Records,18129,2966,Total features in annual GLO GeoPackage v1.02 (2017-2024)
+Sentinel-1,Zero or Negative Area,0,0,Sanity check: no invalid zero/negative area values exist
+Sentinel-1,Terminal 2024 Records,2290,2290,Terminal observations with no subsequent observation year (2025 unavailable); NEXT_AREA_CHANGE cannot be computed
+Sentinel-1,Pre-2024 Terminal Records,676,676,Lake outlines that ceased detection or dropped out before 2024; no subsequent year
+Sentinel-1,Non-Consecutive Gaps (GAP > 1),921,724,Multi-year gaps (2-6 years between detections) due to cloud/radar gaps; excluded from annual delta_t=1 forecasting
+Sentinel-1,Valid Supervised Transitions,14242,2495,Consecutive year pairs (GAP == 1) with valid NEXT_AREA_CHANGE target
+Sentinel-1,Unmatched S1-Only Pairs,2393,820,Valid S1 transitions lacking a concurrent S2 transition in the same lake-year (excluded from dual-sensor fused cohort)
+Sentinel-2,Raw Catalogue Records,22294,4150,Total features in annual GLO GeoPackage v1.02 (2017-2024)
+Sentinel-2,Zero or Negative Area,0,0,Sanity check: no invalid zero/negative area values exist
+Sentinel-2,Terminal 2024 Records,3152,3152,Terminal observations with no subsequent observation year (2025 unavailable); NEXT_AREA_CHANGE cannot be computed
+Sentinel-2,Pre-2024 Terminal Records,998,998,Lake outlines that ceased detection or dropped out before 2024; no subsequent year
+Sentinel-2,Non-Consecutive Gaps (GAP > 1),1534,1191,Multi-year gaps (2-6 years between detections) due to cloud gaps; excluded from annual delta_t=1 forecasting
+Sentinel-2,Valid Supervised Transitions,16610,3134,Consecutive year pairs (GAP == 1) with valid NEXT_AREA_CHANGE target
+Sentinel-2,Unmatched S2-Only Pairs,4761,1446,Valid S2 transitions lacking a concurrent S1 transition in the same lake-year (primarily small lakes < 0.01 km2 unresolvable by C-band SAR)
+Cross-Sensor Fused,Matched Dual-Sensor Transitions,11849,2124,Strict intersection where BOTH S1 and S2 observed the identical lake in year t and t+1; basis of the 36-feature fused model
