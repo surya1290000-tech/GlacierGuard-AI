@@ -3,7 +3,7 @@ GlacierGuard-AI — Canonical Lake Classification Labels
 ======================================================
 Defines deterministic, empirical-delineation-uncertainty-grounded
 classification label semantics for glacial lake condition monitoring
-(Phase 9.1.4 / Phase 9.1.4.1).
+(Phase 9.1.4 / Phase 9.1.4.1 / Phase 9.1.4.2).
 
 GLO AREA_UNCERTAINTY Provenance & Semantics (Rawlins et al., 2026):
 - In the companion peer-reviewed publication (Rawlins, Watson, Bhambri, Khadka,
@@ -17,10 +17,12 @@ GLO AREA_UNCERTAINTY Provenance & Semantics (Rawlins et al., 2026):
       AREA_UNCERTAINTY(A) = round(0.0488 * A^0.537, 3)  [km²]
   Empirically verified at 100.0000% exact match across all 18,129 Sentinel-1
   and 22,294 Sentinel-2 records in the local GLO v1.02 GeoPackages.
-- Statistical independence between S1 and S2 area errors and across consecutive
-  annual observations (t vs. t+1) cannot be assumed and is empirically
-  contradicted in the matched cohort (lag-1 autocorrelation of S1-S2 bias =
-  +0.5489; lag-1 autocorrelation of fused annual change = -0.2700, N = 9,392).
+- Observed serial dependence diagnostics (lag-1 autocorrelation of observed
+  S1-S2 area discrepancy = +0.5489; lag-1 autocorrelation of consecutive
+  observed fused annual changes = -0.2700, N = 9,392 consecutive matched pairs)
+  indicate that the derived cross-sensor discrepancies and annual changes are
+  not temporally independent as observed quantities. These diagnostics do not
+  independently identify the covariance of the underlying measurement errors.
 - Therefore, the combined uncertainty scale U_RMS:
       U_RMS = sqrt(0.25 * (u_S1_t^2 + u_S1_t1^2 + u_S2_t^2 + u_S2_t1^2))
             = 0.5 * sqrt(u_S1_t^2 + u_S1_t1^2 + u_S2_t^2 + u_S2_t1^2)  [km²]
@@ -107,10 +109,9 @@ OPERATIONAL_HEURISTIC_STATES: List[str] = [
     "SYSTEM_ERROR",
 ]
 
-# RiskEngine retains "UNUSUAL_CHANGE" solely as a legacy internal alert alias
-# mapped to user-facing "ELEVATED ALERT" for backward compatibility with
-# existing operational pipelines. It is semantically distinct from the
-# supervised physical ML class CLASS_UNUSUAL_CHANGE.
+# New RiskEngine elevated alerts emit canonical "ELEVATED_ALERT" (mapped to
+# user-facing "ELEVATED ALERT"). Legacy persisted records or external callers
+# using "UNUSUAL_CHANGE" remain readable via map_status_to_user_facing().
 LEGACY_RISK_ENGINE_STATUS_ALIASES: Dict[str, str] = {
     "UNUSUAL_CHANGE": "ELEVATED_ALERT",
 }
@@ -130,6 +131,55 @@ EXCLUDED_TARGET_DERIVED_COLUMNS: List[str] = [
     "S2_NEXT_AREA_CHANGE",
     "S1_NEXT_UNCERTAINTY",
     "S2_NEXT_UNCERTAINTY",
+    "NEXT_YEAR",
+    "NEXT_AREA",
+    "NEXT_YEAR_GAP",
+    "S1_NEXT_AREA",
+    "S2_NEXT_AREA",
+    "S1_NEXT_YEAR",
+    "S2_NEXT_YEAR",
+]
+
+# Authoritative 36 pre-transition predictors for Phase 9.2 classification
+# (4 categorical + 16 S1 numerical + 16 S2 numerical; strictly disjoint from
+# EXCLUDED_TARGET_DERIVED_COLUMNS).
+CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS: List[str] = [
+    "BASIN",
+    "COUNTRY",
+    "GTNG_REGION_O2",
+    "CONNECTIVITY",
+    "S1_AREA",
+    "S1_PERIMETER",
+    "S1_AREA_UNCERTAINTY",
+    "S1_ELEVATION_MEAN",
+    "S1_ELEVATION_MIN",
+    "S1_ELEVATION_MEDIAN",
+    "S1_LATITUDE",
+    "S1_LONGITUDE",
+    "S1_AREA_LAG1",
+    "S1_AREA_LAG2",
+    "S1_AREA_LAG3",
+    "S1_AREA_CHANGE_LAG1",
+    "S1_AREA_CHANGE_LAG2",
+    "S1_AREA_CHANGE_LAG3",
+    "S1_ROLLING_MEAN_3",
+    "S1_ROLLING_STD_3",
+    "S2_AREA",
+    "S2_PERIMETER",
+    "S2_AREA_UNCERTAINTY",
+    "S2_ELEVATION_MEAN",
+    "S2_ELEVATION_MIN",
+    "S2_ELEVATION_MEDIAN",
+    "S2_LATITUDE",
+    "S2_LONGITUDE",
+    "S2_AREA_LAG1",
+    "S2_AREA_LAG2",
+    "S2_AREA_LAG3",
+    "S2_AREA_CHANGE_LAG1",
+    "S2_AREA_CHANGE_LAG2",
+    "S2_AREA_CHANGE_LAG3",
+    "S2_ROLLING_MEAN_3",
+    "S2_ROLLING_STD_3",
 ]
 
 # Canonical threshold parameters (engineering multiples of empirical U_RMS,
@@ -184,21 +234,41 @@ def compute_training_class_weights(
     classes: Optional[List[str]] = None,
 ) -> Dict[str, float]:
     """
-    Compute balanced inverse-frequency class weights strictly from unambiguous
-    training observations:
+    Compute balanced inverse-frequency class weights strictly from validated,
+    unambiguous training observations:
         w_c = N_train / (K * N_c)
 
-    Raises ValueError if AMBIGUOUS or unknown labels are present, or if any
-    physical class has zero training support.
+    Explicitly rejects:
+    - Empty training label Series
+    - Null or missing labels (NaN / None / pd.NA)
+    - AMBIGUOUS labels
+    - Unknown or non-physical labels (including operational heuristic statuses)
+    - Missing support (count == 0) for any required physical class
     """
-    target_classes = classes if classes is not None else PHYSICAL_CLASSES
+    if not isinstance(y_train_unambiguous, pd.Series):
+        y_train_unambiguous = pd.Series(y_train_unambiguous)
+
+    if len(y_train_unambiguous) == 0:
+        raise ValueError("Training labels must not be empty when computing class weights.")
+
+    null_count = int(y_train_unambiguous.isna().sum())
+    if null_count > 0:
+        raise ValueError(
+            f"Training labels contain {null_count} null/missing value(s); "
+            "missing labels must be resolved or excluded before computing class weights."
+        )
+
+    target_classes = list(classes) if classes is not None else list(PHYSICAL_CLASSES)
+    if len(target_classes) == 0:
+        raise ValueError("Target class list must not be empty.")
+
     valid_set = set(target_classes)
-    observed = set(y_train_unambiguous.dropna().unique())
+    observed = set(y_train_unambiguous.unique())
     invalid = observed - valid_set
     if invalid:
         raise ValueError(
             f"Class weights must be computed on unambiguous physical classes "
-            f"{target_classes} only; found invalid labels: {sorted(invalid)}"
+            f"{target_classes} only; found invalid labels: {sorted(map(str, invalid))}"
         )
 
     n_total = len(y_train_unambiguous)
@@ -211,6 +281,127 @@ def compute_training_class_weights(
             raise ValueError(f"Physical class {cls!r} has zero support in training labels.")
         weights[cls] = round(n_total / (n_classes * count), 6)
     return weights
+
+
+def validate_classification_training_inputs(
+    X: pd.DataFrame,
+    y: Optional[pd.Series] = None,
+    *,
+    expected_features: Optional[List[str]] = None,
+    excluded_columns: Optional[List[str]] = None,
+    allowed_classes: Optional[List[str]] = None,
+) -> List[str]:
+    """
+    Validate a predictor matrix X (and optional training target Series y) prior
+    to Phase 9.2 three-class classifier fitting.
+
+    Enforces:
+    1. X is a non-empty DataFrame with unique column names.
+    2. No target-derived or future-observation column from
+       EXCLUDED_TARGET_DERIVED_COLUMNS appears in X.columns.
+    3. If `expected_features` is supplied, X.columns matches the expected
+       feature column set exactly (no missing or unexpected extra columns).
+    4. If `y` is supplied:
+       - len(y) == len(X) and non-empty;
+       - zero null/missing target labels;
+       - zero AMBIGUOUS observations;
+       - every target value belongs strictly to PHYSICAL_CLASSES (or
+         `allowed_classes`), rejecting operational statuses or unknown labels.
+
+    Returns
+    -------
+    List[str]
+        Validated predictor column names in order.
+    """
+    if not isinstance(X, pd.DataFrame):
+        raise TypeError("Predictor matrix X must be a pandas DataFrame.")
+    if len(X) == 0:
+        raise ValueError("Predictor matrix X must not be empty.")
+    if len(X.columns) == 0:
+        raise ValueError("Predictor matrix X must contain at least one feature column.")
+    if X.columns.duplicated().any():
+        dups = list(X.columns[X.columns.duplicated()].unique())
+        raise ValueError(f"Predictor matrix X contains duplicate columns: {dups}")
+
+    cols = list(X.columns)
+    excluded_set = set(
+        excluded_columns if excluded_columns is not None else EXCLUDED_TARGET_DERIVED_COLUMNS
+    )
+    leaked = sorted(set(cols) & excluded_set)
+    if leaked:
+        raise ValueError(
+            f"Target-derived or future-observation column(s) prohibited in predictor matrix X: {leaked}"
+        )
+
+    if expected_features is not None:
+        expected_set = set(expected_features)
+        actual_set = set(cols)
+        missing_cols = sorted(expected_set - actual_set)
+        extra_cols = sorted(actual_set - expected_set)
+        if missing_cols or extra_cols:
+            raise ValueError(
+                f"Predictor matrix columns do not match expected feature schema. "
+                f"Missing: {missing_cols}; Unexpected: {extra_cols}"
+            )
+
+    if y is not None:
+        if not isinstance(y, pd.Series):
+            y = pd.Series(y)
+        if len(y) != len(X):
+            raise ValueError(
+                f"Predictor matrix X ({len(X)} rows) and target y ({len(y)} rows) have mismatched lengths."
+            )
+        if len(y) == 0:
+            raise ValueError("Target Series y must not be empty.")
+        null_count = int(y.isna().sum())
+        if null_count > 0:
+            raise ValueError(
+                f"Target Series y contains {null_count} null/missing label(s); "
+                "missing targets are prohibited during classifier fitting."
+            )
+        valid_classes = set(allowed_classes if allowed_classes is not None else PHYSICAL_CLASSES)
+        observed = set(y.unique())
+        if CLASS_AMBIGUOUS in observed and CLASS_AMBIGUOUS not in valid_classes:
+            raise ValueError(
+                "AMBIGUOUS observations are prohibited in three-class supervised training targets."
+            )
+        invalid = observed - valid_classes
+        if invalid:
+            raise ValueError(
+                f"Training target y contains non-physical or unknown label(s): "
+                f"{sorted(map(str, invalid))}. Allowed classes: {sorted(valid_classes)}"
+            )
+
+    return cols
+
+
+def compute_observed_serial_dependence_diagnostics(df: pd.DataFrame) -> Dict[str, Union[int, float]]:
+    """
+    Reproducibly compute lag-1 serial dependence diagnostics on consecutive
+    matched lake-year pairs (`AREA_YEAR - prev_AREA_YEAR == 1`, sorted by
+    `GLO_ID`, `AREA_YEAR`):
+    - lag-1 autocorrelation of observed S1-S2 area discrepancy (`S1_AREA - S2_AREA`)
+    - lag-1 autocorrelation of observed fused annual change (`FUSED_TARGET`)
+
+    These diagnostics describe temporal dependence in the observed derived
+    quantities and do NOT independently identify the covariance structure of
+    the underlying measurement errors.
+    """
+    ordered = df.sort_values(["GLO_ID", "AREA_YEAR"]).copy()
+    ordered["S1_MINUS_S2"] = ordered["S1_AREA"] - ordered["S2_AREA"]
+    grp = ordered.groupby("GLO_ID")
+    ordered["PREV_YEAR_GAP"] = ordered["AREA_YEAR"] - grp["AREA_YEAR"].shift(1)
+    ordered["PREV_S1_MINUS_S2"] = grp["S1_MINUS_S2"].shift(1)
+    ordered["PREV_FUSED_TARGET"] = grp["FUSED_TARGET"].shift(1)
+    consec = ordered[ordered["PREV_YEAR_GAP"] == 1]
+
+    r_discrepancy = float(consec["S1_MINUS_S2"].corr(consec["PREV_S1_MINUS_S2"]))
+    r_target = float(consec["FUSED_TARGET"].corr(consec["PREV_FUSED_TARGET"]))
+    return {
+        "consecutive_pairs_n": int(len(consec)),
+        "lag1_autocorr_observed_s1_minus_s2": round(r_discrepancy, 4),
+        "lag1_autocorr_observed_fused_target": round(r_target, 4),
+    }
 
 
 def classify_observation_condition(
@@ -681,13 +872,16 @@ def generate_all_canonical_artifacts(repo_root: Optional[Path] = None):
     ]["CANONICAL_LABEL"]
     train_class_weights = compute_training_class_weights(train_unambig)
 
+    # Reproducible observed serial dependence diagnostics on consecutive matched pairs
+    serial_diag = compute_observed_serial_dependence_diagnostics(df)
+
     # 3. Generate reports/12_canonical_label_audit.json
     print("Generating reports/12_canonical_label_audit.json...")
     audit_data = {
         "audit_metadata": {
-            "title": "Phase 9.1.4.1 Canonical Classification Label Reconciliation & Uncertainty Semantics Closure",
+            "title": "Phase 9.1.4.2 Canonical Classification Label Reconciliation & Uncertainty Semantics Closure",
             "date": "2026-11-18",
-            "phase": "9.1.4.1",
+            "phase": "9.1.4.2",
             "lead_ml_engineer": "GlacierGuard-AI Lead Geospatial ML Engineer",
             "git_branch": "feature/phase9-dual-ensemble",
             "audit_objective": (
@@ -695,7 +889,8 @@ def generate_all_canonical_artifacts(repo_root: Optional[Path] = None):
                 "classification labels (STABLE, EXPANDING, UNUSUAL_CHANGE, AMBIGUOUS), verify "
                 "GLO AREA_UNCERTAINTY semantics against Rawlins et al. (2026), align ambiguous "
                 "diagnostic boundaries, separate operational heuristics from physical ML classes, "
-                "and verify partition integrity prior to Phase 9.2 model training."
+                "harden class-weight and predictor-leakage validation, and verify partition "
+                "integrity prior to Phase 9.2 model training."
             ),
         },
         "uncertainty_semantics_audit": {
@@ -704,11 +899,15 @@ def generate_all_canonical_artifacts(repo_root: Optional[Path] = None):
             "glo_area_uncertainty_formula": "AREA_UNCERTAINTY(A) = round(0.0488 * A^0.537, 3) [km²], derived from error% = 4.88 * A^(-0.463) fitted to Sentinel-2 DL vs. n=895 manual digitizations",
             "empirical_match_verification": "100.0000% exact match across all 18,129 Sentinel-1 and 22,294 Sentinel-2 records (40,423/40,423)",
             "is_one_sigma_sd": False,
-            "independence_supported": False,
-            "empirical_dependence_diagnostics": {
-                "lag1_autocorr_s1_minus_s2": 0.5489,
-                "lag1_autocorr_fused_target": -0.2700,
-                "consecutive_pairs_n": 9392,
+            "independence_established_by_source": False,
+            "observed_serial_dependence_diagnostics": {
+                **serial_diag,
+                "interpretation": (
+                    "Observed serial dependence diagnostics indicate that the derived cross-sensor "
+                    "discrepancies and annual changes are not temporally independent as observed "
+                    "quantities. These diagnostics do not independently identify the covariance of "
+                    "the underlying measurement errors."
+                ),
             },
             "combined_scale_interpretation": (
                 "U_RMS = sqrt(0.25 * (u_S1_t^2 + u_S1_t1^2 + u_S2_t^2 + u_S2_t1^2)) is a purely "
@@ -824,18 +1023,21 @@ def generate_all_canonical_artifacts(repo_root: Optional[Path] = None):
             "operational_heuristic_states": OPERATIONAL_HEURISTIC_STATES,
             "vocabulary_disjoint_verified": set(PHYSICAL_CLASSES).isdisjoint(set(OPERATIONAL_HEURISTIC_STATES)),
             "legacy_risk_engine_compatibility_note": (
-                "RiskEngine retains internal status string 'UNUSUAL_CHANGE' solely as a legacy "
-                "compatibility alias mapped to user-facing 'ELEVATED ALERT' (canonical operational "
-                "identifier: ELEVATED_ALERT). Operational alert statuses must NEVER be used as "
-                "supervised training targets."
+                "New RiskEngine elevated alerts emit canonical internal status 'ELEVATED_ALERT' "
+                "(mapped to user-facing 'ELEVATED ALERT'). Previously persisted records or external "
+                "callers using legacy 'UNUSUAL_CHANGE' remain readable via map_status_to_user_facing() "
+                "and dashboard_data/dashboard consumers. Operational alert statuses must NEVER be used "
+                "as supervised training targets."
             ),
             "abstention_separation": "WATCH, STALE, STALE_DATA, and INSUFFICIENT_DATA are operational quality/alert states, NOT physical lake-change categories.",
             "independent_target_formulation": "Supervised labels are constructed strictly from consecutive annual area observations and GLO AREA_UNCERTAINTY, completely independent of RiskEngine and separate from cryospheric event inventories.",
         },
         "scientific_validation_guardrails": {
             "duplicate_transitions_in_cohort": int(df.duplicated(subset=["GLO_ID", "AREA_YEAR"]).sum()),
+            "canonical_predictor_columns": CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS,
             "excluded_target_derived_predictors": EXCLUDED_TARGET_DERIVED_COLUMNS,
-            "class_weights_policy": "Class weights must be calculated strictly from unambiguous training observations (Train <=2021, N=7,880) only.",
+            "predictor_leakage_validator": "glacierguard.classification_labels.validate_classification_training_inputs",
+            "class_weights_policy": "Class weights must be calculated strictly from validated, non-null, unambiguous training observations (Train <=2021, N=7,880) only.",
             "exhausted_test_year_2023": (
                 "The 2023 historical test partition (N=1,742; 1,612 unambiguous) was already used "
                 "in NB09 and NB11. Any further test-set evaluation, threshold selection, hyperparameter "

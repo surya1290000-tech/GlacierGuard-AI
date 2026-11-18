@@ -498,22 +498,34 @@ class TestAmbiguousDiagnosticExclusivity:
 
 
 class TestExcludedPredictorsAndTrainingWeights:
-    """Verify target-derived feature exclusion and training-only class weight calculation."""
+    """Verify target-derived feature exclusion, runtime predictor validation,
+    and hardened training-only class weight calculation."""
 
     def test_excluded_predictors_absent_from_regression_audit(self):
-        from glacierguard.classification_labels import EXCLUDED_TARGET_DERIVED_COLUMNS
+        from glacierguard.classification_labels import (
+            CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS,
+            EXCLUDED_TARGET_DERIVED_COLUMNS,
+        )
 
         required_excluded = {
             "FUSED_TARGET",
             "CANONICAL_LABEL",
+            "AMBIGUOUS_REASON",
             "RELATIVE_CHANGE_PCT_FUSED",
             "FUSED_SIGMA_DELTA",
+            "FUSED_U_RMS",
+            "NEXT_AREA_CHANGE",
+            "NEXT_UNCERTAINTY",
             "S1_NEXT_AREA_CHANGE",
             "S2_NEXT_AREA_CHANGE",
             "S1_NEXT_UNCERTAINTY",
             "S2_NEXT_UNCERTAINTY",
         }
         assert required_excluded.issubset(set(EXCLUDED_TARGET_DERIVED_COLUMNS))
+        assert len(CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS) == 36
+        assert set(CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS).isdisjoint(
+            set(EXCLUDED_TARGET_DERIVED_COLUMNS)
+        )
 
         audit_path = Path("reports/12_regression_data_audit.json")
         assert audit_path.exists(), "reports/12_regression_data_audit.json missing"
@@ -527,21 +539,191 @@ class TestExcludedPredictorsAndTrainingWeights:
         for col in EXCLUDED_TARGET_DERIVED_COLUMNS:
             assert col not in feats, f"Target-derived column {col!r} leaked into predictor schema"
 
-    def test_training_only_class_weights(self):
+    def test_training_only_class_weights_exact_values(self):
         from glacierguard.classification_labels import compute_training_class_weights
 
         df_labels = pd.read_parquet("reports/12_canonical_observation_labels.parquet")
         train_all = df_labels[df_labels["TEMPORAL_SPLIT"] == "TRAIN"]["CANONICAL_LABEL"]
-        # Must reject AMBIGUOUS labels
-        with pytest.raises(ValueError):
-            compute_training_class_weights(train_all)
-
         train_unambig = train_all[train_all.isin(PHYSICAL_CLASSES)]
         assert len(train_unambig) == 7880
+
         weights = compute_training_class_weights(train_unambig)
-        assert weights[CLASS_STABLE] == pytest.approx(7880 / (3 * 7744), rel=1e-5)
-        assert weights[CLASS_EXPANDING] == pytest.approx(7880 / (3 * 47), rel=1e-5)
-        assert weights[CLASS_UNUSUAL_CHANGE] == pytest.approx(7880 / (3 * 89), rel=1e-5)
+        assert weights[CLASS_STABLE] == 0.339187
+        assert weights[CLASS_EXPANDING] == 55.886525
+        assert weights[CLASS_UNUSUAL_CHANGE] == 29.513109
+
+    def test_class_weights_reject_null_labels(self):
+        from glacierguard.classification_labels import compute_training_class_weights
+
+        y_with_none = pd.Series([CLASS_STABLE, CLASS_EXPANDING, CLASS_UNUSUAL_CHANGE, None])
+        with pytest.raises(ValueError, match="null/missing"):
+            compute_training_class_weights(y_with_none)
+
+        y_with_nan = pd.Series([CLASS_STABLE, CLASS_EXPANDING, CLASS_UNUSUAL_CHANGE, np.nan])
+        with pytest.raises(ValueError, match="null/missing"):
+            compute_training_class_weights(y_with_nan)
+
+    def test_class_weights_reject_empty_series(self):
+        from glacierguard.classification_labels import compute_training_class_weights
+
+        with pytest.raises(ValueError, match="empty"):
+            compute_training_class_weights(pd.Series([], dtype=object))
+
+    def test_class_weights_reject_missing_physical_class_support(self):
+        from glacierguard.classification_labels import compute_training_class_weights
+
+        y_missing_expanding = pd.Series([CLASS_STABLE, CLASS_STABLE, CLASS_UNUSUAL_CHANGE])
+        with pytest.raises(ValueError, match="zero support"):
+            compute_training_class_weights(y_missing_expanding)
+
+    def test_class_weights_reject_ambiguous_and_unknown_labels(self):
+        from glacierguard.classification_labels import compute_training_class_weights
+
+        y_ambig = pd.Series([CLASS_STABLE, CLASS_EXPANDING, CLASS_UNUSUAL_CHANGE, CLASS_AMBIGUOUS])
+        with pytest.raises(ValueError, match="invalid labels"):
+            compute_training_class_weights(y_ambig)
+
+        y_unknown = pd.Series([CLASS_STABLE, CLASS_EXPANDING, CLASS_UNUSUAL_CHANGE, "WATCH"])
+        with pytest.raises(ValueError, match="invalid labels"):
+            compute_training_class_weights(y_unknown)
+
+    def test_feature_matrix_validator_accepts_clean_36_features(self):
+        from glacierguard.classification_labels import (
+            CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS,
+            validate_classification_training_inputs,
+        )
+
+        X = pd.DataFrame({col: [1.0, 2.0, 3.0] for col in CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS})
+        y = pd.Series([CLASS_STABLE, CLASS_EXPANDING, CLASS_UNUSUAL_CHANGE])
+        validated_cols = validate_classification_training_inputs(
+            X, y, expected_features=CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS
+        )
+        assert validated_cols == CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS
+
+    def test_feature_matrix_validator_rejects_every_excluded_column(self):
+        from glacierguard.classification_labels import (
+            EXCLUDED_TARGET_DERIVED_COLUMNS,
+            validate_classification_training_inputs,
+        )
+
+        y = pd.Series([CLASS_STABLE, CLASS_EXPANDING, CLASS_UNUSUAL_CHANGE])
+        for leaked_col in EXCLUDED_TARGET_DERIVED_COLUMNS:
+            X = pd.DataFrame({"S1_AREA": [0.1, 0.2, 0.3], leaked_col: [1.0, 2.0, 3.0]})
+            with pytest.raises(ValueError, match="prohibited in predictor matrix"):
+                validate_classification_training_inputs(X, y)
+
+    def test_feature_matrix_validator_rejects_invalid_targets_and_shapes(self):
+        from glacierguard.classification_labels import (
+            CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS,
+            validate_classification_training_inputs,
+        )
+
+        X_ok = pd.DataFrame({"S1_AREA": [0.1, 0.2, 0.3], "S2_AREA": [0.1, 0.2, 0.3]})
+
+        # Missing target label
+        with pytest.raises(ValueError, match="null/missing"):
+            validate_classification_training_inputs(
+                X_ok, pd.Series([CLASS_STABLE, None, CLASS_EXPANDING])
+            )
+
+        # AMBIGUOUS target rejected
+        with pytest.raises(ValueError, match="AMBIGUOUS"):
+            validate_classification_training_inputs(
+                X_ok, pd.Series([CLASS_STABLE, CLASS_AMBIGUOUS, CLASS_EXPANDING])
+            )
+
+        # Operational status target rejected
+        with pytest.raises(ValueError, match="non-physical or unknown"):
+            validate_classification_training_inputs(
+                X_ok, pd.Series([CLASS_STABLE, "ELEVATED_ALERT", CLASS_EXPANDING])
+            )
+
+        # Mismatched expected feature columns rejected
+        with pytest.raises(ValueError, match="expected feature schema"):
+            validate_classification_training_inputs(
+                X_ok,
+                pd.Series([CLASS_STABLE, CLASS_EXPANDING, CLASS_UNUSUAL_CHANGE]),
+                expected_features=CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS,
+            )
+
+        # Empty DataFrame rejected
+        with pytest.raises(ValueError, match="must not be empty"):
+            validate_classification_training_inputs(pd.DataFrame(columns=["S1_AREA"]))
+
+
+class TestRuntimeRiskEngineTaxonomyMigration:
+    """Verify RiskEngine emits canonical ELEVATED_ALERT while preserving legacy
+    UNUSUAL_CHANGE read compatibility across dashboard_data and db persistence."""
+
+    def test_risk_engine_emits_canonical_elevated_alert_not_physical_label(self):
+        import datetime
+        from glacierguard.config import default_settings
+        from glacierguard.models import ObservationRecord
+        from glacierguard.risk_engine import RiskEngine
+
+        engine = RiskEngine(default_settings)
+        obs = ObservationRecord(
+            observation_id="OBS_TEST_ELEV",
+            lake_id="lower_barun",
+            sensor="SENTINEL-2",
+            acquisition_date="2026-09-28",
+            area_50m_km2=0.609,
+        )
+        alert = engine.evaluate("lower_barun", s2_obs=obs, reference_date=datetime.date(2026, 9, 30))
+        assert alert.status == "ELEVATED_ALERT"
+        assert alert.status not in PHYSICAL_CLASSES
+        assert alert.status in OPERATIONAL_HEURISTIC_STATES
+        assert alert.user_facing_status == "ELEVATED ALERT"
+
+    def test_dashboard_schema_accepts_canonical_and_legacy_elevated_statuses(self):
+        from glacierguard.dashboard_data import CANONICAL_LAKE_ORDER, validate_qa_schema
+
+        df_canonical = pd.DataFrame({
+            "lake_id": CANONICAL_LAKE_ORDER,
+            "monitoring_status": ["NORMAL", "WATCH", "WATCH", "ELEVATED_ALERT", "WATCH"],
+        })
+        assert validate_qa_schema(df_canonical) == []
+
+        df_legacy = pd.DataFrame({
+            "lake_id": CANONICAL_LAKE_ORDER,
+            "monitoring_status": ["NORMAL", "WATCH", "WATCH", "UNUSUAL_CHANGE", "WATCH"],
+        })
+        assert validate_qa_schema(df_legacy) == []
+
+    def test_db_persistence_roundtrip_canonical_and_legacy_statuses(self, tmp_path):
+        from glacierguard.db import get_latest_monitoring_alerts, init_db, save_monitoring_alert
+        from glacierguard.models import MonitoringAlert
+
+        db_file = tmp_path / "test_taxonomy.db"
+        init_db(db_file)
+
+        # Persist legacy record and canonical record
+        save_monitoring_alert(
+            MonitoringAlert(
+                alert_id="legacy_1",
+                lake_id="imja_tsho",
+                timestamp="2026-09-28T12:00:00Z",
+                status="UNUSUAL_CHANGE",
+                user_facing_status="ELEVATED ALERT",
+            ),
+            db_path=db_file,
+        )
+        save_monitoring_alert(
+            MonitoringAlert(
+                alert_id="canonical_1",
+                lake_id="lower_barun",
+                timestamp="2026-09-29T12:00:00Z",
+                status="ELEVATED_ALERT",
+                user_facing_status="ELEVATED ALERT",
+            ),
+            db_path=db_file,
+        )
+
+        alerts = get_latest_monitoring_alerts(db_path=db_file)
+        assert alerts["imja_tsho"].status == "UNUSUAL_CHANGE"
+        assert alerts["imja_tsho"].user_facing_status == "ELEVATED ALERT"
+        assert alerts["lower_barun"].status == "ELEVATED_ALERT"
+        assert alerts["lower_barun"].user_facing_status == "ELEVATED ALERT"
 
 
 class TestNoMissingOrDuplicateTransitions:
@@ -567,9 +749,19 @@ class TestNoMissingOrDuplicateTransitions:
 
 
 class TestUncertaintySemanticsEvidenceNote:
-    """Verify uncertainty semantics evidence note and Rawlins et al. (2026) documentation."""
+    """Verify uncertainty semantics evidence note, reproducible serial dependence
+    diagnostics, and non-overreaching statistical interpretation."""
 
-    def test_uncertainty_semantics_note_exists_and_documents_rawlins_formula(self):
+    def test_reproducible_observed_serial_dependence_diagnostics(self):
+        from glacierguard.classification_labels import compute_observed_serial_dependence_diagnostics
+
+        df_labels = pd.read_parquet("reports/12_canonical_observation_labels.parquet")
+        diag = compute_observed_serial_dependence_diagnostics(df_labels)
+        assert diag["consecutive_pairs_n"] == 9392
+        assert diag["lag1_autocorr_observed_s1_minus_s2"] == pytest.approx(0.5489, abs=1e-4)
+        assert diag["lag1_autocorr_observed_fused_target"] == pytest.approx(-0.2700, abs=1e-4)
+
+    def test_uncertainty_semantics_note_exists_and_uses_precise_diagnostics_wording(self):
         note_path = Path("reports/12_uncertainty_semantics_note.md")
         assert note_path.exists(), "reports/12_uncertainty_semantics_note.md missing"
         note = note_path.read_text(encoding="utf-8")
@@ -579,6 +771,8 @@ class TestUncertaintySemanticsEvidenceNote:
         assert "0.537" in note
         assert "0.5489" in note
         assert "U_{\\text{RMS}}" in note
+        assert "do not independently identify the covariance of the underlying measurement errors" in note
+        assert "empirically falsified" not in note.lower()
 
     def test_classification_labels_docstring_documents_empirical_scale(self):
         from glacierguard import classification_labels
@@ -587,3 +781,4 @@ class TestUncertaintySemanticsEvidenceNote:
         assert "rawlins" in docstring
         assert "u_rms" in docstring
         assert "not a one-sigma" in docstring
+        assert "do not\n  independently identify the covariance" in docstring or "do not independently identify" in docstring

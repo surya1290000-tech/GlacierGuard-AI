@@ -1,11 +1,11 @@
 {
   "audit_metadata": {
-    "title": "Phase 9.1.4.1 Canonical Classification Label Reconciliation & Uncertainty Semantics Closure",
+    "title": "Phase 9.1.4.2 Canonical Classification Label Reconciliation & Uncertainty Semantics Closure",
     "date": "2026-11-18",
-    "phase": "9.1.4.1",
+    "phase": "9.1.4.2",
     "lead_ml_engineer": "GlacierGuard-AI Lead Geospatial ML Engineer",
     "git_branch": "feature/phase9-dual-ensemble",
-    "audit_objective": "Establish deterministic, empirical-delineation-uncertainty-grounded canonical classification labels (STABLE, EXPANDING, UNUSUAL_CHANGE, AMBIGUOUS), verify GLO AREA_UNCERTAINTY semantics against Rawlins et al. (2026), align ambiguous diagnostic boundaries, separate operational heuristics from physical ML classes, and verify partition integrity prior to Phase 9.2 model training."
+    "audit_objective": "Establish deterministic, empirical-delineation-uncertainty-grounded canonical classification labels (STABLE, EXPANDING, UNUSUAL_CHANGE, AMBIGUOUS), verify GLO AREA_UNCERTAINTY semantics against Rawlins et al. (2026), align ambiguous diagnostic boundaries, separate operational heuristics from physical ML classes, harden class-weight and predictor-leakage validation, and verify partition integrity prior to Phase 9.2 model training."
   },
   "uncertainty_semantics_audit": {
     "source_publication": "Rawlins, L. D., Watson, C. S., Bhambri, R., Khadka, N., & Chand, M. B. (2026). Earth System Science Data, 18, 5143-5165. doi:10.5194/essd-18-5143-2026",
@@ -13,11 +13,12 @@
     "glo_area_uncertainty_formula": "AREA_UNCERTAINTY(A) = round(0.0488 * A^0.537, 3) [km\u00b2], derived from error% = 4.88 * A^(-0.463) fitted to Sentinel-2 DL vs. n=895 manual digitizations",
     "empirical_match_verification": "100.0000% exact match across all 18,129 Sentinel-1 and 22,294 Sentinel-2 records (40,423/40,423)",
     "is_one_sigma_sd": false,
-    "independence_supported": false,
-    "empirical_dependence_diagnostics": {
-      "lag1_autocorr_s1_minus_s2": 0.5489,
-      "lag1_autocorr_fused_target": -0.27,
-      "consecutive_pairs_n": 9392
+    "independence_established_by_source": false,
+    "observed_serial_dependence_diagnostics": {
+      "consecutive_pairs_n": 9392,
+      "lag1_autocorr_observed_s1_minus_s2": 0.5489,
+      "lag1_autocorr_observed_fused_target": -0.27,
+      "interpretation": "Observed serial dependence diagnostics indicate that the derived cross-sensor discrepancies and annual changes are not temporally independent as observed quantities. These diagnostics do not independently identify the covariance of the underlying measurement errors."
     },
     "combined_scale_interpretation": "U_RMS = sqrt(0.25 * (u_S1_t^2 + u_S1_t1^2 + u_S2_t^2 + u_S2_t1^2)) is a purely descriptive Root-Mean-Square empirical delineation-error scale requiring no Gaussian or independence assumption. Multipliers 1.0x and 3.0x are engineering thresholds, not 1\u03c3 or 3\u03c3 statistical significance levels. See reports/12_uncertainty_semantics_note.md."
   },
@@ -216,12 +217,50 @@
       "SYSTEM_ERROR"
     ],
     "vocabulary_disjoint_verified": true,
-    "legacy_risk_engine_compatibility_note": "RiskEngine retains internal status string 'UNUSUAL_CHANGE' solely as a legacy compatibility alias mapped to user-facing 'ELEVATED ALERT' (canonical operational identifier: ELEVATED_ALERT). Operational alert statuses must NEVER be used as supervised training targets.",
+    "legacy_risk_engine_compatibility_note": "New RiskEngine elevated alerts emit canonical internal status 'ELEVATED_ALERT' (mapped to user-facing 'ELEVATED ALERT'). Previously persisted records or external callers using legacy 'UNUSUAL_CHANGE' remain readable via map_status_to_user_facing() and dashboard_data/dashboard consumers. Operational alert statuses must NEVER be used as supervised training targets.",
     "abstention_separation": "WATCH, STALE, STALE_DATA, and INSUFFICIENT_DATA are operational quality/alert states, NOT physical lake-change categories.",
     "independent_target_formulation": "Supervised labels are constructed strictly from consecutive annual area observations and GLO AREA_UNCERTAINTY, completely independent of RiskEngine and separate from cryospheric event inventories."
   },
   "scientific_validation_guardrails": {
     "duplicate_transitions_in_cohort": 0,
+    "canonical_predictor_columns": [
+      "BASIN",
+      "COUNTRY",
+      "GTNG_REGION_O2",
+      "CONNECTIVITY",
+      "S1_AREA",
+      "S1_PERIMETER",
+      "S1_AREA_UNCERTAINTY",
+      "S1_ELEVATION_MEAN",
+      "S1_ELEVATION_MIN",
+      "S1_ELEVATION_MEDIAN",
+      "S1_LATITUDE",
+      "S1_LONGITUDE",
+      "S1_AREA_LAG1",
+      "S1_AREA_LAG2",
+      "S1_AREA_LAG3",
+      "S1_AREA_CHANGE_LAG1",
+      "S1_AREA_CHANGE_LAG2",
+      "S1_AREA_CHANGE_LAG3",
+      "S1_ROLLING_MEAN_3",
+      "S1_ROLLING_STD_3",
+      "S2_AREA",
+      "S2_PERIMETER",
+      "S2_AREA_UNCERTAINTY",
+      "S2_ELEVATION_MEAN",
+      "S2_ELEVATION_MIN",
+      "S2_ELEVATION_MEDIAN",
+      "S2_LATITUDE",
+      "S2_LONGITUDE",
+      "S2_AREA_LAG1",
+      "S2_AREA_LAG2",
+      "S2_AREA_LAG3",
+      "S2_AREA_CHANGE_LAG1",
+      "S2_AREA_CHANGE_LAG2",
+      "S2_AREA_CHANGE_LAG3",
+      "S2_ROLLING_MEAN_3",
+      "S2_ROLLING_STD_3"
+    ],
     "excluded_target_derived_predictors": [
       "FUSED_TARGET",
       "CANONICAL_LABEL",
@@ -234,9 +273,17 @@
       "S1_NEXT_AREA_CHANGE",
       "S2_NEXT_AREA_CHANGE",
       "S1_NEXT_UNCERTAINTY",
-      "S2_NEXT_UNCERTAINTY"
+      "S2_NEXT_UNCERTAINTY",
+      "NEXT_YEAR",
+      "NEXT_AREA",
+      "NEXT_YEAR_GAP",
+      "S1_NEXT_AREA",
+      "S2_NEXT_AREA",
+      "S1_NEXT_YEAR",
+      "S2_NEXT_YEAR"
     ],
-    "class_weights_policy": "Class weights must be calculated strictly from unambiguous training observations (Train <=2021, N=7,880) only.",
+    "predictor_leakage_validator": "glacierguard.classification_labels.validate_classification_training_inputs",
+    "class_weights_policy": "Class weights must be calculated strictly from validated, non-null, unambiguous training observations (Train <=2021, N=7,880) only.",
     "exhausted_test_year_2023": "The 2023 historical test partition (N=1,742; 1,612 unambiguous) was already used in NB09 and NB11. Any further test-set evaluation, threshold selection, hyperparameter tuning, or model selection using 2023 is strictly prohibited. Previously reported benchmark metrics (MAE=0.004792 km\u00b2, RMSE=0.015079 km\u00b2, R\u00b2=0.3366) are preserved as historical references only.",
     "status_of_year_2024": "2024 area values were consumed to construct the 2023 target; 2024 has no consecutive next year (2025 unavailable) and remains unavailable as an untouched future holdout.",
     "leakage_prevention": "Row-level random splitting is prohibited. Cross-validation must strictly use lake-level grouping (GroupKFold on GLO_ID). Preprocessors must fit strictly on training folds.",

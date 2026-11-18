@@ -1,5 +1,5 @@
 # GlacierGuard-AI — Canonical Lake Classification Label Decisions & Scientific Reconciliation
-**Phase:** 9.1.4 / 9.1.4.1 Canonical Classification Label & Uncertainty Semantics Closure
+**Phase:** 9.1.4 / 9.1.4.1 / 9.1.4.2 Canonical Classification Label & Uncertainty Semantics Closure
 **Date:** 2026-11-18
 **Author:** Lead Geospatial ML Engineer
 **Git Branch:** `feature/phase9-dual-ensemble`
@@ -36,7 +36,7 @@ All earlier count discrepancies stemmed from **how the 897 ambiguous observation
 
 ### 3.1 GLO `AREA_UNCERTAINTY` Semantics (Summary of `reports/12_uncertainty_semantics_note.md`)
 - In Rawlins et al. (2026, *Earth System Science Data*, 18, 5143–5165, `doi:10.5194/essd-18-5143-2026`; Zenodo `10.5281/zenodo.17802333`), `AREA_UNCERTAINTY` is **not** a $1\sigma$ Gaussian standard deviation or confidence interval. It is an **empirical area-dependent power-law delineation-error estimate** ($\text{error}\% = 4.88 A^{-0.463} \implies \text{round}(0.0488 A^{0.537}, 3)\,\text{km}^2$), verified at **100.0000% exact match** across all 40,423 GLO v1.02 records (`18,129` S1 + `22,294` S2).
-- Statistical independence across sensors and consecutive years is **not** justified and is empirically falsified in the matched cohort (lag-1 autocorrelation of $A_{S1} - A_{S2}$ is $+0.5489$; lag-1 autocorrelation of $\Delta A$ is $-0.2700$, $N=9,392$).
+- Statistical independence across sensors and consecutive years is **not** established by the dataset documentation. Observed serial dependence diagnostics on consecutive matched pairs (`N=9,392`: lag-1 autocorrelation of observed S1–S2 area discrepancy `r = +0.5489`; lag-1 autocorrelation of observed fused annual change `r = -0.2700`) indicate that the derived cross-sensor discrepancies and annual changes are not temporally independent as observed quantities; these diagnostics do not independently identify the covariance of the underlying measurement errors.
 - Accordingly, the combined scale $U_{\text{RMS}}$ is interpreted strictly as the **descriptive Root-Mean-Square (RMS) empirical delineation-error scale** across the four paired observations (requiring no Gaussian or independence assumption), and thresholds $1.0\times U_{\text{RMS}}$ and $3.0\times U_{\text{RMS}}$ are engineering multipliers — **not** statistical significance tests.
 
 Let:
@@ -107,22 +107,23 @@ Assuming positive `MEAN_AREA` and positive $U_{\text{RMS}}$, the exact mutually 
 Physical ML classes (`PHYSICAL_CLASSES = ["STABLE", "EXPANDING", "UNUSUAL_CHANGE"]`) and operational alert tiers (`OPERATIONAL_HEURISTIC_STATES = ["SAFE", "NORMAL", "WATCH", "ELEVATED", "ELEVATED_ALERT", "ELEVATED ALERT", "STALE", "STALE_DATA", "STALE DATA", "INSUFFICIENT_DATA", "INSUFFICIENT DATA", "PROCESSING", "SYSTEM_ERROR"]`) are **strictly disjoint vocabularies** (`set(PHYSICAL_CLASSES).isdisjoint(set(OPERATIONAL_HEURISTIC_STATES)) == True`).
 
 - Operational statuses (`WATCH`, `ELEVATED_ALERT`, `STALE`, `INSUFFICIENT_DATA`, etc.) combine heuristics such as data staleness, sensor discordance, and operational thresholds; they must **NEVER** be used as supervised training targets.
-- For backward compatibility with existing operational pipelines and dashboard fixtures, `RiskEngine` retains `"UNUSUAL_CHANGE"` solely as a legacy internal alias mapped to user-facing `"ELEVATED ALERT"` (canonical operational identifier: `ELEVATED_ALERT`); this legacy alert code is semantically distinct from the physical ML class `CLASS_UNUSUAL_CHANGE`.
+- **Migration-Safe Runtime Separation (Phase 9.1.4.2):** New `RiskEngine` elevated operational alerts emit canonical internal status `"ELEVATED_ALERT"` (mapped to user-facing `"ELEVATED ALERT"`). Previously persisted records or external callers using legacy `"UNUSUAL_CHANGE"` remain readable via `map_status_to_user_facing()`, `dashboard_data.py`, `db.py`, and `app/dashboard.py`; that legacy operational code is strictly distinct from the physical ML class `CLASS_UNUSUAL_CHANGE`.
 
 ---
 
 ## 7. Phase 9.2 Classifier Training Guidelines & Guardrails
 
-1. **Class Imbalance Mitigation (Training-Only Class Weights):**
-   - Balanced inverse-frequency class weights $w_c = \frac{N_{\text{train}}}{3 \cdot N_{c,\text{train}}}$ must be computed strictly from the **unambiguous training partition** (`Train <=2021`, $N = 7,880$):
+1. **Class Imbalance Mitigation (Hardened Training-Only Class Weights):**
+   - Balanced inverse-frequency class weights $w_c = \frac{N_{\text{train}}}{3 \cdot N_{c,\text{train}}}$ must be computed strictly via `compute_training_class_weights()` on validated, non-null, unambiguous training observations (`Train <=2021`, $N = 7,880$; explicitly rejects empty Series, null/missing labels, `AMBIGUOUS`, unknown labels, or missing physical class support):
      - `STABLE`: $7,880 / (3 \times 7,744) = 0.339187$
      - `EXPANDING`: $7,880 / (3 \times 47) = 55.886525$
      - `UNUSUAL_CHANGE`: $7,880 / (3 \times 89) = 29.513109$
    - Primary metrics: **Macro-F1** and **PR-AUC** for `EXPANDING` and `UNUSUAL_CHANGE` (overall accuracy is prohibited as a selection metric because an all-`STABLE` trivial classifier achieves $90.81\%$ on the overall cohort and $98.25\%$ on the unambiguous subcohort).
    - Synthetic oversampling (e.g., SMOTE) on validation or test partitions is strictly prohibited.
 
-2. **Target-Derived Feature Leakage Exclusion:**
-   - The following columns are explicitly excluded from all model predictors: `FUSED_TARGET`, `CANONICAL_LABEL`, `AMBIGUOUS_REASON`, `RELATIVE_CHANGE_PCT_FUSED`, `FUSED_SIGMA_DELTA`, `FUSED_U_RMS`, `NEXT_AREA_CHANGE`, `NEXT_UNCERTAINTY`, `S1_NEXT_AREA_CHANGE`, `S2_NEXT_AREA_CHANGE`, `S1_NEXT_UNCERTAINTY`, `S2_NEXT_UNCERTAINTY`.
+2. **Target-Derived Feature Leakage Exclusion (Enforced Runtime Validator):**
+   - All Phase 9.2 classifier fitting paths must validate predictor matrices and target vectors through `validate_classification_training_inputs(X, y, expected_features=CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS)` before model fitting.
+   - Explicitly excluded target-derived and future-observation columns (`EXCLUDED_TARGET_DERIVED_COLUMNS`): `FUSED_TARGET`, `CANONICAL_LABEL`, `AMBIGUOUS_REASON`, `RELATIVE_CHANGE_PCT_FUSED`, `FUSED_SIGMA_DELTA`, `FUSED_U_RMS`, `NEXT_AREA_CHANGE`, `NEXT_UNCERTAINTY`, `S1_NEXT_AREA_CHANGE`, `S2_NEXT_AREA_CHANGE`, `S1_NEXT_UNCERTAINTY`, `S2_NEXT_UNCERTAINTY`, `NEXT_YEAR`, `NEXT_AREA`, `NEXT_YEAR_GAP`, `S1_NEXT_AREA`, `S2_NEXT_AREA`, `S1_NEXT_YEAR`, `S2_NEXT_YEAR`.
 
 3. **Validation & Partition Integrity:**
 

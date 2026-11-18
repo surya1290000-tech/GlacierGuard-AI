@@ -1,6 +1,6 @@
 {
   "audit_metadata": {
-    "title": "Phase 9.1 / 9.1.4.1 Classification Label Audit & Uncertainty Semantics Closure",
+    "title": "Phase 9.1 / 9.1.4.2 Classification Label Audit & Uncertainty Semantics Closure",
     "date": "2026-11-18",
     "lead_ml_engineer": "GlacierGuard-AI Lead ML Engineer",
     "git_branch": "feature/phase9-dual-ensemble",
@@ -25,12 +25,13 @@
     "fraction_within_1x_u_rms_pct": 90.07,
     "fraction_within_2x_u_rms_pct": 97.37,
     "fraction_exceeding_3x_u_rms_pct": 1.03,
-    "empirical_dependence_checks": {
-      "lag1_autocorr_s1_minus_s2": 0.5489,
-      "lag1_autocorr_fused_target": -0.27,
-      "consecutive_pairs_n": 9392
+    "observed_serial_dependence_diagnostics": {
+      "lag1_autocorr_observed_s1_minus_s2": 0.5489,
+      "lag1_autocorr_observed_fused_target": -0.27,
+      "consecutive_pairs_n": 9392,
+      "interpretation": "Observed serial dependence diagnostics indicate that the derived cross-sensor discrepancies and annual changes are not temporally independent as observed quantities. These diagnostics do not independently identify the covariance of the underlying measurement errors."
     },
-    "scientific_interpretation": "Over 90% of observed annual changes in the 11,849 matched cohort are smaller than the 1.0x U_RMS empirical delineation-error scale. Statistical independence across sensors and consecutive years is empirically contradicted; U_RMS is therefore used purely as a descriptive RMS empirical delineation-error scale without Gaussian sigma claims. See reports/12_uncertainty_semantics_note.md."
+    "scientific_interpretation": "Over 90% of observed annual changes in the 11,849 matched cohort are smaller than the 1.0x U_RMS empirical delineation-error scale. Because GLO AREA_UNCERTAINTY is an empirical delineation-error estimate (not a 1-sigma Gaussian SD) and independence is not established by the source, U_RMS is used purely as a descriptive RMS empirical delineation-error scale without Gaussian sigma or covariance claims. See reports/12_uncertainty_semantics_note.md."
   },
   "operational_rules_vs_ground_truth_isolation": {
     "physical_ml_classes": [
@@ -53,7 +54,7 @@
       "PROCESSING",
       "SYSTEM_ERROR"
     ],
-    "rule_based_risk_engine_status": "RiskEngine statuses (SAFE, NORMAL, WATCH, ELEVATED_ALERT, STALE, STALE_DATA, INSUFFICIENT_DATA; plus legacy internal alias 'UNUSUAL_CHANGE' mapped to 'ELEVATED ALERT') are heuristic operational alert tiers combining sensor discordance, staleness, and operational thresholds. They must NEVER be used as supervised training targets.",
+    "rule_based_risk_engine_status": "RiskEngine statuses (SAFE, NORMAL, WATCH, ELEVATED_ALERT, STALE, STALE_DATA, INSUFFICIENT_DATA; plus legacy persisted read compatibility for 'UNUSUAL_CHANGE' mapped to 'ELEVATED ALERT') are heuristic operational alert tiers combining sensor discordance, staleness, and operational thresholds. New RiskEngine elevated alerts emit canonical 'ELEVATED_ALERT'. Operational alert statuses must NEVER be used as supervised training targets.",
     "abstention_separation": "WATCH, STALE, STALE_DATA, and INSUFFICIENT_DATA are operational quality/alert states, NOT physical lake-change categories.",
     "independent_target_formulation": "Supervised labels are constructed strictly from consecutive annual area observations and GLO AREA_UNCERTAINTY, completely independent of RiskEngine and separate from cryospheric event catalogues."
   },

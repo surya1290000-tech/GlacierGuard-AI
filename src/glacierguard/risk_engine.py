@@ -17,15 +17,16 @@ Rules follow the conservative glaciological framework:
 - PROCESSING: Live ingestion/inference actively underway.
 - SYSTEM ERROR: Failure in data acquisition or processing stages.
 
-Taxonomy Separation Note (Phase 9.1.4.1):
+Taxonomy Separation Note (Phase 9.1.4.2):
 Operational monitoring tiers produced by RiskEngine (canonical alert codes:
 NORMAL/SAFE, WATCH, ELEVATED_ALERT, STALE_DATA, INSUFFICIENT_DATA, PROCESSING,
 SYSTEM_ERROR) are rule-based heuristic alert statuses and must NEVER be used as
-supervised ML training labels. For backward compatibility with existing
-operational pipelines and tests, Rule 2 emits the legacy internal alert string
-"UNUSUAL_CHANGE" (mapped to user-facing "ELEVATED ALERT"); this legacy internal
-alert code is semantically distinct from the supervised physical ML class
-`glacierguard.classification_labels.CLASS_UNUSUAL_CHANGE`.
+supervised ML training labels. New RiskEngine elevated alerts emit the canonical
+internal code "ELEVATED_ALERT" (mapped to user-facing "ELEVATED ALERT").
+`map_status_to_user_facing()` retains legacy support for previously persisted
+records or external callers using "UNUSUAL_CHANGE" -> "ELEVATED ALERT"; that
+legacy operational code is strictly distinct from the supervised physical ML
+class `glacierguard.classification_labels.CLASS_UNUSUAL_CHANGE`.
 """
 
 import datetime
@@ -254,7 +255,7 @@ class RiskEngine:
         # Rule 2: Elevated Area Change (> ±20% vs baseline, verified)
         if diff_pct is not None and abs(diff_pct) >= thresholds.area_change_elevated_pct:
             return (
-                "UNUSUAL_CHANGE",
+                "ELEVATED_ALERT",
                 f"Lake extent exhibits substantial change of {diff_pct:+.1f}% relative to GLO 2023 baseline. "
                 "Exceeds elevated threshold (±20.0%). Requires glaciological expert inspection.",
                 "Calving bay boundary dynamics or rapid perimeter expansion in effect.",

@@ -79,7 +79,7 @@ class TestOperationalRiskRules:
         )
 
         alert = engine.evaluate("lower_barun", s2_obs=obs, reference_date=ref_date)
-        assert alert.status == "UNUSUAL_CHANGE"
+        assert alert.status == "ELEVATED_ALERT"
         assert alert.user_facing_status == "ELEVATED ALERT"
         assert alert.area_change_pct is not None
         assert alert.area_change_pct > 20.0
@@ -185,3 +185,12 @@ class TestOperationalRiskRules:
         assert alert.area_change_pct is not None
         assert abs(alert.area_change_pct) < 1.0
         assert "stable" in alert.rationale.lower()
+
+    def test_canonical_and_legacy_elevated_status_mapping(self):
+        # Canonical new RiskEngine internal code
+        assert map_status_to_user_facing("ELEVATED_ALERT", staleness_days=5) == "ELEVATED ALERT"
+        # Legacy persisted internal status remains readable
+        assert map_status_to_user_facing("UNUSUAL_CHANGE", staleness_days=5) == "ELEVATED ALERT"
+        # Stale guard still overrides both when > 90 days
+        assert map_status_to_user_facing("ELEVATED_ALERT", staleness_days=120) == "STALE DATA"
+        assert map_status_to_user_facing("UNUSUAL_CHANGE", staleness_days=120) == "STALE DATA"

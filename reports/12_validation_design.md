@@ -1,6 +1,6 @@
 # GlacierGuard-AI — Phase 9 Validation & Experimental Design
 **Author:** Lead ML Engineer
-**Date:** 2026-11-18 *(reconciled in Phase 9.1.4.1)*
+**Date:** 2026-11-18 *(reconciled in Phase 9.1.4.2)*
 **Target Systems:**
 - System A: Regression Ensemble (Predicting `NEXT_AREA_CHANGE` in $\text{km}^2$)
 - System B: Classification Ensemble (Predicting `STABLE`, `EXPANDING`, `UNUSUAL_CHANGE`)
@@ -59,9 +59,11 @@ To test geographic transferability and prevent lake-level leakage:
   - Random row-level splitting is strictly prohibited.
   - Multi-fold cross-validation must strictly use `GroupKFold(n_splits=5, groups=GLO_ID)`. All multi-year observations for any single lake remain strictly within either train or validation folds.
 
-### 2.5 Explicitly Excluded Target-Derived Predictors
-All target-derived and future-observation columns are strictly prohibited from model feature matrices:
-`FUSED_TARGET`, `CANONICAL_LABEL`, `AMBIGUOUS_REASON`, `RELATIVE_CHANGE_PCT_FUSED`, `FUSED_SIGMA_DELTA`, `FUSED_U_RMS`, `NEXT_AREA_CHANGE`, `NEXT_UNCERTAINTY`, `S1_NEXT_AREA_CHANGE`, `S2_NEXT_AREA_CHANGE`, `S1_NEXT_UNCERTAINTY`, `S2_NEXT_UNCERTAINTY`.
+### 2.5 Explicitly Excluded Target-Derived Predictors & Runtime Validation Gate
+All target-derived and future-observation columns (`EXCLUDED_TARGET_DERIVED_COLUMNS`) are strictly prohibited from model feature matrices:
+`FUSED_TARGET`, `CANONICAL_LABEL`, `AMBIGUOUS_REASON`, `RELATIVE_CHANGE_PCT_FUSED`, `FUSED_SIGMA_DELTA`, `FUSED_U_RMS`, `NEXT_AREA_CHANGE`, `NEXT_UNCERTAINTY`, `S1_NEXT_AREA_CHANGE`, `S2_NEXT_AREA_CHANGE`, `S1_NEXT_UNCERTAINTY`, `S2_NEXT_UNCERTAINTY`, `NEXT_YEAR`, `NEXT_AREA`, `NEXT_YEAR_GAP`, `S1_NEXT_AREA`, `S2_NEXT_AREA`, `S1_NEXT_YEAR`, `S2_NEXT_YEAR`.
+
+Before Phase 9.2 classifier fitting, all feature matrices and training targets must pass `glacierguard.classification_labels.validate_classification_training_inputs(X, y, expected_features=CANONICAL_CLASSIFICATION_PREDICTOR_COLUMNS)`, which enforces predictor column purity, rejects missing targets and `AMBIGUOUS` rows, and permits only `PHYSICAL_CLASSES` (`STABLE`, `EXPANDING`, `UNUSUAL_CHANGE`).
 
 ---
 
@@ -111,7 +113,7 @@ Operational alert tiers in `RiskEngine` (`SAFE`, `NORMAL`, `WATCH`, `ELEVATED_AL
 
 ### 4.2 Handling Class Imbalance
 With an empirical overall-cohort imbalance ratio of **93.57 : 1** (`STABLE` to `UNUSUAL_CHANGE`; **87.01 : 1** in Train $\le 2021$):
-- **Training-Only Loss Weighting:** Class weights are calculated strictly from unambiguous training observations (`Train <=2021`, $N_{\text{train}} = 7,880$):
+- **Training-Only Loss Weighting:** Class weights are calculated strictly via `compute_training_class_weights()` on validated, non-null, unambiguous training observations (`Train <=2021`, $N_{\text{train}} = 7,880$; explicitly rejecting empty inputs, null/missing labels, `AMBIGUOUS`, unknown labels, or zero-support classes):
   $$w_c = \frac{N_{\text{train}}}{3 \cdot N_{c,\text{train}}}$$
   yielding $w_{\text{STABLE}} = 0.339187$, $w_{\text{EXPANDING}} = 55.886525$, $w_{\text{UNUSUAL\_CHANGE}} = 29.513109$.
 - **Evaluation Metrics:**

@@ -146,7 +146,7 @@ st.markdown(
         color: #D97706;
         border: 1px solid #FDE68A;
     }
-    .badge-ELEVATED, .badge-UNUSUAL_CHANGE {
+    .badge-ELEVATED, .badge-ELEVATED_ALERT, .badge-UNUSUAL_CHANGE {
         background: #FEF2F2;
         color: #DC2626;
         border: 1px solid #FECACA;
@@ -332,7 +332,7 @@ def render_system_overview(df: pd.DataFrame):
         1
         for _, r in df.iterrows()
         if str(r.get("user_facing_status", r.get("monitoring_status"))).upper()
-        in ("ELEVATED ALERT", "UNUSUAL_CHANGE")
+        in ("ELEVATED ALERT", "ELEVATED_ALERT", "UNUSUAL_CHANGE")
     )
     watch_count = sum(
         1
@@ -460,6 +460,7 @@ def render_system_overview(df: pd.DataFrame):
                 "NORMAL": "#10B981",
                 "WATCH": "#F59E0B",
                 "ELEVATED ALERT": "#EF4444",
+                "ELEVATED_ALERT": "#EF4444",
                 "UNUSUAL_CHANGE": "#EF4444",
                 "STALE DATA": "#64748B",
             },
@@ -770,7 +771,7 @@ def render_risk_events(df: pd.DataFrame):
         meta = LAKE_METADATA.get(lid, {})
         status = str(row.get("user_facing_status", row.get("monitoring_status", "NORMAL"))).upper()
 
-        if status in ("ELEVATED ALERT", "UNUSUAL_CHANGE"):
+        if status in ("ELEVATED ALERT", "ELEVATED_ALERT", "UNUSUAL_CHANGE"):
             st.error(
                 f"🚨 **{meta.get('display_name', lid)}** — ELEVATED ALERT: {row.get('status_rationale', '')}"
             )

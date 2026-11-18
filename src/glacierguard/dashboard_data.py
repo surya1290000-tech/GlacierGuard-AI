@@ -186,8 +186,15 @@ def validate_qa_schema(df: pd.DataFrame) -> List[str]:
     if missing_lakes:
         warnings.append(f"Missing lakes: {sorted(missing_lakes)}")
 
-    # Check monitoring_status values
-    valid_statuses = {"NORMAL", "WATCH", "UNUSUAL_CHANGE", "INSUFFICIENT_DATA"}
+    # Check monitoring_status values (canonical ELEVATED_ALERT + legacy persisted UNUSUAL_CHANGE)
+    valid_statuses = {
+        "NORMAL",
+        "WATCH",
+        "ELEVATED_ALERT",
+        "UNUSUAL_CHANGE",
+        "STALE_DATA",
+        "INSUFFICIENT_DATA",
+    }
     actual_statuses = set(df["monitoring_status"].dropna().unique())
     invalid = actual_statuses - valid_statuses
     if invalid:

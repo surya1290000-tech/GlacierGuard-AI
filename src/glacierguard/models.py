@@ -99,7 +99,7 @@ class MonitoringAlert:
     alert_id: str
     lake_id: str
     timestamp: str
-    status: str  # Operational status: NORMAL, WATCH, ELEVATED_ALERT (legacy alias: UNUSUAL_CHANGE), STALE_DATA, INSUFFICIENT_DATA
+    status: str  # Operational status: NORMAL, WATCH, ELEVATED_ALERT (legacy persisted alias: UNUSUAL_CHANGE), STALE_DATA, INSUFFICIENT_DATA
     user_facing_status: str  # SAFE, WATCH, ELEVATED ALERT, STALE DATA, INSUFFICIENT DATA, PROCESSING, SYSTEM ERROR
     primary_area_km2: Optional[float] = None
     baseline_area_km2: Optional[float] = None
