@@ -28,7 +28,7 @@ To maintain strict scientific defense and research credibility, this roadmap enf
 ## 2. Actual Inspected Repository State
 
 ### 2.1 Git Status & Branch Architecture
-- **Current Branch:** `main` — up to date with `origin/main`.
+- **Current Branch:** `feature/phase6-dashboard` — branched from `main`.
 - **Merged PR #1:** Pull Request #1 (`feature/nrt-five-lake-qa-audit` -> `main`) successfully merged and closed.
 - **Commit History on main (8 commits total):**
   - `5b0f537` first commit
@@ -39,13 +39,15 @@ To maintain strict scientific defense and research credibility, this roadmap enf
   - `20602e9` docs: correct stale git state, test counts, and CI status in roadmap and README
   - `c158c8b` test(ensemble): bind T11 sign-convention tests directly to production paired_mae_comparison
   - `3a1aedd` docs(roadmap): update Section 2.1 to reflect commit 96e1d95 and 6 PR commits
-- **Working Tree:** In progress — Phase 5 package components in `src/glacierguard/` and parity tests in `tests/`.
+- **Working Tree:** Phase 6 operational demonstration dashboard implemented in `app/dashboard.py`, modular data abstractions in `src/glacierguard/dashboard_data.py`, and 39 automated unit tests in `tests/test_dashboard_data.py` (123 tests passing project-wide).
 
 ### 2.2 Directory & Artifact Topology
 ```text
 GlacierGuard-AI/
 ├── .databricks/                 # Local Databricks automation bundles
 ├── .venv/                       # Python 3.12 virtual environment (uv managed)
+├── app/                         # Phase 6 operational demonstration dashboard
+│   └── dashboard.py             # Streamlit interactive dashboard
 ├── data/raw/GLO/                # Reserved local data directory (empty)
 ├── docs/                        # Architecture, roadmap, and specification documents
 ├── notebooks/                   # Notebooks 01 through 10.2 (all executed with outputs)
@@ -55,11 +57,12 @@ GlacierGuard-AI/
 │   └── models/                  # Frozen models: S1, S2, and 09_final_fused_xgboost.pkl
 ├── scratch/                     # Operational scripts, tests, and temporary caches
 ├── shared_datasets/             # Portable sharing package (21 verified files; Git-ignored)
-├── src/glacierguard/            # Reusable core Python package (Phase 5)
+├── src/glacierguard/            # Reusable core Python package (Phase 5 & 6)
+│   ├── dashboard_data.py        # Dashboard data loaders, schema validation & lake metadata
 │   ├── features/                # Feature engineering, temporal lags & splits
 │   ├── inference/               # Frozen fused-XGBoost predictor & evaluation
 │   └── satellite/               # SAR Lee filter, MNDWI, morphology & QA rules
-└── tests/                       # 84 automated unit tests across 5 test suites
+└── tests/                       # 123 automated unit tests across 6 test suites
 ```
 
 ---
@@ -89,9 +92,9 @@ Statuses used:
 | **Five-Lake Operational Surveillance (NB10.2)** | `FUNCTIONAL_BUT_NEEDS_REVIEW` | `10_2_five_lake_monitoring_qa.ipynb` (8 cells), `10_2_five_lake_monitoring_qa.csv`, 5 lake mask PNGs, `src/glacierguard/satellite/` | Evaluated 50 scenes over 5 lakes. Separated core vs 50m buffer. Added temporal matching flags and operational states. Filter and QA rules packaged into `glacierguard.satellite`. | Tsho Rolpa SAR failure requires gorge layover mask. Thulagi has monsoon optical gap. | Moderate | Incorporate terrain-adaptive backscatter masking in Phase 4. |
 | **Ensemble Regression Benchmark (NB11)** | `VERIFIED_COMPLETE` | `11_rf_xgboost_ensemble_benchmark.ipynb`, `11_ensemble_*.csv`, `11_best_s1.pkl`, `manifest.json` | Benchmarked 6 candidate models on fair temporal splits. S1 RF achieved lowest val MAE (0.00544 km²), but test difference vs XGBoost (ΔMAE = -529 m², 95% CI [-1184, +21] m²) includes zero; retained as candidate S1 model. S2 Persistence remains optical benchmark. Reconciled on 1,742 matched lake-year observations. | Evaluated against reused 2023 historical benchmark; further tuning prohibited. | Low | Freeze candidate S1 artifact pending multi-year validation. |
 | **GLOF Event Database Quality Audit** | `VERIFIED_COMPLETE` | `docs/GLOF_CLASSIFICATION_RESEARCH_PLAN.md`, `reports/glof_research/*.csv`, `profile.json` | Audited HMAGLOFDB (774 events, 1533–2026). Documented >88% consequence missingness, 95.1% pre-event area missingness, and circular leakage. Flagged 2 unverified 2026 records. Reaffirmed **STRICT NO-GO** gate decision for predictive ML. | No training or deployment attempted; gate decision enforced. | None | Retain GLOF catalog strictly for descriptive reference. |
-| **Automated Unit Testing & Verification** | `VERIFIED_COMPLETE` | `tests/test_*.py` (84 tests across 5 test suites) | 84 automated unit tests covering temporal splits, leakage elimination, OOF expanding windows, paired MAE sign convention (T11), HMAGLOFDB audit, feature pipeline parity, frozen inference parity, and satellite QA rules. | No GitHub Actions CI workflow yet configured. | Very Low | Add CI automation in Phase 7. |
-| **Reusable Core Python Architecture (Phase 5)** | `VERIFIED_COMPLETE` | `src/glacierguard/` (`features/`, `inference/`, `satellite/`) | Clean modular Python architecture under `src/glacierguard/`. Parity verified against frozen models and notebooks. | Out-of-band data downloader CLI remains optional. | Very Low | Reused in Phase 6 dashboard. |
-| **Operational Demonstration Dashboard** | `NOT_STARTED` | Static figures exist in `reports/figures/`; no UI codebase found | High-quality analytical figures demonstrate visual reporting capability. | Interactive web dashboard (Streamlit / FastAPI) not yet implemented. | Low | Build lightweight demonstration dashboard in Phase 6. |
+| **Automated Unit Testing & Verification** | `VERIFIED_COMPLETE` | `tests/test_*.py` (123 tests across 6 test suites) | 123 automated unit tests covering temporal splits, leakage elimination, OOF expanding windows, paired MAE sign convention (T11), HMAGLOFDB audit, feature pipeline parity, frozen inference parity, satellite QA rules, and Phase 6 dashboard data loading. | No GitHub Actions CI workflow yet configured. | Very Low | Add CI automation in Phase 7. |
+| **Reusable Core Python Architecture (Phase 5)** | `VERIFIED_COMPLETE` | `src/glacierguard/` (`dashboard_data.py`, `features/`, `inference/`, `satellite/`) | Clean modular Python architecture under `src/glacierguard/`. Parity verified against frozen models and notebooks. | Out-of-band data downloader CLI remains optional. | Very Low | Reused in Phase 6 dashboard. |
+| **Operational Demonstration Dashboard** | `VERIFIED_COMPLETE` | `app/dashboard.py`, `src/glacierguard/dashboard_data.py`, `tests/test_dashboard_data.py` (39 tests) | Fully interactive Streamlit demonstration dashboard covering all 5 focal lakes, dual-sensor QA, water mask overlays, annual ML prediction inspection, and system integrity safeguards. | None for Phase 6 demonstration scope. | Very Low | Completed in Phase 6; run with `uv run streamlit run app/dashboard.py`. |
 | **User & Collaborator Documentation** | `VERIFIED_COMPLETE` | `README.md`, `DEVELOPER_SETUP.md`, `shared_datasets/README.md` | Detailed setup guides, credential guides, data catalogs, and workflow instructions available. `DEVELOPER_SETUP.md` committed in `d64f665` and visible on PR branch. | No open gaps. | Very Low | Maintain documentation parity with implementation changes. |
 
 ---
@@ -303,18 +306,23 @@ graph TD
   - `tests/test_satellite_qa.py`: 12 tests covering SAR Lee filter, MNDWI, cloud screening, clean_mask, temporal pairs, and lake status rules.
 - **Acceptance Criteria:** `pytest` passes with 84/84 tests passing across all components. (Met).
 
-### Phase 6 — Lightweight Operational Demonstration Dashboard (P2)
+### Phase 6 — Lightweight Operational Demonstration Dashboard (P2 — Completed)
 - **Objective:** Develop a clean, interactive web demonstration dashboard using Streamlit for project presentation.
-- **Tasks:**
-  1. Build `app/dashboard.py` displaying:
-     - Interactive Folium/Leaflet map with the 5 focal lakes and GLO boundaries.
-     - Lake selector: Switch between Imja Tsho, Thulagi, Tsho Rolpa, Lower Barun, and Sabai Tsho.
-     - Dual-sensor inspector: Side-by-side view of latest Sentinel-1 SAR and Sentinel-2 optical imagery with extracted water masks.
-     - Historical time series graph: GLO 2017–2024 area progression alongside 2026 near-real-time observations.
-     - Operational Status Badge: `NORMAL`, `WATCH`, or `UNUSUAL_CHANGE` with explicit status rationale.
-  2. Implement caching for GeoTIFF rendering to ensure responsive UI performance.
-- **Acceptance Criteria:** Dashboard launches with `streamlit run app/dashboard.py`; displays all 5 lakes with real data and masks.
-- **Estimated Effort:** 10–14 developer-hours.
+- **Status:** **Completed.** Interactive Streamlit dashboard implemented in `app/dashboard.py` supported by modular data loading and validation in `src/glacierguard/dashboard_data.py`, with 39 dedicated unit tests (123 tests passing project-wide).
+- **Architecture & Capabilities Implemented:**
+  1. **Multi-Tab Navigation:**
+     - *Five-Lake Surveillance Overview:* High-level status cards, interactive geographic overview of the 5 focal lakes, and data freshness metrics.
+     - *Dual-Sensor QA & Water Masks:* Side-by-side Sentinel-1 SAR and Sentinel-2 optical water mask inspection, buffer sensitivity analysis (0m core vs 50m buffer), and cross-sensor agreement diagnostics.
+     - *Annual Area ML Prediction Explorer:* Feature importance inspection, SHAP value summaries, and interactive inference exploration with `FusedXGBoostPredictor` anchoring to frozen `09_final_fused_xgboost.pkl`.
+     - *System Architecture & Scientific Integrity:* Complete pipeline documentation, explicit scientific distinctions between lake area changes and GLOF risk, and dataset provenance notes.
+  2. **Strict Scientific Boundaries:**
+     - Distinguishes annual lake area prediction from instantaneous GLOF alert triggers.
+     - Flags topographic radar layover at Tsho Rolpa and monsoon optical data gaps at Thulagi as sensor-specific constraints, preventing false alarms.
+  3. **Decoupled Architecture:**
+     - Data loaders and schema validation isolated in `src/glacierguard/dashboard_data.py` to allow headless unit testing without Streamlit imports.
+- **Test Modules Implemented:**
+  - `tests/test_dashboard_data.py`: 39 unit and integration tests covering QA schema validation, lake metadata, temporal staleness calculation, water mask paths, and real QA CSV integration.
+- **Acceptance Criteria:** Dashboard launches cleanly with `uv run streamlit run app/dashboard.py`; displays all 5 lakes with real research evidence; all 123 automated tests pass. (Met).
 
 ### Phase 7 — Testing, Secret Scanning & CI Automation (P3)
 - **Objective:** Configure automated GitHub Actions CI pipeline to enforce syntax hygiene, run unit tests, and block credential leakage.
@@ -341,17 +349,18 @@ graph TD
 ## 9. Recommended Immediate Next Task
 
 ### The Single Recommended Next Action:
-**Complete Peer Review and Merge PR #1 on GitHub, Then Begin Phase 1 (Collaborator Onboarding Validation) and Phase 4 (Terrain-Adaptive SAR Masking).**
+**Open Pull Request for Phase 6 (`feature/phase6-dashboard` -> `main`), then Proceed to Phase 7 (Testing, Secret Scanning & CI Automation) and Phase 4 (Terrain-Adaptive SAR Masking).**
 
 ### Current Milestone Status:
-1. **Repository Baseline Pushed:** The completed five-lake monitoring notebook (`10_2_five_lake_monitoring_qa.ipynb`), audited QA metrics, water mask maps, developer setup documentation, ensemble benchmark (`11_rf_xgboost_ensemble_benchmark.ipynb`), and the 63-test unit test suite are committed and live on GitHub in PR #1 (`feature/nrt-five-lake-qa-audit`).
-2. **Deterministic Sign-Convention Tests (T11):** Three deterministic unit tests directly invoke the production `paired_mae_comparison` function and verify the candidate-minus-reference convention with bootstrap confidence intervals.
-3. **Cross-Artifact Consistency:** Verified 100% consistent across all CSV reports, figures, manifests, notebooks, and documentation.
+1. **Phase 6 Operational Demonstration Dashboard Complete:** `app/dashboard.py` and `src/glacierguard/dashboard_data.py` provide a fully functional, scientifically honest Streamlit demonstration interface.
+2. **123 Passing Automated Tests:** Project test suite expanded from 84 to 123 tests across 6 test modules with 100% pass rate.
+3. **Cross-Artifact Consistency Maintained:** Documentation, README, repository topology, and test suites are aligned with the actual repository state.
 
 ### Next Execution Steps:
-1. Conduct code review and merge PR #1 into `main`.
-2. Support collaborator environment onboarding (`uv sync` + credential setup via `DEVELOPER_SETUP.md`).
-3. Proceed with Phase 4: develop terrain-adaptive SAR backscatter masking for steep gorge lakes (resolving the Tsho Rolpa layover limitation).
+1. Stage, verify, and commit Phase 6 changes to `feature/phase6-dashboard`.
+2. Push branch and open Pull Request for Phase 6.
+3. Proceed with Phase 7: create `.github/workflows/ci.yml` for automated testing and secret scanning.
+4. Proceed with Phase 4: develop terrain-adaptive SAR backscatter masking for steep gorge lakes (resolving the Tsho Rolpa layover limitation).
 
 ---
 

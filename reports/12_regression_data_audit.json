@@ -1,0 +1,122 @@
+{
+  "audit_metadata": {
+    "title": "Phase 9.1 Regression Data Audit & Model Compatibility",
+    "date": "2026-11-01",
+    "lead_ml_engineer": "GlacierGuard-AI Lead ML Engineer",
+    "git_branch": "feature/phase9-dual-ensemble",
+    "audit_objective": "Verify data consistency, sample reconciliation, feature definitions, preprocessing compatibility, and parity for Random Forest + XGBoost regression ensemble."
+  },
+  "source_data_provenance": {
+    "s1_gpkg": {
+      "path": "raw/GLO/S1_20172024_NTB_GLOID_v1.02.gpkg",
+      "sha256": "98a830fc26d10f42758c992a9ca961ed6ddf84b584cdba2c93ee0187f518e03b",
+      "total_rows": 18129,
+      "unique_lakes": 2966
+    },
+    "s2_gpkg": {
+      "path": "raw/GLO/S2_20172024_NTB_GLOID_v1.02.gpkg",
+      "sha256": "4bdf3a6d148329f39eb0f2ad1f5bfb3790ceff494ae83c049e75dbdca02040af",
+      "total_rows": 22294,
+      "unique_lakes": 4150
+    }
+  },
+  "sample_counts": {
+    "s1_total_records": 18129,
+    "s2_total_records": 22294,
+    "s1_supervised_pairs": 14242,
+    "s2_supervised_pairs": 16610,
+    "matched_dual_sensor_pairs": 11849,
+    "unique_lakes_in_matched_cohort": 2124,
+    "s1_only_unmatched_pairs": 2393,
+    "s2_only_unmatched_pairs": 4761,
+    "splits": {
+      "train_years": "<= 2021",
+      "train_sample_count": 8527,
+      "val_year": "2022",
+      "val_sample_count": 1580,
+      "test_year": "2023",
+      "test_sample_count": 1742,
+      "test_status": "Reused historical benchmark (NB09 baseline reuse; NOT a fresh untouched test set; tuning prohibited)"
+    }
+  },
+  "target_specification": {
+    "target_variable": "NEXT_AREA_CHANGE [km\u00b2]",
+    "fused_target_formula": "FUSED_TARGET = 0.5 * (S1_NEXT_AREA_CHANGE + S2_NEXT_AREA_CHANGE)",
+    "single_sensor_formula": "NEXT_AREA_CHANGE = AREA(t+1) - AREA(t) when NEXT_YEAR - AREA_YEAR == 1 else NaN",
+    "target_statistics": {
+      "mean_km2": 0.0006551820662634129,
+      "std_km2": 0.020824387606057374,
+      "median_km2": 8.388420735645861e-05,
+      "p25_km2": -0.0015994874007605338,
+      "p75_km2": 0.0018864010947039385,
+      "p90_km2": 0.005246164667461097,
+      "p99_km2": 0.03846392888584248,
+      "min_km2": -0.6704940517502471,
+      "max_km2": 0.7861203850172268
+    }
+  },
+  "feature_specification": {
+    "total_raw_features": 36,
+    "categorical_features": [
+      "BASIN",
+      "COUNTRY",
+      "GTNG_REGION_O2",
+      "CONNECTIVITY"
+    ],
+    "numerical_features_s1": [
+      "AREA",
+      "PERIMETER",
+      "AREA_UNCERTAINTY",
+      "ELEVATION_MEAN",
+      "ELEVATION_MIN",
+      "ELEVATION_MEDIAN",
+      "LATITUDE",
+      "LONGITUDE",
+      "AREA_LAG1",
+      "AREA_LAG2",
+      "AREA_LAG3",
+      "AREA_CHANGE_LAG1",
+      "AREA_CHANGE_LAG2",
+      "AREA_CHANGE_LAG3",
+      "ROLLING_MEAN_3",
+      "ROLLING_STD_3"
+    ],
+    "numerical_features_s2": [
+      "S2_AREA",
+      "S2_PERIMETER",
+      "S2_AREA_UNCERTAINTY",
+      "S2_ELEVATION_MEAN",
+      "S2_ELEVATION_MIN",
+      "S2_ELEVATION_MEDIAN",
+      "S2_LATITUDE",
+      "S2_LONGITUDE",
+      "S2_AREA_LAG1",
+      "S2_AREA_LAG2",
+      "S2_AREA_LAG3",
+      "S2_AREA_CHANGE_LAG1",
+      "S2_AREA_CHANGE_LAG2",
+      "S2_AREA_CHANGE_LAG3",
+      "S2_ROLLING_MEAN_3",
+      "S2_ROLLING_STD_3"
+    ]
+  },
+  "preprocessing_and_pipeline_parity": {
+    "column_transformer": "Numerical SimpleImputer(median) + Categorical SimpleImputer(most_frequent) & OneHotEncoder(handle_unknown='ignore', sparse_output=False)",
+    "rf_xgboost_parity_assessment": "PASS: Random Forest Regressor and XGBoost Regressor can be fitted on the EXACT same feature matrix, observations, target and preprocessing pipeline.",
+    "leakage_safety": "All imputation and one-hot encoding must be fit strictly on training partitions; transformers must never see validation or test partitions."
+  },
+  "frozen_baseline_contract": {
+    "artifact_path": "reports/models/09_final_fused_xgboost.pkl",
+    "model_type": "Fused XGBoost Regressor (36 features)",
+    "test_mae_km2": 0.004792,
+    "test_rmse_km2": 0.015079,
+    "test_r2": 0.3366,
+    "evaluation_cohort_n": 1742,
+    "status": "Production frozen benchmark; must NEVER be overwritten."
+  },
+  "reconciliation_with_nb11": {
+    "key_distinction": "NB11 evaluated single-sensor candidate models on 20 features per sensor. It was NOT an equivalent comparison with the 36-feature fused XGBoost baseline.",
+    "empirical_finding": "On S1 20-feature dataset, RF achieved MAE 0.006756 km\u00b2 vs XGBoost 0.007369 km\u00b2 on matched cohort (delta -0.000529 km\u00b2 = -529 m\u00b2), but 95% bootstrap CI included zero [-0.001184, +0.000021] km\u00b2 (not statistically significant). On S2, Persistence (zero change) beat all ML models (MAE 0.005082 km\u00b2). Fused XGBoost on 36 features remained superior (MAE 0.004792 km\u00b2).",
+    "proposed_phase9_evaluation": "Train Random Forest Regressor on the identical 36-feature fused representation. Evaluate RF vs XGBoost vs optimal validation-weighted blend alpha*RF + (1-alpha)*XGBoost vs stacking with temporal expanding window."
+  }
+}

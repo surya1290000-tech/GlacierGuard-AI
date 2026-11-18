@@ -1,0 +1,132 @@
+{
+  "audit_metadata": {
+    "title": "Phase 9.1 / 9.1.4.2 Classification Label Audit & Uncertainty Semantics Closure",
+    "date": "2026-11-18",
+    "lead_ml_engineer": "GlacierGuard-AI Lead ML Engineer",
+    "git_branch": "feature/phase9-dual-ensemble",
+    "audit_objective": "Audit canonical lake-condition classification targets (STABLE, EXPANDING, UNUSUAL_CHANGE, plus explicit AMBIGUOUS exclusion state), verify GLO AREA_UNCERTAINTY semantics against Rawlins et al. (2026), separate operational heuristics from physical ML classes, and enforce leakage prevention."
+  },
+  "target_definitions": {
+    "delta_area_km2": "FUSED_TARGET = 0.5 * (S1_NEXT_AREA_CHANGE + S2_NEXT_AREA_CHANGE) [km\u00b2]",
+    "mean_area_km2": "MEAN_AREA = 0.5 * (S1_AREA + S2_AREA) [km\u00b2]",
+    "relative_change_pct": "100.0 * FUSED_TARGET / MEAN_AREA [%]",
+    "combined_delineation_uncertainty_u_rms": "U_RMS = 0.5 * sqrt(u_s1_t^2 + u_s1_t1^2 + u_s2_t^2 + u_s2_t1^2) [km\u00b2] (descriptive RMS empirical delineation-error scale from Rawlins et al., 2026 Eq. 1; NOT a 1-sigma Gaussian SD)"
+  },
+  "candidate_classes": {
+    "STABLE": "Annual lake area change within the 1.0x U_RMS empirical delineation-error floor (|delta| <= 1.0 * U_RMS) OR within +/-5.0% relative change (|rel| <= 5.0%) OR moderate annual contraction (-3.0 * U_RMS <= delta < 0 and rel >= -20.0%; project-defined convention).",
+    "EXPANDING": "Positive annual expansion exceeding the 1.0x U_RMS empirical delineation-error floor and +5.0% relative change, bounded above by 3.0x U_RMS and +20.0% relative change.",
+    "UNUSUAL_CHANGE": "Threshold-defined unusual change: extreme annual expansion (>3.0x U_RMS and >20.0% relative) or extreme annual contraction (<-3.0x U_RMS and <-20.0% relative). Not independently verified hazard or GLOF events.",
+    "AMBIGUOUS": "Label-exclusion state (not a 4th learned physical class) for observations failing to satisfy physical class conjunctions. Explicitly tracked (N=897, 7.57% of overall matched cohort) and excluded from 3-class supervised training."
+  },
+  "measurement_uncertainty_findings": {
+    "source_formula": "AREA_UNCERTAINTY(A) = round(0.0488 * A^0.537, 3) [km\u00b2] (Rawlins et al., 2026, ESSD 18:5143-5165, Eq. 1; verified 100.0000% across all 40,423 GLO v1.02 records)",
+    "median_combined_u_rms_km2": 0.007,
+    "median_absolute_change_km2": 0.0017230764497027616,
+    "fraction_within_1x_u_rms_pct": 90.07,
+    "fraction_within_2x_u_rms_pct": 97.37,
+    "fraction_exceeding_3x_u_rms_pct": 1.03,
+    "observed_serial_dependence_diagnostics": {
+      "lag1_autocorr_observed_s1_minus_s2": 0.5489,
+      "lag1_autocorr_observed_fused_target": -0.27,
+      "consecutive_pairs_n": 9392,
+      "interpretation": "Observed serial dependence diagnostics indicate that the derived cross-sensor discrepancies and annual changes are not temporally independent as observed quantities. These diagnostics do not independently identify the covariance of the underlying measurement errors."
+    },
+    "scientific_interpretation": "Over 90% of observed annual changes in the 11,849 matched cohort are smaller than the 1.0x U_RMS empirical delineation-error scale. Because GLO AREA_UNCERTAINTY is an empirical delineation-error estimate (not a 1-sigma Gaussian SD) and independence is not established by the source, U_RMS is used purely as a descriptive RMS empirical delineation-error scale without Gaussian sigma or covariance claims. See reports/12_uncertainty_semantics_note.md."
+  },
+  "operational_rules_vs_ground_truth_isolation": {
+    "physical_ml_classes": [
+      "STABLE",
+      "EXPANDING",
+      "UNUSUAL_CHANGE"
+    ],
+    "operational_heuristic_states": [
+      "SAFE",
+      "NORMAL",
+      "WATCH",
+      "ELEVATED",
+      "ELEVATED_ALERT",
+      "ELEVATED ALERT",
+      "STALE",
+      "STALE_DATA",
+      "STALE DATA",
+      "INSUFFICIENT_DATA",
+      "INSUFFICIENT DATA",
+      "PROCESSING",
+      "SYSTEM_ERROR"
+    ],
+    "rule_based_risk_engine_status": "RiskEngine statuses (SAFE, NORMAL, WATCH, ELEVATED_ALERT, STALE, STALE_DATA, INSUFFICIENT_DATA; plus legacy persisted read compatibility for 'UNUSUAL_CHANGE' mapped to 'ELEVATED ALERT') are heuristic operational alert tiers combining sensor discordance, staleness, and operational thresholds. New RiskEngine elevated alerts emit canonical 'ELEVATED_ALERT'. Operational alert statuses must NEVER be used as supervised training targets.",
+    "abstention_separation": "WATCH, STALE, STALE_DATA, and INSUFFICIENT_DATA are operational quality/alert states, NOT physical lake-change categories.",
+    "independent_target_formulation": "Supervised labels are constructed strictly from consecutive annual area observations and GLO AREA_UNCERTAINTY, completely independent of RiskEngine and separate from cryospheric event catalogues."
+  },
+  "asymmetry_and_contraction_handling": {
+    "physical_reality": "Annual lake area time series contain both positive and negative year-to-year changes arising from delineation error, water-level variation, and physical lake evolution. Annual area observations alone do not establish the physical cause of an individual contraction.",
+    "moderate_contraction_records": 4869,
+    "label_assignment": "Grouping moderate annual contraction (-3.0x U_RMS <= delta < 0 and rel >= -20.0%) into STABLE is a project-defined classification convention. Only extreme annual contraction (<-3.0x U_RMS AND <-20.0%) triggers threshold-defined UNUSUAL_CHANGE."
+  },
+  "class_imbalance": {
+    "overall_matched_cohort_counts": {
+      "total_cohort": 11849,
+      "stable_n": 10760,
+      "stable_pct": 90.81,
+      "expanding_n": 77,
+      "expanding_pct": 0.65,
+      "unusual_change_n": 115,
+      "unusual_change_pct": 0.97,
+      "ambiguous_n": 897,
+      "ambiguous_pct": 7.57,
+      "imbalance_ratio_stable_to_unusual": "93.57 : 1"
+    },
+    "unambiguous_three_class_subcohort": {
+      "total_unambiguous": 10952,
+      "stable_n": 10760,
+      "stable_pct": 98.25,
+      "expanding_n": 77,
+      "expanding_pct": 0.7,
+      "unusual_change_n": 115,
+      "unusual_change_pct": 1.05,
+      "imbalance_ratio_stable_to_unusual": "93.57 : 1"
+    },
+    "partition_breakdown": {
+      "train_le_2021": {
+        "overall_n": 8527,
+        "unambiguous_n": 7880,
+        "ambiguous_n": 647,
+        "stable_n": 7744,
+        "expanding_n": 47,
+        "unusual_change_n": 89,
+        "imbalance_ratio_stable_to_unusual": "87.01 : 1"
+      },
+      "val_2022": {
+        "overall_n": 1580,
+        "unambiguous_n": 1460,
+        "ambiguous_n": 120,
+        "stable_n": 1440,
+        "expanding_n": 11,
+        "unusual_change_n": 9,
+        "imbalance_ratio_stable_to_unusual": "160.00 : 1"
+      },
+      "test_2023_exhausted_historical_reference": {
+        "overall_n": 1742,
+        "unambiguous_n": 1612,
+        "ambiguous_n": 130,
+        "stable_n": 1576,
+        "expanding_n": 19,
+        "unusual_change_n": 17,
+        "imbalance_ratio_stable_to_unusual": "92.71 : 1",
+        "usage_policy": "PROHIBITED for any further evaluation, threshold selection, hyperparameter tuning, or model selection; NB09/NB11 metrics preserved as historical references only."
+      }
+    },
+    "training_only_balanced_class_weights": {
+      "STABLE": 0.339187,
+      "EXPANDING": 55.886525,
+      "UNUSUAL_CHANGE": 29.513109
+    },
+    "canonical_reconciliation_note": "Earlier superseded draft values (STABLE=10,764 / EXPANDING=577 / UNUSUAL=508, 0 AMBIGUOUS) conflated Category C small-lake negative contractions with UNUSUAL_CHANGE and forced positive ambiguous records into EXPANDING. Canonical reconciliation resolves all 11,849 matched observations into mutually exclusive physical classes (STABLE=10,760 [90.81%], EXPANDING=77 [0.65%], UNUSUAL_CHANGE=115 [0.97%]) plus 897 [7.57%] explicit AMBIGUOUS exclusions.",
+    "mitigation_plan": "Training-only balanced class weights (computed strictly on Train <=2021 unambiguous N=7,880), cost-sensitive loss, and PR-AUC / macro-F1 optimization. Synthetic oversampling (SMOTE) is strictly prohibited on validation/test partitions."
+  },
+  "temporal_guardrails": {
+    "exhausted_test_2023_prohibition": "The 2023 historical test cohort (N=1,742) was already used in NB09 and NB11. Any further test-set evaluation, threshold selection, hyperparameter tuning, or model selection using 2023 is strictly prohibited.",
+    "status_of_2024": "2024 area observations were consumed to form the 2023 target and lack 2025 next-year observations; 2024 remains unavailable as an untouched future holdout.",
+    "phase9_2_decision_gate": "GO"
+  }
+}

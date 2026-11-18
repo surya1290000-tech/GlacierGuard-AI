@@ -1,0 +1,339 @@
+{
+  "schema_version": "1.1.0",
+  "description": "GlacierGuard-AI Versioned Cryospheric and Cascading Hazard Event Catalogue (Nepal 2026)",
+  "allowed_primary_hazard_types": [
+    "ROCK_ICE_AVALANCHE",
+    "GLACIAL_LAKE_OUTBURST",
+    "LANDSLIDE_DAM_BREACH",
+    "DEBRIS_FLOW",
+    "DOWNSTREAM_FLOOD",
+    "TEMPORARY_RIVER_BLOCKAGE"
+  ],
+  "events": [
+    {
+      "event_id": "NEPAL-2026-08-26-LANGTANG",
+      "name": "Langtang Lirung / Lhende Khola Rock-Ice Avalanche and Cascading Flood",
+      "event_date": "2026-08-26",
+      "primary_type": "ROCK_ICE_AVALANCHE",
+      "cascading_types": [
+        "DEBRIS_FLOW",
+        "DOWNSTREAM_FLOOD"
+      ],
+      "source_location": {
+        "latitude": 28.288708,
+        "longitude": 85.528159,
+        "elevation_approx_m": 6200,
+        "coordinate_system": "EPSG:4326 (WGS84)",
+        "spatial_precision_m": 150.0,
+        "description": "Steep north-northwest face of Langtang Lirung massif, above upper Lhende Khola cirque"
+      },
+      "catchment": "Lhende Khola (tributary to Bhote Koshi / Trishuli)",
+      "major_basin": "Trishuli / Narayani (Gandaki)",
+      "affected_river_corridor": "Lhende Khola -> Bhote Koshi (Gyirong / Rasuwagadhi border corridor) -> Trishuli River -> Betrawati",
+      "mechanism_confidence": "HIGH",
+      "is_provisional": false,
+      "evidence_sources": [
+        "ICIMOD Special Report: Understanding the Gyirong-Rasuwa disaster of 26 August 2026",
+        "Copernicus Sentinel-1 SLC/GRD SAR imagery",
+        "Copernicus Sentinel-2 L2A optical imagery",
+        "EarthArXiv preprint 10.31223/x59n5n",
+        "Regional seismic network shock detections",
+        "Nepal National Disaster Risk Reduction & Management Authority (NDRRMA) bulletins"
+      ],
+      "event_summary": "Catastrophic detachment of high-relief rock and hanging glacier ice (estimated ~132 million m3) on the NW face of Langtang Lirung. The mass plunged into the Lhende Khola gorge, generating a hyperconcentrated debris flow and temporary valley damming followed by a cascading outburst surge down the Bhote Koshi. NOT a conventional moraine-dammed glacial lake outburst (GLOF).",
+      "relationship_to_existing_ml": {
+        "is_glo_lake_expansion": false,
+        "is_in_glo_lake_training_footprint": false,
+        "predictable_by_fused_xgboost_regressor": false,
+        "predictable_by_annual_lake_classifier": false,
+        "note": "Existing ML models predict annual glacial lake boundary expansion (NEXT_AREA_CHANGE) for mapped GLO water bodies. They have zero capability to predict steep-wall rock-ice avalanches or slope failures."
+      },
+      "elevation_reconciliation": {
+        "catalogue_nominal_elevation_m": 6200,
+        "catalogue_nominal_status": "NOMINAL_CATALOGUE_UNVERIFIED",
+        "source_coordinate_elevation": {
+          "elevation_m": 6200,
+          "provenance": "Nominal point estimate for detachment scarp on the NW flank of Langtang Lirung; unverified by direct differential in-situ survey or stereoscopic DEM differencing.",
+          "status": "NOMINAL_CATALOGUE_UNVERIFIED"
+        },
+        "source_scar_elevation_range_m": {
+          "range": [
+            5500,
+            6800
+          ],
+          "source_citation": "ICIMOD preliminary working notes; lacks specific page, figure, or table in published report (lib.icimod.org/records/qdvc1-tc123).",
+          "status": "UNVERIFIED_PENDING_PAGE_CITATION"
+        },
+        "icimod_public_summary_slope_elevation_m": {
+          "range": [
+            5000,
+            5500
+          ],
+          "source_citation": "ICIMOD (13 October 2026), Gyirong-Rasuwa disaster public event briefing / summary describing north-face detachment slope.",
+          "status": "PUBLIC_EVENT_SUMMARY_ESTIMATE",
+          "url": "https://www.icimod.org/news/learning-from-disaster-icimod-convenes-international-experts-following-rasuwa-gyirong-flood/"
+        },
+        "lower_runout_elevation_m": {
+          "range": [
+            5000,
+            5200
+          ],
+          "source_citation": "Preliminary situational bulletins / news media accounts describing lower breakline and plunge throat into Lhende Khola gorge; exact primary source unidentified.",
+          "status": "PROVISIONAL_UNVERIFIED"
+        },
+        "deposition_elevation_m": {
+          "approx_elevation_m": 3800,
+          "valley_reach": "Lhende Khola valley floor constriction above Rasuwagadhi border corridor (~1,800 m).",
+          "source_citation": "Topographic map estimation of Lhende Khola gorge floor.",
+          "status": "APPROXIMATE_UNVERIFIED"
+        },
+        "reconciliation_notes": "The 6,200 m catalogue elevation is a nominal point estimate preserved from historical entries, explicitly unverified. The 5,500–6,800 m range was cited in preliminary working notes but lacks specific page, figure, or table attribution in the ICIMOD report. In contrast, ICIMOD's public event briefing describes the north-face slope at approximately 5,000–5,500 m. Conflicting values are preserved as unverified. Lower breakline (5,000–5,200 m) and valley floor deposition (~3,800 m) remain provisional and unverified pending sub-meter stereoscopic DEM differencing."
+      },
+      "spatial_uncertainty_reconciliation": {
+        "raw_point_in_polygon": false,
+        "distance_to_nearest_rgi_glacier_m": 42.4,
+        "nearest_rgi_glacier_id": "RGI60-15.04173",
+        "reported_coordinate_precision_m": 150.0,
+        "uncertainty_semantics": "UNKNOWN",
+        "hypothetical_buffer_scenario": {
+          "description": "Hypothetical scenario: If the 150 m precision were assumed to be an isotropic circular error radius, a 150 m buffer would overlap glacier polygon RGI60-15.04173 (since 42.4 m < 150 m). However, the original publication does not define the error distribution, ellipse geometry, or confidence interval for this figure, so treating 150 m as a confirmed isotropic buffer is scientifically unverified.",
+          "is_confirmed_buffer": false
+        },
+        "glacier_containment_status": "UNRESOLVED",
+        "spatial_status": "SPATIALLY_AMBIGUOUS_WITHIN_REPORTED_PRECISION",
+        "precision_interpretation": "Raw point-in-polygon evaluation against RGI 6.0 yields False at a distance of 42.4 m. Because coordinate uncertainty semantics are UNKNOWN in the source and RGI 6.0 represents historical 2000–2010 boundaries, available evidence neither proves nor disproves that the detachment initiated inside glacierized terrain.",
+        "rgi_metadata": {
+          "inventory_version": "RGI 6.0 (Region 15 South Asia East)",
+          "source_era": "Circa 2000-2010 Landsat mapping composites",
+          "is_exact_2026_boundary": false,
+          "notes": "RGI 6.0 outlines represent historical glacier extents and do not reflect 2026 instantaneous ice margins or retreat."
+        },
+        "rgi7_comparison": {
+          "status": "TABULAR_ATTRIBUTES_ONLY",
+          "notes": "RGI 7.0 tabular data show glacier RGI2000-v7.0-G-15-05732 with centroid at (28.2780 N, 85.5368 E, 1,461 m south), but vector boundary polygons for Region 15 are not bundled in local workspace shapefiles; comparison remains anchored on reproducible RGI 6.0 vector outlines."
+        }
+      },
+      "evidence_sources_comprehensive": [
+        {
+          "source_org": "ICIMOD",
+          "title": "Understanding the Gyirong–Rasuwa disaster of 26 August 2026",
+          "url": "https://lib.icimod.org/records/qdvc1-tc123",
+          "publication_date": "2026-10-13",
+          "evidence_type": "OFFICIAL_REPORT",
+          "claim_supported": "Pre-collapse InSAR LOS displacement up to 40 cm between 7 July and 24 August 2026.",
+          "confidence": "HIGH",
+          "last_reviewed_date": "2026-11-01"
+        },
+        {
+          "source_org": "EarthArXiv",
+          "authors": "Ajay Kumar Sah",
+          "title": "No detectable precursor in Sentinel-1 backscatter before the 26 August 2026 Langtang Lirung rock–ice avalanche, Nepal",
+          "doi": "10.31223/X59N5N",
+          "url": "https://doi.org/10.31223/X59N5N",
+          "publication_date": "2026-09-06",
+          "date_updated": "2026-09-08",
+          "evidence_type": "PREPRINT",
+          "claim_supported": "Sentinel-1 Level-1 GRD backscatter amplitude (sigma0) time series analysis showed no anomalous precursory deviation; routine 12-day orbital repeat and C-band surface scattering limits constrain early detection of pre-collapse mechanical creep.",
+          "confidence": "PREPRINT_UNREVIEWED",
+          "last_reviewed_date": "2026-11-02",
+          "indexed_study_finding": "Sentinel-1 Level-1 GRD backscatter amplitude (sigma0) time series analysis in VV and VH polarizations showed no anomalous precursory deviation prior to the 26 August 2026 collapse.",
+          "temporal_sampling_limits": "Routine 12-day orbital repeat interval and C-band surface penetration depth constrain sensitivity to sub-surface mechanical degradation occurring between satellite passes."
+        },
+        {
+          "source_org": "EarthArXiv",
+          "authors": "Ajay Kumar Sah",
+          "title": "The single-pair unwrapping ceiling is a property of the track, not of the radar: Sentinel-1 evidence from rock–ice avalanches at Langtang Lirung and Ronti Peak",
+          "doi": "10.31223/X5GZ3J",
+          "url": "https://doi.org/10.31223/X5GZ3J",
+          "publication_date": "2026-09-18",
+          "evidence_type": "PREPRINT",
+          "claim_supported": "The single-pair unwrapping ceiling is track-dependent; geometric decorrelation in steep relief (>45 deg) constrains single-pair LOS displacement retrieval.",
+          "confidence": "PREPRINT_UNREVIEWED",
+          "last_reviewed_date": "2026-11-02",
+          "indexed_study_finding": "Sentinel-1 C-band single-pair interferometric phase unwrapping ceiling is track-dependent; geometric decorrelation and phase aliasing in steep Himalayan relief (>45 deg) constrain single-pair LOS displacement retrieval.",
+          "additional_interpretation": "Single-pair C-band InSAR is not an autonomous standalone warning trigger for steep hanging glacier detachments without multi-track combination, multi-temporal persistence scatterers, or optical offset tracking."
+        },
+        {
+          "source_org": "ICIMOD",
+          "title": "Learning from disaster: ICIMOD convenes international experts following Rasuwa Gyirong flood",
+          "url": "https://www.icimod.org/news/learning-from-disaster-icimod-convenes-international-experts-following-rasuwa-gyirong-flood/",
+          "publication_date": "2026-09-16",
+          "evidence_type": "PUBLIC_EVENT_BRIEFING",
+          "claim_supported": "North-face detachment slope estimated at approximately 5,000–5,500 m altitude.",
+          "confidence": "PUBLIC_EVENT_SUMMARY_ESTIMATE",
+          "last_reviewed_date": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "event_id": "NEPAL-2026-10-11-BUDHI-GANDAKI",
+      "name": "Budhi Gandaki River Surge / Flood near Chumchet, Gorkha",
+      "event_date": "2026-10-11",
+      "primary_type": "ROCK_ICE_AVALANCHE",
+      "cascading_types": [
+        "DEBRIS_FLOW",
+        "TEMPORARY_RIVER_BLOCKAGE",
+        "DOWNSTREAM_FLOOD"
+      ],
+      "source_location": {
+        "latitude": null,
+        "longitude": null,
+        "elevation_approx_m": null,
+        "coordinate_system": "EPSG:4326 (WGS84)",
+        "spatial_precision_m": null,
+        "status": "UNRESOLVED_PENDING_SURFACE_SURVEY",
+        "description": "Unresolved source detachment zone (candidate: high-altitude glaciated cirque / rock face near Shringri Himal, upstream headwaters of Udilung / Ungdilung Khola). Coordinates set to null to avoid fabricating precise source point."
+      },
+      "catchment": "Upper Budhi Gandaki River / Shiar Khola",
+      "major_basin": "Budhi Gandaki / Narayani (Gandaki)",
+      "affected_river_corridor": "Budhi Gandaki mainstem downstream through Philim, Jagat, Tatopani, Soti Khola, Arughat",
+      "mechanism_confidence": "HIGH",
+      "is_provisional": false,
+      "evidence_sources": [
+        "District Administration Office Gorkha incident report",
+        "Nepal NDRRMA situational monitoring update",
+        "Local eyewitness accounts and river gauge level fluctuations"
+      ],
+      "event_summary": "Catastrophic cryospheric cascading event initiating as a high-mountain rock-ice avalanche in the upper catchment of Udilung Khola (southern flanks of Shringri Himal). The mass mobilized as a channelized debris flow down the Udilung gorge, creating a temporary river blockage and sediment dam at the confluence with Syar Khola, which subsequently breached in multiple surge pulses down the Budhi Gandaki mainstem. Initial preliminary hypotheses of a localized valley-wall landslide dam have been superseded by multi-agency satellite and field mapping (ICIMOD 13 Oct, Red Cross Sitrep 4).",
+      "relationship_to_existing_ml": {
+        "is_glo_lake_expansion": false,
+        "is_in_glo_lake_training_footprint": false,
+        "predictable_by_fused_xgboost_regressor": false,
+        "predictable_by_annual_lake_classifier": false,
+        "note": "River valley landslide damming and breach events occur outside mapped glacial lake perimeters and are not captured by annual lake area ML models."
+      },
+      "location_components": {
+        "source_region": {
+          "description": "High-relief glaciated cirque / rock face near Shringri Himal, upstream headwaters of Udilung / Ungdilung Khola",
+          "coordinates": null,
+          "spatial_precision": "UNRESOLVED_PENDING_SURFACE_SURVEY",
+          "notes": "Preliminary secondary satellite observations (N. Parajuli HGR) locate fresh detachment scars on the southern flanks of Shringri Himal above Udilung Khola. Coordinates set to null to avoid fabricating precise source point."
+        },
+        "affected_reach_location": {
+          "description": "Chumchet village reach and confluence of Shiar Khola with Budhi Gandaki river corridor",
+          "latitude": 28.457,
+          "longitude": 84.975,
+          "spatial_precision_m": 2500.0,
+          "notes": "Coarse geographic reference for the initial reported flood impact and eyewitness observations, NOT the rock avalanche detachment source."
+        },
+        "blockage_location": {
+          "description": "Confluence of Ungdilung/Udilung Khola with Syar/Shiar stream",
+          "coordinates": null,
+          "spatial_precision": "ESTIMATED_VALLEY_CONFLUENCE",
+          "notes": "Red Cross Sitrep 4 identifies massive debris accumulation causing temporary valley ponding and multi-pulse outburst releases at this confluence."
+        },
+        "downstream_corridor": "Budhi Gandaki river mainstem through Philim, Jagat, Tatopani, Soti Khola, Arughat"
+      },
+      "cascade_stage_details": [
+        {
+          "stage_order": 1,
+          "hazard_process": "ROCK_ICE_AVALANCHE",
+          "location_ref": "source_region",
+          "confidence": "HIGH",
+          "evidence": "ICIMOD 13 Oct 2026 confirmation; Nepal Red Cross 29 Oct 2026 Sitrep 4."
+        },
+        {
+          "stage_order": 2,
+          "hazard_process": "DEBRIS_FLOW",
+          "location_ref": "Udilung / Ungdilung tributary gorge",
+          "confidence": "HIGH",
+          "evidence": "Nepal Red Cross Sitrep 4; documented heavy sediment and boulder transport down Udilung gorge."
+        },
+        {
+          "stage_order": 3,
+          "hazard_process": "TEMPORARY_RIVER_BLOCKAGE",
+          "location_ref": "blockage_location",
+          "confidence": "MODERATE_HIGH",
+          "evidence": "Nepal Red Cross Sitrep 4; eyewitness accounts of river halting followed by surging."
+        },
+        {
+          "stage_order": 4,
+          "hazard_process": "DOWNSTREAM_FLOOD",
+          "location_ref": "downstream_corridor",
+          "confidence": "HIGH",
+          "evidence": "Gorkha District Administration Office and NDRRMA hydrological gauge surge."
+        }
+      ],
+      "revision_history": [
+        {
+          "revision_date": "2026-10-11",
+          "prior_primary_type": null,
+          "revised_primary_type": "LANDSLIDE_DAM_BREACH",
+          "reason": "Initial rapid assessment by ICIMOD bulletin indicating possible valley landslide dam breach.",
+          "source_ref": "https://www.icimod.org/press-releases/landslide-dam-breach-may-have-triggered-budhi-gandaki-flash-flood/"
+        },
+        {
+          "revision_date": "2026-11-01",
+          "prior_primary_type": "LANDSLIDE_DAM_BREACH",
+          "revised_primary_type": "ROCK_ICE_AVALANCHE",
+          "reason": "Reconciled to rock-ice avalanche following ICIMOD 13 Oct confirmation and Nepal Red Cross Sitrep 4 field evidence documenting ice-debris avalanche at headwaters and tributary confluence blockage.",
+          "source_ref": "https://www.icimod.org/press-releases/second-major-himalayan-flood-in-seven-weeks-raises-new-questions-about-mountain-risk/"
+        }
+      ],
+      "evidence_sources_comprehensive": [
+        {
+          "source_org": "ICIMOD",
+          "url": "https://www.icimod.org/press-releases/landslide-dam-breach-may-have-triggered-budhi-gandaki-flash-flood/",
+          "publication_date": "2026-10-11",
+          "evidence_type": "OFFICIAL_REPORT",
+          "claim_supported": "Initial preliminary assessment of sudden flood surge; hypothesized valley landslide blockage.",
+          "confidence": "PRELIMINARY_SUPERSEDED",
+          "last_reviewed_date": "2026-11-01"
+        },
+        {
+          "source_org": "ICIMOD",
+          "url": "https://www.icimod.org/press-releases/second-major-himalayan-flood-in-seven-weeks-raises-new-questions-about-mountain-risk/",
+          "publication_date": "2026-10-13",
+          "evidence_type": "OFFICIAL_REPORT",
+          "claim_supported": "Confirmed separate high-mountain rock avalanche and glacier collapse as initiating trigger.",
+          "confidence": "HIGH",
+          "last_reviewed_date": "2026-11-01"
+        },
+        {
+          "source_org": "Nepal Red Cross Society",
+          "url": "https://nrcs.org/resources/news-and-events/gorkha-sitrep3/",
+          "publication_date": "2026-10-17",
+          "evidence_type": "FIELD_REPORT",
+          "claim_supported": "Downstream humanitarian impact, infrastructure loss, and flood corridor extent in Gorkha.",
+          "confidence": "HIGH",
+          "last_reviewed_date": "2026-11-01"
+        },
+        {
+          "source_org": "Nepal Red Cross Society",
+          "url": "https://nrcs.org/resources/news-and-events/gorkha-floodresponse-sitrep4/",
+          "publication_date": "2026-10-29",
+          "evidence_type": "FIELD_REPORT",
+          "claim_supported": "Ice-and-debris avalanche in upper catchment; debris accumulation at Ungdilung/Syar confluence causing temporary damming and multiple release surges.",
+          "confidence": "HIGH",
+          "last_reviewed_date": "2026-11-01"
+        },
+        {
+          "source_org": "EarthArXiv",
+          "url": "https://eartharxiv.org/repository/view/15540/",
+          "publication_date": "2026-10-25",
+          "evidence_type": "PREPRINT",
+          "claim_supported": "Study-specific analysis of SAR backscatter over candidate headwalls reporting no detectable amplitude precursor.",
+          "confidence": "PREPRINT_UNREVIEWED",
+          "last_reviewed_date": "2026-11-01"
+        },
+        {
+          "source_org": "Himalayan Geomorphic Research (N. Parajuli)",
+          "url": "https://www.parajulinawaraj.com.np/HGR/events/budi-gandaki-2026/index.html",
+          "publication_date": "2026-10-20",
+          "evidence_type": "SECONDARY_RESEARCH",
+          "claim_supported": "Candidate detachment zone identified on Shringri Himal flank upstream of Udilung Khola via 6 Oct vs 13 Oct optical comparisons.",
+          "confidence": "CANDIDATE_SECONDARY",
+          "last_reviewed_date": "2026-11-01"
+        }
+      ],
+      "affected_reach_location": {
+        "latitude": 28.457,
+        "longitude": 84.975,
+        "elevation_approx_m": 2200,
+        "coordinate_system": "EPSG:4326 (WGS84)",
+        "spatial_precision_m": 2500.0,
+        "description": "Approximate reach near Chumchet village and Shiar Khola / Budhi Gandaki confluence, Chumanwri Rural Municipality, Gorkha District (affected downstream reach, NOT the avalanche source)"
+      }
+    }
+  ]
+}
