@@ -1,0 +1,116 @@
+# GLO `AREA_UNCERTAINTY` Semantics — Scientific Evidence Note
+
+**Phase:** 9.1.4.1 — Scientific Uncertainty and Label Taxonomy Closure
+**Date:** 2026-11-18
+**Author:** Lead Geospatial ML Engineer
+**Branch:** `feature/phase9-dual-ensemble`
+**Primary Dataset:** Glacial Lake Observatory (GLO) v1.02 (2017–2024), Zenodo DOI `10.5281/zenodo.17802333`
+**Companion Publication:** Rawlins, L. D., Watson, C. S., Bhambri, R., Khadka, N., & Chand, M. B. (2026). *Glacial Lake Observatory (GLO): annual dataset of glacial lakes in Nepal and transboundary catchments (2017–2024)*. Earth System Science Data, 18, 5143–5165. `https://doi.org/10.5194/essd-18-5143-2026`
+
+---
+
+## 1. Executive Finding
+
+`AREA_UNCERTAINTY` in GLO v1.02 is **NOT a one-sigma ($1\sigma$) Gaussian standard deviation** and **NOT a parametric confidence interval**.
+
+By inspecting the official GLO v1.02 README, the companion *Earth System Science Data* publication (Rawlins et al., 2026), and all 40,423 polygon records in the local GeoPackage files, we establish with 100.0000% numerical verification that `AREA_UNCERTAINTY` is a **deterministic, area-dependent empirical delineation-error estimate** derived from a power-law regression fitted to Sentinel-2 deep-learning vs. manual digitization discrepancies ($n = 895$ outlines) and applied identically to both Sentinel-2 and Sentinel-1 annual polygons.
+
+Consequently:
+1. The previous statistical interpretation of `0.5 * sqrt(u_S1_t^2 + u_S1_t1^2 + u_S2_t^2 + u_S2_t1^2)` as Gaussian variance propagation of independent $1\sigma$ standard deviations is **scientifically unsupported and withdrawn**.
+2. Classification thresholds **must not** be described as "$1\sigma$" or "$3\sigma$" statistical significance levels.
+3. The combined scale $U_{\text{RMS}} = \sqrt{\frac{1}{4}(u_{S1,t}^2 + u_{S1,t+1}^2 + u_{S2,t}^2 + u_{S2,t+1}^2)}$ is retained solely as a **descriptive Root-Mean-Square (RMS) empirical delineation-error scale** requiring no distributional or independence assumption, with thresholds expressed as engineering multiples **$1.0 \times U_{\text{RMS}}$** and **$3.0 \times U_{\text{RMS}}$**.
+
+---
+
+## 2. Source Definition and Empirical Verification
+
+### 2.1 Dataset Metadata (`raw/GLO/README (1).md`)
+In the GLO v1.02 README (Section *Attribute Information → Attributes in All Lakes datasets*, line 66), `AREA_UNCERTAINTY` is defined verbatim as:
+
+> `AREA_UNCERTAINTY` — *"Estimated uncertainty in lake area"* — Units: `km²`
+
+The README provides no statistical distribution, confidence level, or formula for `AREA_UNCERTAINTY`. The GeoPackage internal metadata tables (`gpkg_metadata`, `gpkg_contents`) contain only QGIS CRS definitions (`ESRI:102025`) and no field-level statistical descriptions.
+
+*(Note: Line 123 of the README mentions a `>2σ` standardized-residual outlier threshold and 1,000-iteration bootstrap 95% confidence intervals. Those apply to long-term `EXPANSION_RATE` time-series regression in the Unique Lakes layers, NOT to single-observation `AREA_UNCERTAINTY`.)*
+
+### 2.2 Companion Publication Definition (Rawlins et al., 2026, ESSD)
+In Rawlins et al. (2026, *Earth System Science Data*, 18, 5143–5165, Equation 1), the authors quantified delineation error by comparing Sentinel-2 DeepLabV3 lake polygons against manually digitized outlines ($n = 895$ outlines from 239 lakes) and fitted a log-log linear power-law model of percentage area error as a function of lake area $A$ (in $\text{km}^2$):
+
+$$\text{error}\% = 4.88 \times A^{-0.463}$$
+
+Converting percentage error to absolute area uncertainty in $\text{km}^2$ gives:
+
+$$\text{AREA\_UNCERTAINTY}(A) = \text{round}\!\left(\frac{4.88}{100} \times A^{1 - 0.463},\; 3\right) = \text{round}\!\left(0.0488 \times A^{0.537},\; 3\right) \quad [\text{km}^2]$$
+
+### 2.3 Exact Verification Against Local GLO v1.02 GeoPackages
+Testing $\text{round}(0.0488 \times A^{0.537}, 3)$ directly against every observation in the local GLO v1.02 files yields:
+
+| Source GeoPackage | Total Records | Exact Match to $\text{round}(0.0488 A^{0.537}, 3)$ | Max $|U - 0.0488 A^{0.537}|$ (unrounded) |
+| :--- | ---: | ---: | ---: |
+| `S1_20172024_NTB_GLOID_v1.02.gpkg` | 18,129 | **18,129 / 18,129 (100.0000%)** | `0.000500 km²` |
+| `S2_20172024_NTB_GLOID_v1.02.gpkg` | 22,294 | **22,294 / 22,294 (100.0000%)** | `0.000500 km²` |
+| **Combined GLO v1.02** | **40,423** | **40,423 / 40,423 (100.0000%)** | **`0.000500 km²`** |
+
+**Confirmed Scientific Facts:**
+- `AREA_UNCERTAINTY` is a deterministic, 3-decimal-rounded function of polygon `AREA` alone (not of `PERIMETER` or per-scene quality metrics).
+- The exact same Sentinel-2-fitted formula is applied to Sentinel-1 records, even though Sentinel-1 achieved lower validation accuracy against manual outlines (`F1 = 0.82` for S1 vs. `F1 = 0.92` for S2 in 2020).
+- `AREA_UNCERTAINTY` is an **empirical delineation-error estimate**, not a Gaussian $1\sigma$ standard deviation or a parametric confidence interval.
+
+---
+
+## 3. Investigation of Statistical Independence Assumptions
+
+Standard Gaussian variance propagation for $\Delta A = \frac{1}{2}(A_{S1,t+1} - A_{S1,t}) + \frac{1}{2}(A_{S2,t+1} - A_{S2,t})$ requires all four observation errors $(\epsilon_{S1,t}, \epsilon_{S1,t+1}, \epsilon_{S2,t}, \epsilon_{S2,t+1})$ to be independent, zero-mean random variables with known standard deviations. None of these conditions hold:
+
+1. **Sentinel-1 vs. Sentinel-2 area errors are NOT independent:**
+   - Both sensors image the same lake in the same year under shared site-specific confounders (partial ice/snow cover, calving debris, shallow turbid shorelines, moraine shadow).
+   - Both layers assign `AREA_UNCERTAINTY` from the identical Sentinel-2-derived formula $0.0488 A^{0.537}$, rather than independent sensor-specific error variances.
+   - Across the $N = 11,849$ matched cohort, median $|A_{S1,t} - A_{S2,t}| = 0.004769\,\text{km}^2$, which is $0.6695\times$ the baseline mean empirical error scale $\bar{u}_t$.
+   - Correlation between S1 and S2 annual changes is weak ($r = +0.0995$) because most annual fluctuations are small relative to delineation error, while genuine large area changes co-vary across sensors.
+
+2. **Consecutive annual observations ($t$ vs. $t+1$) are NOT independent (empirically falsified):**
+   - Across $N = 9,392$ consecutive matched lake-year pairs (`PREV_YEAR_GAP == 1`):
+     - **Lag-1 autocorrelation of cross-sensor discrepancy $(A_{S1,t} - A_{S2,t})$ is $r = +0.5489$**, demonstrating strong persistent lake-specific sensor bias (e.g., recurring SAR layover/shadow geometry in steep valleys) across consecutive years.
+     - **Lag-1 autocorrelation of `FUSED_TARGET` ($\Delta A_t$ vs. $\Delta A_{t-1}$) is $r = -0.2700$**, demonstrating shared-endpoint delineation error bounce (an over-delineation at year $t$ creates a positive error in $\Delta A_{t-1}$ and an equal negative error in $\Delta A_t$).
+
+3. **Current and next-year `AREA_UNCERTAINTY` values are nearly collinear:**
+   - Because $u_t = 0.0488 A_t^{0.537}$ and $u_{t+1} = 0.0488 A_{t+1}^{0.537}$ with $A_{t+1} \approx A_t$ for most lakes, all four inputs $(u_{S1,t}, u_{S1,t+1}, u_{S2,t}, u_{S2,t+1})$ are nearly equal deterministic functions of lake size.
+
+**Conclusion:** Independence between sensors and across consecutive years **cannot** be assumed. Variance-propagation formulas must not be given a Gaussian standard-deviation or confidence-interval interpretation.
+
+---
+
+## 4. Defensible Alternative Without Invented Distributional or Covariance Assumptions
+
+Because we refuse to invent a Gaussian distribution or an unverified cross-sensor/temporal covariance matrix, any combination of the four documented empirical error estimates $(u_{S1,t}, u_{S1,t+1}, u_{S2,t}, u_{S2,t+1})$ must be framed transparently as a **descriptive empirical error scale**.
+
+We evaluated four candidate non-parametric scales on the full matched cohort ($N = 11,849$):
+
+| Candidate Scale Formula | Mathematical Interpretation | Median ($\text{km}^2$) | Ratio to $U_{\text{RMS}}$ (Med [P05, P95]) | STABLE / EXPANDING / UNUSUAL / AMBIGUOUS | Agreement with $U_{\text{RMS}}$ |
+| :--- | :--- | ---: | :--- | :--- | ---: |
+| **$U_{\text{RMS}} = \sqrt{\frac{1}{4}\sum_{i=1}^4 u_i^2} = 0.5\sqrt{u_{S1,t}^2+u_{S1,t+1}^2+u_{S2,t}^2+u_{S2,t+1}^2}$** | **Descriptive RMS ($L_2$ mean) of the 4 empirical delineation-error estimates** | `0.007000` | `1.000 [1.000, 1.000]` | `10,760 / 77 / 115 / 897` | **100.00%** |
+| $\bar{u} = \frac{1}{4}(u_{S1,t}+u_{S1,t+1}+u_{S2,t}+u_{S2,t+1})$ | Arithmetic mean ($L_1$ mean) of the 4 empirical delineation-error estimates | `0.007000` | `0.997 [0.948, 1.000]` | `10,716 / 78 / 132 / 923` | 99.49% |
+| $\bar{u}_t = \frac{1}{2}(u_{S1,t}+u_{S2,t})$ | Baseline year-$t$ mean empirical delineation error | `0.007000` | `0.999 [0.870, 1.077]` | `10,693 / 87 / 151 / 918` | 98.05% |
+| $U_{\text{additive}} = \frac{1}{2}\sum_{i=1}^4 u_i = 2\bar{u}$ | Worst-case adversarial additive bound (assumes simultaneous worst-case opposite errors at $t$ and $t+1$ across both sensors) | `0.014000` | `1.994 [1.896, 2.000]` | `11,519 / 12 / 25 / 293` | 92.81% |
+
+### Engineering Decision
+We adopt **$U_{\text{RMS}}$** as the canonical empirical delineation-error reference scale:
+
+$$U_{\text{RMS}} = \sqrt{\frac{u_{S1,t}^2 + u_{S1,t+1}^2 + u_{S2,t}^2 + u_{S2,t+1}^2}{4}} = 0.5\,\sqrt{u_{S1,t}^2 + u_{S1,t+1}^2 + u_{S2,t}^2 + u_{S2,t+1}^2} \quad [\text{km}^2]$$
+
+**Justification:**
+1. **No distributional or independence assumption required:** Algebraically, $U_{\text{RMS}}$ is simply the quadratic mean (RMS) of the four GLO empirical delineation-error estimates, bounded strictly by $\min_i u_i \le \bar{u} \le U_{\text{RMS}} \le \max_i u_i$.
+2. **Nearly identical to the arithmetic mean ($\bar{u}$):** Median ratio is `0.9972` with **99.49%** label agreement across $N = 11,849$ observations, while slightly weighting larger-error endpoints when S1/S2 areas diverge or when large transitions occur.
+3. **Avoids worst-case over-conservatism of $U_{\text{additive}} = 2\bar{u}$:** Because persistent lake-specific bias is positively correlated across consecutive years ($r = +0.5489$), systematic bias partially *cancels* in $A_{t+1} - A_t$. Applying $2\bar{u}$ collapses `EXPANDING` to 12 observations and `UNUSUAL_CHANGE` to 25 across 7 years, leaving insufficient support for supervised validation.
+4. **Terminology correction:** All "$1\sigma$" and "$3\sigma$" statistical significance labels are removed and replaced with **$1.0 \times U_{\text{RMS}}$** (empirical delineation-error floor) and **$3.0 \times U_{\text{RMS}}$** (3× empirical delineation-error threshold). Legacy code/column names (`FUSED_SIGMA_DELTA`, `compute_combined_sigma_delta`) are retained strictly as backward-compatible aliases documented as representing $U_{\text{RMS}}$.
+
+---
+
+## 5. Epistemic Classification Summary
+
+| Category | Statements |
+| :--- | :--- |
+| **Confirmed Scientific Facts** | (1) GLO v1.02 `AREA_UNCERTAINTY` equals $\text{round}(0.0488 A^{0.537}, 3)\,\text{km}^2$ (Rawlins et al., 2026 Eq. 1) for 40,423/40,423 (100.0000%) S1 and S2 records. (2) It is an empirical Sentinel-2 DL-vs-manual power-law delineation-error estimate, NOT a $1\sigma$ Gaussian SD. (3) Consecutive-year errors are empirically non-independent ($r = +0.5489$ for $A_{S1}-A_{S2}$; $r = -0.2700$ for $\Delta A$; $N = 9,392$). (4) 90.07% of matched annual changes satisfy $|\Delta A| \le 1.0 \times U_{\text{RMS}}$. |
+| **Documented Assumptions** | (1) Treating Rawlins et al.'s Sentinel-2 empirical power-law error magnitude as an approximate order-of-magnitude delineation-error scale for fused S1/S2 annual changes. (2) Engineering threshold multipliers $k_{\text{low}} = 1.0$, $k_{\text{high}} = 3.0$, relative thresholds $\pm 5\%$ and $\pm 20\%$, and grouping moderate contraction into `STABLE` are project-defined classification conventions. |
+| **Unresolved Questions** | (1) Separate empirical area-error power-law parameters for Sentinel-1 SAR (which had lower F1 = 0.82 vs. S2 F1 = 0.92) are not published in GLO v1.02. (2) The exact empirical coverage probability (e.g., quantile vs. mean/median residual) of Rawlins et al.'s power-law regression curve in original space (vs. log-log mean) and the true cross-sensor/temporal error covariance matrix remain unquantified without the original $n = 895$ manual digitization polygons. |
+| **Engineering Decisions** | (1) Withdraw all $1\sigma$/$3\sigma$ Gaussian significance claims. (2) Retain $U_{\text{RMS}}$ strictly as a descriptive RMS empirical delineation-error scale with engineering multipliers $1.0\times U_{\text{RMS}}$ and $3.0\times U_{\text{RMS}}$. (3) Keep canonical counts (`10,760 / 77 / 115 / 897`) intact and reconciled across all Phase 12 artifacts. |

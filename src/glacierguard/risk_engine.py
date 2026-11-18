@@ -16,6 +16,16 @@ Rules follow the conservative glaciological framework:
 - INSUFFICIENT DATA: No valid imagery or failed quality screening.
 - PROCESSING: Live ingestion/inference actively underway.
 - SYSTEM ERROR: Failure in data acquisition or processing stages.
+
+Taxonomy Separation Note (Phase 9.1.4.1):
+Operational monitoring tiers produced by RiskEngine (canonical alert codes:
+NORMAL/SAFE, WATCH, ELEVATED_ALERT, STALE_DATA, INSUFFICIENT_DATA, PROCESSING,
+SYSTEM_ERROR) are rule-based heuristic alert statuses and must NEVER be used as
+supervised ML training labels. For backward compatibility with existing
+operational pipelines and tests, Rule 2 emits the legacy internal alert string
+"UNUSUAL_CHANGE" (mapped to user-facing "ELEVATED ALERT"); this legacy internal
+alert code is semantically distinct from the supervised physical ML class
+`glacierguard.classification_labels.CLASS_UNUSUAL_CHANGE`.
 """
 
 import datetime
